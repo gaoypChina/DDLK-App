@@ -1,0 +1,9 @@
+import 'package:flutter/material.dart';
+
+class ColorConstant {
+  static const green_primary = Color(0xff52AB5C);
+  static const grey_F8F9FA = Color(0xffF8F9FA);
+  static const neutral_black = Color(0xff2C3F58);
+  static const neutral_gray = Color(0xff778699);
+  static const border_gray = Color(0xffE3E7ED);
+}
