@@ -7,4 +7,6 @@ class ConstantIcons {
   static const ic_fb = 'assets/icons/ic_fb.svg';
   static const ic_gg = 'assets/icons/ic_gg.svg';
   static const ic_apple = 'assets/icons/ic_apple.svg';
+  static const ic_mail = 'assets/icons/ic_mail.svg';
+  static const ic_lock = 'assets/icons/ic_lock.svg';
 }

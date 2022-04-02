@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/option_signup_screen.dart';
+import 'package:diadiemlongkhanh/screens/verify_phone/verify_phone_screen.dart';
 import 'package:flutter/material.dart';
 
 class RouterManager {
@@ -18,6 +19,10 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => LoginScreen(),
         );
+      case RouterName.verify_phone:
+        return MaterialPageRoute(
+          builder: (_) => VerifyPhoneScreen(),
+        );
 
       default:
         return MaterialPageRoute(
@@ -33,4 +38,5 @@ class RouterName {
   static const option_login = '/option_login';
   static const option_signup = '/option_signup';
   static const login = '/login';
+  static const verify_phone = '/verify_phone';
 }

@@ -6,4 +6,7 @@ class ColorConstant {
   static const neutral_black = Color(0xff2C3F58);
   static const neutral_gray = Color(0xff778699);
   static const border_gray = Color(0xffE3E7ED);
+  static const border_gray2 = Color(0xffACB8C7);
+  static const grey_F5F5F5 = Color(0xffF5F5F5);
+  static const grey_EBEFF4 = Color(0xffEBEFF4);
 }
