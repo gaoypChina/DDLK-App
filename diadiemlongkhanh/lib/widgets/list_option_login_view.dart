@@ -17,7 +17,8 @@ class ListOptionLoginView extends StatelessWidget {
             ConstantIcons.ic_user,
           ),
           title: 'Sử dụng số điện thoại hoặc email',
-          onPressed: () => Navigator.of(context).pushNamed(RouterName.login),
+          onPressed: () => Navigator.of(context)
+              .pushNamed(isLogin ? RouterName.login : RouterName.signup),
         ),
         SizedBox(
           height: 16,

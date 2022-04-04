@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 class MainTextFormField extends StatelessWidget {
   final String? hintText;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
   MainTextFormField({
     this.hintText,
     this.prefixIcon,
+    this.suffixIcon,
   });
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,14 @@ class MainTextFormField extends StatelessWidget {
         prefixIconConstraints: BoxConstraints(
           minHeight: 20,
           minWidth: 20,
+        ),
+        suffixIconConstraints: BoxConstraints(
+          minHeight: 20,
+          minWidth: 20,
+        ),
+        suffixIcon: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: suffixIcon,
         ),
         contentPadding: const EdgeInsets.only(left: 16),
         border: OutlineInputBorder(

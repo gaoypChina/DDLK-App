@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/widgets/list_option_login_view.dart';
+import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:diadiemlongkhanh/widgets/my_back_button.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +16,7 @@ class _OptionSingupScreenState extends State<OptionSingupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: MyBackButton(),
-      ),
+      appBar: MyAppBar(),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -51,7 +48,9 @@ class _OptionSingupScreenState extends State<OptionSingupScreen> {
                   right: 16,
                   top: 36,
                 ),
-                child: ListOptionLoginView(),
+                child: ListOptionLoginView(
+                  isLogin: false,
+                ),
               ),
               SizedBox(
                 height: 36,

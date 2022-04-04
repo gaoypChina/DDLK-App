@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: AppTheme.of(context, listen: true).currentTheme,
       onGenerateRoute: RouterManager.generateRoute,
-      initialRoute: RouterName.option_login,
+      initialRoute: RouterName.welcome,
     );
   }
 }

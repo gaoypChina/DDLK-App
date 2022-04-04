@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 
 class SegmentLoginView extends StatefulWidget {
   final Function(int)? onChanged;
-  SegmentLoginView({this.onChanged});
+  final EdgeInsetsGeometry? margin;
+  SegmentLoginView({
+    this.onChanged,
+    this.margin,
+  });
   @override
   _SegmentLoginViewState createState() => _SegmentLoginViewState();
 }
@@ -15,6 +19,7 @@ class _SegmentLoginViewState extends State<SegmentLoginView> {
     final width = MediaQuery.of(context).size.width;
     return Container(
       height: 52,
+      margin: widget.margin,
       decoration: BoxDecoration(
         color: ColorConstant.border_gray,
         borderRadius: BorderRadius.circular(4),

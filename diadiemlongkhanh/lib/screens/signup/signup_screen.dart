@@ -1,5 +1,4 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
-import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
@@ -9,22 +8,24 @@ import 'package:diadiemlongkhanh/widgets/segment_login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
+
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   int indexSelected = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(
-        title: 'Đăng nhập',
+        title: 'Đăng ký',
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SegmentLoginView(
@@ -36,15 +37,15 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             ),
             indexSelected == 0
-                ? _buildLoginWithPhoneView()
-                : _buildLoginWithEmailView(),
+                ? _buildSignupWithPhoneView()
+                : _buildSignupWithEmailView(),
           ],
         ),
       ),
     );
   }
 
-  Container _buildLoginWithEmailView() {
+  Container _buildSignupWithEmailView() {
     return Container(
       margin: const EdgeInsets.only(top: 56),
       child: Column(
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 16,
           ),
           MainTextFormField(
-            hintText: 'Nhập mật khẩu ',
+            hintText: 'Nhập mật khẩu',
             prefixIcon: SvgPicture.asset(
               ConstantIcons.ic_lock,
             ),
@@ -68,23 +69,16 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           SizedBox(
-            height: 8,
+            height: 16,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GestureDetector(
-                onTap: () =>
-                    Navigator.of(context).pushNamed(RouterName.forgot_password),
-                child: Text(
-                  'Quên mật khẩu?',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              )
-            ],
+          MainTextFormField(
+            hintText: 'Nhập mật khẩu',
+            prefixIcon: SvgPicture.asset(
+              ConstantIcons.ic_lock,
+            ),
+            suffixIcon: SvgPicture.asset(
+              ConstantIcons.ic_eye_off,
+            ),
           ),
           SizedBox(
             height: 32,
@@ -94,34 +88,12 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Theme.of(context).primaryColor,
             textColor: Colors.white,
           ),
-          SizedBox(
-            height: 24,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Bạn chưa có tài khoản ?',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              GestureDetector(
-                onTap: () =>
-                    Navigator.of(context).pushNamed(RouterName.option_signup),
-                child: Text(
-                  ' Đăng ký',
-                  style: Theme.of(context).textTheme.headline2?.apply(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
   }
 
-  Container _buildLoginWithPhoneView() {
+  Container _buildSignupWithPhoneView() {
     return Container(
       child: Column(
         children: [

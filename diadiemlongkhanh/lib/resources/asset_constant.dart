@@ -1,5 +1,10 @@
 class ConstantImages {
   static const logo = 'assets/images/logo.jpg';
+  static const skip_bg = 'assets/images/skip_bg.png';
+  static const skip_bg2 = 'assets/images/skip_bg2.png';
+  static const welcome1 = 'assets/images/welcome1.png';
+  static const welcome2 = 'assets/images/welcome2.png';
+  static const welcome3 = 'assets/images/welcome3.png';
 }
 
 class ConstantIcons {
@@ -9,4 +14,7 @@ class ConstantIcons {
   static const ic_apple = 'assets/icons/ic_apple.svg';
   static const ic_mail = 'assets/icons/ic_mail.svg';
   static const ic_lock = 'assets/icons/ic_lock.svg';
+  static const ic_eye_off = 'assets/icons/ic_eye-off.svg';
+  static const ic_circle_check = 'assets/icons/ic_circle_check.svg';
+  static const ic_arrow_right = 'assets/icons/ic_arrow_right.svg';
 }

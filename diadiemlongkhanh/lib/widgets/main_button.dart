@@ -5,11 +5,13 @@ class MainButton extends StatelessWidget {
   final String? title;
   final Color? textColor;
   final Function()? onPressed;
+  final EdgeInsetsGeometry? margin;
   MainButton({
     this.color,
     this.title,
     this.textColor,
     this.onPressed,
+    this.margin,
   });
 
   @override
@@ -18,6 +20,7 @@ class MainButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: 48,
+        margin: margin,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: color,
