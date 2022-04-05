@@ -17,4 +17,9 @@ class ConstantIcons {
   static const ic_eye_off = 'assets/icons/ic_eye-off.svg';
   static const ic_circle_check = 'assets/icons/ic_circle_check.svg';
   static const ic_arrow_right = 'assets/icons/ic_arrow_right.svg';
+  static const ic_home = 'assets/icons/ic_home.svg';
+  static const ic_compass = 'assets/icons/ic_compass.svg';
+  static const ic_category = 'assets/icons/ic_category.svg';
+  static const ic_account = 'assets/icons/ic_account.svg';
+  static const ic_plus = 'assets/icons/ic_plus.svg';
 }

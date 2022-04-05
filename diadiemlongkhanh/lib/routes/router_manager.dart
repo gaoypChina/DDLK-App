@@ -1,7 +1,9 @@
+import 'package:diadiemlongkhanh/screens/base_tabbar/base_tabbar_screen.dart';
 import 'package:diadiemlongkhanh/screens/forgot_password/forgot_password_screen.dart';
 import 'package:diadiemlongkhanh/screens/forgot_password/reset_password_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
+import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/option_signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/verify_phone/verify_phone_screen.dart';
@@ -43,6 +45,14 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => WelcomeScreen(),
         );
+      case RouterName.base_tabbar:
+        return MaterialPageRoute(
+          builder: (_) => BaseTabBarSreen(),
+        );
+      case RouterName.otp_login:
+        return MaterialPageRoute(
+          builder: (_) => OTPLoginScreen(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -62,4 +72,6 @@ class RouterName {
   static const reset_password = '/reset_password';
   static const signup = '/signup';
   static const welcome = '/welcome';
+  static const base_tabbar = '/base_tabbar';
+  static const otp_login = '/otp_login';
 }

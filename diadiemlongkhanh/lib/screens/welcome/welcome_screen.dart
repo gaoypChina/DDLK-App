@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/screens/welcome/model/welcome_model.dart';
 import 'package:diadiemlongkhanh/widgets/dots_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin {
   int step = 0;
   late AnimationController controller;
+  final scrollController = PageController();
 
   @override
   void initState() {
     super.initState();
+    scrollController.addListener(() {
+      print(scrollController.offset);
+    });
     controller = AnimationController(
       value: 0.5,
       vsync: this,
@@ -46,34 +51,48 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     SizedBox(
                       height: 142,
                     ),
-                    Image.asset(
-                      ConstantImages.welcome1,
-                      width: 250,
-                      height: 194,
-                    ),
-                    SizedBox(
-                      height: 32,
-                    ),
-                    Text(
-                      'Chào mừng bạn đến',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Địa Điểm Long Khánh',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline1,
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Text(
-                      'Mong muốn mang lại những điều hữu ích, những trải \nnghiệm tốt đẹp khi đến Long Khánh - Đồng Nai',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.subtitle1,
+                    Container(
+                      height: 353,
+                      child: PageView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          controller: scrollController,
+                          itemCount: WelcomeModel.welcomeDatas.length,
+                          itemBuilder: (_, index) {
+                            final item = WelcomeModel.welcomeDatas[index];
+                            return Column(
+                              children: [
+                                item.img,
+                                SizedBox(
+                                  height: 32,
+                                ),
+                                item.title != null
+                                    ? Text(
+                                        'Chào mừng bạn đến',
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      )
+                                    : SizedBox.shrink(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  item.subTitle,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.headline1,
+                                ),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                Text(
+                                  item.description,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                ),
+                              ],
+                            );
+                          }),
                     ),
                     SizedBox(
                       height: 32,
@@ -97,9 +116,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     if (step == 2) {
       return;
     }
+    final width = MediaQuery.of(context).size.width;
+
     controller.forward();
     setState(() {
       step += 1;
+      scrollController.animateTo(
+        width * step,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeIn,
+      );
     });
   }
 

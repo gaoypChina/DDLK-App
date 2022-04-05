@@ -1,9 +1,14 @@
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(
     ChangeNotifierProvider(
       create: (_) => AppTheme(),
@@ -36,7 +41,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: AppTheme.of(context, listen: true).currentTheme,
       onGenerateRoute: RouterManager.generateRoute,
-      initialRoute: RouterName.welcome,
+      initialRoute: RouterName.login,
     );
   }
 }

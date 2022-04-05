@@ -23,7 +23,7 @@ class MainButton extends StatelessWidget {
         margin: margin,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: color,
+          color: color ?? Theme.of(context).primaryColor,
         ),
         child: Center(
           child: Text(
@@ -31,7 +31,7 @@ class MainButton extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: textColor,
+              color: textColor ?? Colors.white,
             ),
           ),
         ),

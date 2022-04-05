@@ -15,7 +15,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  int indexSelected = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,17 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            SegmentLoginView(
-              margin: const EdgeInsets.only(top: 50),
-              onChanged: (val) {
-                setState(() {
-                  indexSelected = val;
-                });
-              },
-            ),
-            indexSelected == 0
-                ? _buildLoginWithPhoneView()
-                : _buildLoginWithEmailView(),
+            _buildLoginWithEmailView(),
           ],
         ),
       ),
@@ -50,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         children: [
           MainTextFormField(
-            hintText: 'Nhập email của bạn',
+            hintText: 'Nhập số điện thoại hoặc địa chỉ email',
             prefixIcon: SvgPicture.asset(
               ConstantIcons.ic_mail,
             ),
@@ -75,9 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               GestureDetector(
                 onTap: () =>
-                    Navigator.of(context).pushNamed(RouterName.forgot_password),
+                    Navigator.of(context).pushNamed(RouterName.otp_login),
                 child: Text(
-                  'Quên mật khẩu?',
+                  'Đăng nhập bằng OTP',
                   style: TextStyle(
                     fontSize: 12,
                     color: Theme.of(context).primaryColor,
@@ -102,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Text(
                 'Bạn chưa có tài khoản ?',
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               GestureDetector(
                 onTap: () =>
@@ -116,26 +105,17 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ],
           ),
-        ],
-      ),
-    );
-  }
-
-  Container _buildLoginWithPhoneView() {
-    return Container(
-      child: Column(
-        children: [
-          PhoneFormField(),
           SizedBox(
-            height: 32,
+            height: 8,
           ),
-          MainButton(
-            onPressed: () =>
-                Navigator.of(context).pushNamed(RouterName.verify_phone),
-            color: Theme.of(context).primaryColor, //ColorConstant.grey_F5F5F5,
-            title: 'Yêu cầu OTP',
-            textColor: Colors.white, //ColorConstant.border_gray2,
-          )
+          GestureDetector(
+            onTap: () =>
+                Navigator.of(context).pushNamed(RouterName.forgot_password),
+            child: Text(
+              'Quên mật khẩu?',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
         ],
       ),
     );
