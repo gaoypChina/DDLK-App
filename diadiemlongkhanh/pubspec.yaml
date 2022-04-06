@@ -38,6 +38,7 @@ dependencies:
   flutter_svg: ^1.0.3
   pin_code_fields: ^7.3.0
   rflutter_alert: ^2.0.4
+  flutter_swipe_detector: ^2.0.0
 
 dev_dependencies:
   flutter_test:

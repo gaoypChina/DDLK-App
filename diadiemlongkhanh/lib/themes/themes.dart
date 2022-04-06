@@ -23,6 +23,11 @@ final Map<AppThemeKeys, ThemeData> _themes = {
         fontSize: 18,
         color: ColorConstant.neutral_black,
       ),
+      headline4: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
+        color: ColorConstant.neutral_black,
+      ),
       subtitle1: TextStyle(
         fontSize: 14,
         color: ColorConstant.neutral_gray,

@@ -22,4 +22,7 @@ class ConstantIcons {
   static const ic_category = 'assets/icons/ic_category.svg';
   static const ic_account = 'assets/icons/ic_account.svg';
   static const ic_plus = 'assets/icons/ic_plus.svg';
+  static const ic_bell = 'assets/icons/ic_bell.svg';
+  static const ic_search = 'assets/icons/ic_search.svg';
+  static const ic_map = 'assets/icons/ic_map.png';
 }
