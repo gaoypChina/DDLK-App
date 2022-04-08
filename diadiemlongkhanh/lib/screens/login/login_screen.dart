@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       appBar: MyAppBar(
         title: 'Đăng nhập',
+        isShowBackButton: false,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -79,6 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 32,
           ),
           MainButton(
+            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                RouterName.base_tabbar, (route) => false),
             title: 'Đăng nhập',
             color: Theme.of(context).primaryColor,
             textColor: Colors.white,

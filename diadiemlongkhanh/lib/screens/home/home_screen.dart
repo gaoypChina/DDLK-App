@@ -1,9 +1,9 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/dots_view.dart';
-import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
-import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
+import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
@@ -82,135 +82,19 @@ class _HomeScreenState extends State<HomeScreen>
                               itemCount: 3,
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              padding: const EdgeInsets.only(top: 16),
+                              padding:
+                                  const EdgeInsets.only(top: 16, bottom: 24),
                               itemBuilder: (_, index) {
-                                return Container(
-                                  height: 561,
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                    left: 12,
-                                    right: 12,
-                                  ),
-                                  margin: const EdgeInsets.only(
-                                    bottom: 16,
-                                    left: 16,
-                                    right: 16,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: ColorConstant.grey_shadow
-                                            .withOpacity(0.12),
-                                        offset: Offset(0, 12),
-                                        blurRadius: 40,
-                                      )
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          ClipRRectImage(
-                                            radius: 22,
-                                            url:
-                                                'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
-                                            width: 44,
-                                            height: 44,
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      'Trần Tâm',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline2,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    SvgPicture.asset(
-                                                      ConstantIcons.ic_right,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    Text(
-                                                      'Harleys The Coffee',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline2,
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 6,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '4.0',
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: ColorConstant
-                                                            .neutral_gray_lighter,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 7,
-                                                    ),
-                                                    MyRatingBar(
-                                                      rating: 4,
-                                                      onRatingUpdate:
-                                                          (rate, isEmpty) {},
-                                                    ),
-                                                    Container(
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                        left: 5,
-                                                        right: 8,
-                                                      ),
-                                                      height: 4,
-                                                      width: 4,
-                                                      decoration: BoxDecoration(
-                                                        color: ColorConstant
-                                                            .neutral_gray_lighter,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(2),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      '7 ngày trước',
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: ColorConstant
-                                                            .neutral_gray_lighter,
-                                                      ),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          _buildFollowButton(context),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                );
+                                return NewFeedItemView();
                               },
+                            ),
+                            MainButton(
+                              title: 'KHÁM PHÁ THÊM',
+                              margin: const EdgeInsets.only(
+                                left: 16,
+                                right: 16,
+                                bottom: 30,
+                              ),
                             )
                           ],
                         ),
@@ -222,38 +106,6 @@ class _HomeScreenState extends State<HomeScreen>
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Container _buildFollowButton(BuildContext context) {
-    return Container(
-      height: 24,
-      width: 60,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(
-          color: Theme.of(context).primaryColor,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            ConstantIcons.ic_plus,
-            color: Theme.of(context).primaryColor,
-            width: 12,
-            height: 12,
-          ),
-          Text(
-            'Theo dõi',
-            style: TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).primaryColor,
-            ),
-          )
-        ],
       ),
     );
   }
@@ -751,8 +603,11 @@ class _HomeScreenState extends State<HomeScreen>
             bottom: 6,
             left: 0,
             right: 0,
-            child: Container(
-              color: _indexSlide == 0 ? Colors.red : Colors.green,
+            child: ClipRRectImage(
+              radius: 12,
+              url: _indexSlide == 0
+                  ? 'https://aeonmall-haiphong-lechan.com.vn/wp-content/uploads/2020/12/hc-flagships-750x468-1.png'
+                  : 'https://kenh14cdn.com/thumb_w/600/203336854389633024/2021/10/1/photo1633091620833-16330916212291420799229.jpg',
             ),
           ),
           Positioned(
@@ -779,8 +634,11 @@ class _HomeScreenState extends State<HomeScreen>
                   _indexSlide -= 1;
                 });
               },
-              child: Container(
-                color: _indexSlide == 0 ? Colors.green : Colors.red,
+              child: ClipRRectImage(
+                radius: 12,
+                url: _indexSlide == 1
+                    ? 'https://aeonmall-haiphong-lechan.com.vn/wp-content/uploads/2020/12/hc-flagships-750x468-1.png'
+                    : 'https://kenh14cdn.com/thumb_w/600/203336854389633024/2021/10/1/photo1633091620833-16330916212291420799229.jpg',
               ),
             ),
           )

@@ -9,37 +9,46 @@ final Map<AppThemeKeys, ThemeData> _themes = {
     fontFamily: 'Roboto',
     textTheme: TextTheme(
       headline1: TextStyle(
+        fontFamily: 'Roboto',
         fontWeight: FontWeight.w500,
         fontSize: 24,
         color: ColorConstant.neutral_black,
       ),
       headline2: TextStyle(
+        fontFamily: 'Roboto',
         fontWeight: FontWeight.w500,
         fontSize: 14,
         color: ColorConstant.neutral_black,
       ),
       headline3: TextStyle(
+        fontFamily: 'Roboto',
         fontWeight: FontWeight.w500,
         fontSize: 18,
         color: ColorConstant.neutral_black,
       ),
       headline4: TextStyle(
+        fontFamily: 'Roboto',
         fontWeight: FontWeight.w500,
         fontSize: 16,
         color: ColorConstant.neutral_black,
       ),
       headline5: TextStyle(
+        fontFamily: 'Roboto',
         fontWeight: FontWeight.w700,
         fontSize: 18,
         color: ColorConstant.neutral_black,
       ),
       subtitle1: TextStyle(
+        fontFamily: 'Roboto',
         fontSize: 14,
         color: ColorConstant.neutral_gray,
+        fontWeight: FontWeight.w400,
       ),
       bodyText1: TextStyle(
+        fontFamily: 'Roboto',
         fontSize: 14,
         color: ColorConstant.neutral_black,
+        fontWeight: FontWeight.w400,
       ),
     ),
   ),

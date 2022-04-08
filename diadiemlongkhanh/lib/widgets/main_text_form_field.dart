@@ -5,10 +5,14 @@ class MainTextFormField extends StatelessWidget {
   final String? hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final double? radius;
+  final Color? colorBorder;
   MainTextFormField({
     this.hintText,
     this.prefixIcon,
     this.suffixIcon,
+    this.radius,
+    this.colorBorder,
   });
   @override
   Widget build(BuildContext context) {
@@ -17,13 +21,15 @@ class MainTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: Theme.of(context).textTheme.subtitle1,
-        prefixIcon: Padding(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-          ),
-          child: prefixIcon,
-        ),
+        prefixIcon: prefixIcon != null
+            ? Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                ),
+                child: prefixIcon,
+              )
+            : null,
         prefixIconConstraints: BoxConstraints(
           minHeight: 20,
           minWidth: 20,
@@ -38,16 +44,19 @@ class MainTextFormField extends StatelessWidget {
         ),
         contentPadding: const EdgeInsets.only(left: 16),
         border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radius ?? 4),
           borderSide: BorderSide(
-            color: ColorConstant.border_gray,
+            color: colorBorder ?? ColorConstant.border_gray,
           ),
         ),
         enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radius ?? 4),
           borderSide: BorderSide(
-            color: ColorConstant.border_gray,
+            color: colorBorder ?? ColorConstant.border_gray,
           ),
         ),
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radius ?? 4),
           borderSide: BorderSide(
             color: Theme.of(context).primaryColor,
           ),

@@ -17,4 +17,5 @@ class ColorConstant {
   static const grey_shadow = Color(0xff3C4A51);
   static const grey_F1F5F2 = Color(0xffF1F5F2);
   static const green_D5F4D9 = Color(0xffD5F4D9);
+  static const grey_F2F4F8 = Color(0xffF2F4F8);
 }

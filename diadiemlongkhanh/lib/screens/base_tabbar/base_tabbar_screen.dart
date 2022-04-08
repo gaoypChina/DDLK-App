@@ -78,7 +78,7 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
                   ? Theme.of(context).primaryColor
                   : ColorConstant.neutral_gray,
             ),
-            text: 'Chi nhánh',
+            text: 'Khám phá',
           ),
           FABBottomAppBarItem(
             iconData: SvgPicture.asset(

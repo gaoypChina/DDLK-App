@@ -4,19 +4,24 @@ import 'my_back_button.dart';
 
 class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
-  MyAppBar({this.title});
+  final bool isShowBackButton;
+  MyAppBar({
+    this.title,
+    this.isShowBackButton = true,
+  });
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: isShowBackButton,
         elevation: 0,
         title: Text(
           title ?? '',
           style: Theme.of(context).textTheme.headline1,
         ),
-        leading: MyBackButton(),
+        leading: isShowBackButton ? MyBackButton() : null,
       ),
     );
   }
