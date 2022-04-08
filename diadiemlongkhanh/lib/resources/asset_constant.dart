@@ -40,4 +40,5 @@ class ConstantIcons {
   static const ic_heart = 'assets/icons/ic_heart.svg';
   static const ic_comment = 'assets/icons/ic_comment.svg';
   static const ic_eye = 'assets/icons/ic_eye.svg';
+  static const ic_heart_outline = 'assets/icons/ic_heart_outline.svg';
 }

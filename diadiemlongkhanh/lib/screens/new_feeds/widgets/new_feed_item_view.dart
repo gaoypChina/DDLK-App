@@ -7,16 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class NewFeedItemView extends StatelessWidget {
-  const NewFeedItemView({Key? key}) : super(key: key);
+  final bool isShowComment;
+  NewFeedItemView({
+    this.isShowComment = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 561,
       padding: const EdgeInsets.only(
         top: 12,
         left: 12,
         right: 12,
+        bottom: 16,
       ),
       margin: const EdgeInsets.only(
         bottom: 16,
@@ -51,30 +54,8 @@ class NewFeedItemView extends StatelessWidget {
           SizedBox(
             height: 16,
           ),
-          Row(
-            children: [
-              ClipRRectImage(
-                radius: 18,
-                url:
-                    'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
-                width: 36,
-                height: 36,
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: 36,
-                  child: MainTextFormField(
-                    hintText: 'Viết bình luận',
-                    colorBorder: ColorConstant.neutral_gray_lightest,
-                    radius: 18,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          _buildInputCommentField(),
+          isShowComment ? _buildListCommentView(context) : SizedBox.shrink(),
           SizedBox(
             height: 24,
           ),
@@ -86,6 +67,148 @@ class NewFeedItemView extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  ListView _buildListCommentView(BuildContext context) {
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: 3,
+      padding: const EdgeInsets.only(
+        top: 16,
+      ),
+      shrinkWrap: true,
+      itemBuilder: (_, index) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 18,
+          ),
+          child: Row(
+            children: [
+              ClipRRectImage(
+                radius: 18,
+                url:
+                    'https://bangsport.net/wp-content/uploads/2021/12/3139455-64344828-2560-1440.jpg',
+                width: 36,
+                height: 36,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        top: 12,
+                        right: 12,
+                        bottom: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: ColorConstant.neutral_gray_lightest,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Bửu Quang',
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            'Địa điểm xịn ghê, bữa nào mình phải ghé thăm mới được',
+                            maxLines: null,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: ColorConstant.neutral_black,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '7 ngày trước',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: ColorConstant.neutral_gray,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 17,
+                        ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              ConstantIcons.ic_heart_outline,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              '6 Thích',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: ColorConstant.neutral_gray,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          'Trả lời',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: ColorConstant.neutral_gray,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Row _buildInputCommentField() {
+    return Row(
+      children: [
+        ClipRRectImage(
+          radius: 18,
+          url:
+              'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
+          width: 36,
+          height: 36,
+        ),
+        SizedBox(
+          width: 8,
+        ),
+        Expanded(
+          child: SizedBox(
+            height: 36,
+            child: MainTextFormField(
+              hintText: 'Viết bình luận',
+              colorBorder: ColorConstant.neutral_gray_lightest,
+              radius: 18,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
