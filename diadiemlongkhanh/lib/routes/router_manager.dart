@@ -1,9 +1,11 @@
 import 'package:diadiemlongkhanh/screens/base_tabbar/base_tabbar_screen.dart';
+import 'package:diadiemlongkhanh/screens/create_review/create_review_screen.dart';
 import 'package:diadiemlongkhanh/screens/forgot_password/forgot_password_screen.dart';
 import 'package:diadiemlongkhanh/screens/forgot_password/reset_password_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
+import 'package:diadiemlongkhanh/screens/promotion/promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/option_signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/verify_phone/verify_phone_screen.dart';
@@ -53,6 +55,14 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => OTPLoginScreen(),
         );
+      case RouterName.create_review:
+        return MaterialPageRoute(
+          builder: (_) => CreateReviewScreen(),
+        );
+      case RouterName.promotion:
+        return MaterialPageRoute(
+          builder: (_) => PromotionScreen(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -74,4 +84,6 @@ class RouterName {
   static const welcome = '/welcome';
   static const base_tabbar = '/base_tabbar';
   static const otp_login = '/otp_login';
+  static const create_review = '/create_review';
+  static const promotion = '/promotion';
 }

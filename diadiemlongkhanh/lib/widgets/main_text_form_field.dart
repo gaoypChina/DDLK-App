@@ -7,18 +7,32 @@ class MainTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final double? radius;
   final Color? colorBorder;
+  final TextInputType? keyboardType;
+  final EdgeInsetsGeometry? contentPadding;
+  final int? maxLines;
+  final Color? fillColor;
+  final bool hideBorder;
   MainTextFormField({
     this.hintText,
     this.prefixIcon,
     this.suffixIcon,
     this.radius,
     this.colorBorder,
+    this.keyboardType,
+    this.contentPadding,
+    this.maxLines,
+    this.fillColor,
+    this.hideBorder = false,
   });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       style: Theme.of(context).textTheme.bodyText1,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
       decoration: InputDecoration(
+        fillColor: fillColor,
+        filled: fillColor != null,
         hintText: hintText,
         hintStyle: Theme.of(context).textTheme.subtitle1,
         prefixIcon: prefixIcon != null
@@ -42,25 +56,31 @@ class MainTextFormField extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: suffixIcon,
         ),
-        contentPadding: const EdgeInsets.only(left: 16),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius ?? 4),
-          borderSide: BorderSide(
-            color: colorBorder ?? ColorConstant.border_gray,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius ?? 4),
-          borderSide: BorderSide(
-            color: colorBorder ?? ColorConstant.border_gray,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius ?? 4),
-          borderSide: BorderSide(
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
+        contentPadding: contentPadding ?? const EdgeInsets.only(left: 16),
+        border: hideBorder
+            ? InputBorder.none
+            : OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius ?? 4),
+                borderSide: BorderSide(
+                  color: colorBorder ?? ColorConstant.border_gray,
+                ),
+              ),
+        enabledBorder: hideBorder
+            ? InputBorder.none
+            : OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius ?? 4),
+                borderSide: BorderSide(
+                  color: colorBorder ?? ColorConstant.border_gray,
+                ),
+              ),
+        focusedBorder: hideBorder
+            ? InputBorder.none
+            : OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius ?? 4),
+                borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
       ),
     );
   }

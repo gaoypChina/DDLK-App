@@ -5,15 +5,20 @@ import 'package:flutter_svg/svg.dart';
 class MyRatingBar extends StatelessWidget {
   final int rating;
   final Function(int, bool) onRatingUpdate;
+  final Widget? emptyStar;
+  final Widget? fillStar;
   MyRatingBar({
     this.rating = 0,
     required this.onRatingUpdate,
+    this.emptyStar,
+    this.fillStar,
   });
 
   @override
   Widget build(BuildContext context) {
     final list = listStars();
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: list,
     );
   }
@@ -109,11 +114,15 @@ class MyRatingBar extends StatelessWidget {
       onTap: () {
         onRatingUpdate(index + 1, isEmpty);
       },
-      child: SvgPicture.asset(
-        isEmpty ? ConstantIcons.ic_empty_star : ConstantIcons.ic_fill_star,
-        width: 11,
-        height: 10,
-      ),
+      child: emptyStar != null && fillStar != null
+          ? (isEmpty ? emptyStar : fillStar)
+          : SvgPicture.asset(
+              isEmpty
+                  ? ConstantIcons.ic_empty_star
+                  : ConstantIcons.ic_fill_star,
+              width: 11,
+              height: 10,
+            ),
     );
   }
 

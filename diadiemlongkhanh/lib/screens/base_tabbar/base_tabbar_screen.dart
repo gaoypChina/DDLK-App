@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/home/home_screen.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/new_feed_screen.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,8 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
         child: Padding(
           padding: const EdgeInsets.all(5.0),
           child: FloatingActionButton(
-            onPressed: null,
+            onPressed: () =>
+                Navigator.of(context).pushNamed(RouterName.create_review),
             backgroundColor: Theme.of(context).primaryColor,
             child: SvgPicture.asset(ConstantIcons.ic_plus),
           ),
@@ -87,7 +89,7 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
                   ? Theme.of(context).primaryColor
                   : ColorConstant.neutral_gray,
             ),
-            text: 'Ưu đãi',
+            text: 'Danh mục',
           ),
           FABBottomAppBarItem(
             iconData: SvgPicture.asset(

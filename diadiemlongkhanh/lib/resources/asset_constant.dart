@@ -6,6 +6,8 @@ class ConstantImages {
   static const welcome2 = 'assets/images/welcome2.png';
   static const welcome3 = 'assets/images/welcome3.png';
   static const world_map = 'assets/images/world_map.png';
+  static const star_header = 'assets/images/star_header.png';
+  static const left_pin = 'assets/images/left_pin.png';
 }
 
 class ConstantIcons {
@@ -41,4 +43,14 @@ class ConstantIcons {
   static const ic_comment = 'assets/icons/ic_comment.svg';
   static const ic_eye = 'assets/icons/ic_eye.svg';
   static const ic_heart_outline = 'assets/icons/ic_heart_outline.svg';
+  static const ic_map_pin = 'assets/icons/ic_map_pin.svg';
+  static const ic_very_bad = 'assets/icons/ic_very_bad.png';
+  static const ic_big_empty_star = 'assets/icons/ic_big_empty_star.svg';
+  static const ic_big_fill_star = 'assets/icons/ic_big_fill_star.svg';
+  static const ic_bad = 'assets/icons/ic_bad.png';
+  static const ic_not_good = 'assets/icons/ic_not_good.png';
+  static const ic_good = 'assets/icons/ic_good.png';
+  static const ic_very_good = 'assets/icons/ic_very_good.png';
+  static const ic_upload_img = 'assets/icons/ic_upload_img.svg';
+  static const ic_close = 'assets/icons/ic_close.svg';
 }

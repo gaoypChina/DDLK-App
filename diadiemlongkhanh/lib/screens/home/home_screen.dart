@@ -1,6 +1,8 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/dots_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
@@ -150,111 +152,8 @@ class _HomeScreenState extends State<HomeScreen>
                 );
               }),
         ),
-        Container(
-          // height: 900,
-          child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 6,
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 10,
-              bottom: 48,
-            ),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                mainAxisExtent: 238),
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 238,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColorConstant.grey_shadow.withOpacity(0.12),
-                      offset: Offset(0, 12),
-                      blurRadius: 40,
-                    )
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRectImage(
-                        radius: 8,
-                        url:
-                            'https://cdn.tgdd.vn/Files/2019/07/03/1177014/nau-banh-canh-ghe-co-gi-ma-kho-doc-ngay-bai-viet-nay-la-biet-lam-ngay-202112221144210167.jpg',
-                        height: 148,
-                        width: double.infinity,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Đang mở cửa',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          Text(
-                            'Cách 2km',
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: ColorConstant.neutral_gray,
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        'Bún riêu hột vịt lộn – Bún bò quán Nhỏ Xíu ',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: ColorConstant.neutral_black,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            ConstantIcons.ic_marker_grey,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            'Phường Xuân An',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: ColorConstant.neutral_gray_lighter),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
+        PlacesGridView(
+          physics: NeverScrollableScrollPhysics(),
         ),
       ],
     );
@@ -506,6 +405,8 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
               _buildMenuItem(
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(RouterName.promotion),
                 title: 'Khuyến mãi',
                 icon: Image.asset(
                   ConstantIcons.ic_promotion,
@@ -560,33 +461,37 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Column _buildMenuItem({
+  Widget _buildMenuItem({
+    Function()? onPressed,
     Widget? icon,
     required String title,
   }) {
-    return Column(
-      children: [
-        Container(
-          height: 56,
-          width: 56,
-          margin: const EdgeInsets.only(bottom: 4),
-          decoration: BoxDecoration(
-            color: ColorConstant.grey_F8F9FA,
-            borderRadius: BorderRadius.circular(4),
+    return InkWell(
+      onTap: onPressed,
+      child: Column(
+        children: [
+          Container(
+            height: 56,
+            width: 56,
+            margin: const EdgeInsets.only(bottom: 4),
+            decoration: BoxDecoration(
+              color: ColorConstant.grey_F8F9FA,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Center(
+              child: icon,
+            ),
           ),
-          child: Center(
-            child: icon,
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
+              color: ColorConstant.neutral_black,
+            ),
           ),
-        ),
-        Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 12,
-            color: ColorConstant.neutral_black,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
