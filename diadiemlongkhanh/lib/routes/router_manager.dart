@@ -5,6 +5,7 @@ import 'package:diadiemlongkhanh/screens/forgot_password/reset_password_screen.d
 import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
+import 'package:diadiemlongkhanh/screens/promotion/detail_promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/option_signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/signup_screen.dart';
@@ -63,6 +64,10 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => PromotionScreen(),
         );
+      case RouterName.detail_promotion:
+        return MaterialPageRoute(
+          builder: (_) => DetailPromotionScreen(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -86,4 +91,5 @@ class RouterName {
   static const otp_login = '/otp_login';
   static const create_review = '/create_review';
   static const promotion = '/promotion';
+  static const detail_promotion = '/detail_promotion';
 }
