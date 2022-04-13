@@ -34,7 +34,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
             ),
             Text(
               'Nhập mã gồm 6 chữ số',
-              style: Theme.of(context).textTheme.headline3,
+              style: Theme.of(context).textTheme.headline5,
             ),
             Text(
               'Mã của bạn đã được gửi đến +84 328391129',

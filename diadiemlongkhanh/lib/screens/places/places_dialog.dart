@@ -49,7 +49,7 @@ class _PlacesDialogState extends State<PlacesDialog> {
                   ),
                   Text(
                     'Chọn địa điểm',
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.headline5,
                   ),
                   Text(
                     'Thêm mới',
@@ -69,7 +69,7 @@ class _PlacesDialogState extends State<PlacesDialog> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 'Đã xem gần đây',
-                style: Theme.of(context).textTheme.headline3,
+                style: Theme.of(context).textTheme.headline5,
               ),
             ),
             Expanded(

@@ -53,4 +53,6 @@ class ConstantIcons {
   static const ic_very_good = 'assets/icons/ic_very_good.png';
   static const ic_upload_img = 'assets/icons/ic_upload_img.svg';
   static const ic_close = 'assets/icons/ic_close.svg';
+  static const ic_qr = 'assets/icons/ic_qr.svg';
+  static const ic_book_mark = 'assets/icons/ic_book_mark.svg';
 }
