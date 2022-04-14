@@ -55,4 +55,6 @@ class ConstantIcons {
   static const ic_close = 'assets/icons/ic_close.svg';
   static const ic_qr = 'assets/icons/ic_qr.svg';
   static const ic_book_mark = 'assets/icons/ic_book_mark.svg';
+  static const ic_filter = 'assets/icons/ic_filter.svg';
+  static const ic_gps = 'assets/icons/ic_gps.svg';
 }

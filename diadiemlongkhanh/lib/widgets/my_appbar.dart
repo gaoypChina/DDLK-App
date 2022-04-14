@@ -6,10 +6,12 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final bool isShowBackButton;
   final bool isShowBgBackButton;
+  final List<Widget>? actions;
   MyAppBar({
     this.title,
     this.isShowBackButton = true,
     this.isShowBgBackButton = true,
+    this.actions,
   });
   @override
   Widget build(BuildContext context) {
@@ -21,8 +23,9 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
         elevation: 0,
         title: Text(
           title ?? '',
-          style: Theme.of(context).textTheme.headline1,
+          style: Theme.of(context).textTheme.headline3,
         ),
+        actions: actions,
         leading: isShowBackButton
             ? MyBackButton(
                 isShowBgBackButton: isShowBgBackButton,

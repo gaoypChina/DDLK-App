@@ -390,6 +390,8 @@ class _HomeScreenState extends State<HomeScreen>
             children: [
               _buildMenuItem(
                 title: 'Gần đây',
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(RouterName.list_places),
                 icon: Image.asset(
                   ConstantIcons.ic_map,
                   width: 46,
