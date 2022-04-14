@@ -27,69 +27,111 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              height: 48,
-              margin: const EdgeInsets.only(
-                top: 24,
-                left: 16,
-                right: 16,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: ColorConstant.border_gray,
+        child: Stack(children: [
+          Column(
+            children: [
+              Container(
+                height: 48,
+                margin: const EdgeInsets.only(
+                  top: 24,
+                  left: 16,
+                  right: 16,
                 ),
-              ),
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    ConstantIcons.ic_search,
-                  ),
-                  Expanded(
-                    child: MainTextFormField(
-                      hideBorder: true,
-                      hintText: 'Nhập địa điểm cần tìm',
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 9,
-                      horizontal: 16,
-                    ),
-                    width: 1,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
                     color: ColorConstant.border_gray,
                   ),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        ConstantIcons.ic_gps,
+                ),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      ConstantIcons.ic_search,
+                    ),
+                    Expanded(
+                      child: MainTextFormField(
+                        hideBorder: true,
+                        hintText: 'Nhập địa điểm cần tìm',
                       ),
-                      SizedBox(
-                        width: 10,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 9,
+                        horizontal: 16,
                       ),
-                      Text(
-                        'Gần đây',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).primaryColor,
+                      width: 1,
+                      color: ColorConstant.border_gray,
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          ConstantIcons.ic_gps,
                         ),
-                      )
-                    ],
-                  )
-                ],
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Gần đây',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: PlacesGridView(
+                  topPadding: 24,
+                  bottomPadding: 78,
+                ),
+              ),
+            ],
+          ),
+          Positioned.fill(
+            bottom: 30,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: 152,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorConstant.green_shadow.withOpacity(0.12),
+                      offset: Offset(0, 15),
+                      blurRadius: 30,
+                    )
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      ConstantIcons.ic_map_outline,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      'Xem Bản đồ',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          ?.apply(color: Theme.of(context).primaryColor),
+                    )
+                  ],
+                ),
               ),
             ),
-            Expanded(
-              child: PlacesGridView(
-                topPadding: 24,
-              ),
-            )
-          ],
-        ),
+          )
+        ]),
       ),
     );
   }

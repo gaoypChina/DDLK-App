@@ -57,4 +57,6 @@ class ConstantIcons {
   static const ic_book_mark = 'assets/icons/ic_book_mark.svg';
   static const ic_filter = 'assets/icons/ic_filter.svg';
   static const ic_gps = 'assets/icons/ic_gps.svg';
+  static const ic_check = 'assets/icons/ic_check.svg';
+  static const ic_map_outline = 'assets/icons/ic_map_outline.svg';
 }
