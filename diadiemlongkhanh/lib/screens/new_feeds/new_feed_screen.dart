@@ -36,7 +36,7 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                 backgroundColor: Colors.white,
                 title: Text(
                   'Khám phá',
-                  style: Theme.of(context).textTheme.headline1,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
                 automaticallyImplyLeading: false,
                 pinned: false,

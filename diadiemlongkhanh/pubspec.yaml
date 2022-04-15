@@ -40,6 +40,7 @@ dependencies:
   rflutter_alert: ^2.0.4
   flutter_swipe_detector: ^2.0.0
   dotted_border: ^2.0.0+2
+  qr_flutter: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +85,8 @@ flutter:
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Italic.ttf
+          style: italic
         - asset: assets/fonts/Roboto-Medium.ttf
           weight: 500
         - asset: assets/fonts/Roboto-Bold.ttf

@@ -1,8 +1,10 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/screens/category/category_screen.dart';
 import 'package:diadiemlongkhanh/screens/home/home_screen.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/new_feed_screen.dart';
+import 'package:diadiemlongkhanh/screens/profile/account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -98,7 +100,7 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
                   ? Theme.of(context).primaryColor
                   : ColorConstant.neutral_gray,
             ),
-            text: 'Cá nhân',
+            text: 'Tài khoản',
           ),
         ],
       ),
@@ -108,10 +110,8 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
         children: [
           HomeScreen(),
           NewFeedScreen(),
-          Container(color: Colors.yellow),
-          Container(
-            color: Colors.blue,
-          )
+          CategoryScreen(),
+          AccountScreen(),
         ],
       ),
     );

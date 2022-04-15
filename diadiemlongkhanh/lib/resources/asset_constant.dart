@@ -59,4 +59,9 @@ class ConstantIcons {
   static const ic_gps = 'assets/icons/ic_gps.svg';
   static const ic_check = 'assets/icons/ic_check.svg';
   static const ic_map_outline = 'assets/icons/ic_map_outline.svg';
+  static const ic_send = 'assets/icons/ic_send.svg';
+  static const ic_bookmark_outline = 'assets/icons/ic_bookmark_outline.svg';
+  static const ic_discount = 'assets/icons/ic_discount.png';
+  static const ic_chevron_down = 'assets/icons/ic_chevron_down.svg';
+  static const ic_chevron_left = 'assets/icons/ic_chevron_left.svg';
 }

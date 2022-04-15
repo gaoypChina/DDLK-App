@@ -1,5 +1,7 @@
+import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MyBackButton extends StatelessWidget {
   final bool isShowBgBackButton;
@@ -20,10 +22,7 @@ class MyBackButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
         ),
         child: Center(
-          child: Icon(
-            Icons.chevron_left,
-            color: Colors.black,
-          ),
+          child: SvgPicture.asset(ConstantIcons.ic_chevron_left),
         ),
       ),
     );

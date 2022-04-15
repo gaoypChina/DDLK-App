@@ -34,6 +34,7 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                 height: 48,
                 margin: const EdgeInsets.only(
                   top: 24,
+                  bottom: 12,
                   left: 16,
                   right: 16,
                 ),
@@ -86,7 +87,7 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
               ),
               Expanded(
                 child: PlacesGridView(
-                  topPadding: 24,
+                  topPadding: 12,
                   bottomPadding: 78,
                 ),
               ),

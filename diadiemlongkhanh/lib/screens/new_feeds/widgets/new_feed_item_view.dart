@@ -208,6 +208,9 @@ class NewFeedItemView extends StatelessWidget {
             ),
           ),
         ),
+        SvgPicture.asset(
+          ConstantIcons.ic_send,
+        )
       ],
     );
   }

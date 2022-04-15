@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/screens/promotion/code_promotion_dialog.dart';
 import 'package:diadiemlongkhanh/screens/promotion/widgets/list_promotion_view.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/line_dashed_painter.dart';
@@ -40,7 +41,7 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
               top: 0,
               left: 0,
               right: 0,
-              bottom: 120,
+              bottom: 0,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,34 +168,40 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                               children: [
                                 Expanded(
                                   flex: 7,
-                                  child: Container(
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
-                                      borderRadius: BorderRadius.circular(12),
+                                  child: InkWell(
+                                    onTap: () => showDialog(
+                                      context: context,
+                                      builder: (_) => CodePromotionDialog(),
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          ConstantIcons.ic_qr,
-                                          height: 24,
-                                          width: 24,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          'Lấy mã giảm giá',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline4
-                                              ?.apply(
-                                                color: Colors.white,
-                                              ),
-                                        )
-                                      ],
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).primaryColor,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            ConstantIcons.ic_qr,
+                                            height: 24,
+                                            width: 24,
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            'Lấy mã giảm giá',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline4
+                                                ?.apply(
+                                                  color: Colors.white,
+                                                ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
