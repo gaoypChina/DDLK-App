@@ -64,4 +64,11 @@ class ConstantIcons {
   static const ic_discount = 'assets/icons/ic_discount.png';
   static const ic_chevron_down = 'assets/icons/ic_chevron_down.svg';
   static const ic_chevron_left = 'assets/icons/ic_chevron_left.svg';
+  static const ic_setting = 'assets/icons/ic_setting.svg';
+  static const ic_logout = 'assets/icons/ic_logout.svg';
+  static const ic_profile_edit = 'assets/icons/ic_profile_edit.png';
+  static const ic_contact = 'assets/icons/ic_contact.svg';
+  static const ic_bell_fill = 'assets/icons/ic_bell_fill.png';
+  static const ic_qr_black = 'assets/icons/ic_qr_black.svg';
+  static const ic_lock_fill = 'assets/icons/ic_lock_fill.svg';
 }

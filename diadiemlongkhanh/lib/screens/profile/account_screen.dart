@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
@@ -13,19 +14,31 @@ class AccountScreen extends StatefulWidget {
   _AccountScreenState createState() => _AccountScreenState();
 }
 
-class _AccountScreenState extends State<AccountScreen> {
+class _AccountScreenState extends State<AccountScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: ColorConstant.grey_F2F4F8,
       appBar: MyAppBar(
         title: 'Thông tin cá nhân',
         isShowBackButton: false,
+        actions: [
+          IconButton(
+            onPressed: () =>
+                Navigator.of(context).pushNamed(RouterName.setting),
+            icon: SvgPicture.asset(
+              ConstantIcons.ic_setting,
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             _buildInfoUserView(context),
+            // _buildFollowView(context),
             Container(
               height: 112,
               child: Column(
@@ -105,6 +118,69 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Container _buildFollowView(BuildContext context) {
+    return Container(
+      height: 72,
+      width: double.infinity,
+      padding: const EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom: 24,
+      ),
+      color: Colors.white,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 7,
+            child: Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    ConstantIcons.ic_plus,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Theo dõi',
+                    style: Theme.of(context).textTheme.headline4?.apply(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 7,
+          ),
+          Container(
+            width: 83,
+            decoration: BoxDecoration(
+              color: ColorConstant.neutral_gray_lightest,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Center(
+              child: Text(
+                'Liên hệ',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -289,4 +365,8 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
