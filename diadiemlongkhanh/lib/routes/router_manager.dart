@@ -6,6 +6,7 @@ import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/places/list_place_screen.dart';
+import 'package:diadiemlongkhanh/screens/profile/edit_profile_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/setting_profile_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/setting_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/detail_promotion_screen.dart';
@@ -83,6 +84,10 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => SettingProfileScreen(),
         );
+      case RouterName.edit_profile:
+        return MaterialPageRoute(
+          builder: (_) => EditProfileScreen(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -110,4 +115,5 @@ class RouterName {
   static const list_places = '/list_places';
   static const setting = '/setting';
   static const setting_profile = '/setting_profile';
+  static const edit_profile = '/edit_profile';
 }

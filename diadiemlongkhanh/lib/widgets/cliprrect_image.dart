@@ -20,7 +20,7 @@ class ClipRRectImage extends StatelessWidget {
         url ?? '',
         width: width,
         height: height,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/models/local/setting_menu_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/profile/widgets/setting_item_view.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,12 @@ class _SettingProfileScreenState extends State<SettingProfileScreen> {
         // shrinkWrap: true,
         itemBuilder: (_, index) {
           final item = settingItems[index];
-          return SettingItemView(item);
+          return SettingItemView(
+            item,
+            onPressed: () => Navigator.of(context).pushNamed(
+              RouterName.edit_profile,
+            ),
+          );
         },
       ),
     );

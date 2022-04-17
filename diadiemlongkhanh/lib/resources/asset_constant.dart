@@ -71,4 +71,5 @@ class ConstantIcons {
   static const ic_bell_fill = 'assets/icons/ic_bell_fill.png';
   static const ic_qr_black = 'assets/icons/ic_qr_black.svg';
   static const ic_lock_fill = 'assets/icons/ic_lock_fill.svg';
+  static const ic_camera = 'assets/icons/ic_camera.svg';
 }
