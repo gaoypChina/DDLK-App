@@ -8,6 +8,7 @@ class ConstantImages {
   static const world_map = 'assets/images/world_map.png';
   static const star_header = 'assets/images/star_header.png';
   static const left_pin = 'assets/images/left_pin.png';
+  static const new_tag = 'assets/images/new_tag.png';
 }
 
 class ConstantIcons {

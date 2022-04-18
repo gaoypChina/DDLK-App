@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/places/filter_place_screen.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
@@ -139,26 +140,9 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
 
   Widget _buildFilterButton(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.push(
+      onTap: () => AppUtils.showBottomDialog(
         context,
-        PageRouteBuilder(
-          opaque: false,
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const FilterPlaceScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(0.0, 1.0);
-            const end = Offset.zero;
-            const curve = Curves.ease;
-
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-        ),
+        FilterPlaceScreen(),
       ),
       child: Padding(
         padding: const EdgeInsets.only(right: 18),
