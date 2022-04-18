@@ -36,28 +36,38 @@ class _PlacesDialogState extends State<PlacesDialog> {
                 right: 11,
                 bottom: 14,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: SvgPicture.asset(
-                      ConstantIcons.ic_close,
-                      width: 20,
-                      height: 20,
+              child: Container(
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Text(
+                        'Chọn địa điểm',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Chọn địa điểm',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  Text(
-                    'Thêm mới',
-                    style: Theme.of(context).textTheme.headline4?.apply(
-                          color: Theme.of(context).primaryColor,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: SvgPicture.asset(
+                            ConstantIcons.ic_close,
+                            width: 20,
+                            height: 20,
+                          ),
                         ),
-                  ),
-                ],
+                        Text(
+                          'Thêm mới',
+                          style: Theme.of(context).textTheme.headline4?.apply(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(

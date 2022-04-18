@@ -37,82 +37,86 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: Container(
-        width: 70,
-        height: 70,
-        decoration:
-            BoxDecoration(borderRadius: BorderRadius.circular(40), boxShadow: [
-          BoxShadow(
-            color: ColorConstant.green_shadow.withOpacity(0.49),
-            blurRadius: 16,
-          )
-        ]),
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: FloatingActionButton(
-            onPressed: () =>
-                Navigator.of(context).pushNamed(RouterName.create_review),
-            backgroundColor: Theme.of(context).primaryColor,
-            child: SvgPicture.asset(ConstantIcons.ic_plus),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        floatingActionButton: Container(
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              boxShadow: [
+                BoxShadow(
+                  color: ColorConstant.green_shadow.withOpacity(0.49),
+                  blurRadius: 16,
+                )
+              ]),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: FloatingActionButton(
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(RouterName.create_review),
+              backgroundColor: Theme.of(context).primaryColor,
+              child: SvgPicture.asset(ConstantIcons.ic_plus),
+            ),
           ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: FABBottomAppBar(
-        centerItemText: '',
-        selectedColor: Theme.of(context).primaryColor,
-        notchedShape: CircularNotchedRectangle(),
-        color: ColorConstant.neutral_gray,
-        onTabSelected: _selectedTab,
-        items: [
-          FABBottomAppBarItem(
-            iconData: SvgPicture.asset(
-              ConstantIcons.ic_home,
-              color: _indexSelected == 0
-                  ? Theme.of(context).primaryColor
-                  : ColorConstant.neutral_gray,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: FABBottomAppBar(
+          centerItemText: '',
+          selectedColor: Theme.of(context).primaryColor,
+          notchedShape: CircularNotchedRectangle(),
+          color: ColorConstant.neutral_gray,
+          onTabSelected: _selectedTab,
+          items: [
+            FABBottomAppBarItem(
+              iconData: SvgPicture.asset(
+                ConstantIcons.ic_home,
+                color: _indexSelected == 0
+                    ? Theme.of(context).primaryColor
+                    : ColorConstant.neutral_gray,
+              ),
+              text: 'Trang chủ',
             ),
-            text: 'Trang chủ',
-          ),
-          FABBottomAppBarItem(
-            iconData: SvgPicture.asset(
-              ConstantIcons.ic_compass,
-              color: _indexSelected == 1
-                  ? Theme.of(context).primaryColor
-                  : ColorConstant.neutral_gray,
+            FABBottomAppBarItem(
+              iconData: SvgPicture.asset(
+                ConstantIcons.ic_compass,
+                color: _indexSelected == 1
+                    ? Theme.of(context).primaryColor
+                    : ColorConstant.neutral_gray,
+              ),
+              text: 'Khám phá',
             ),
-            text: 'Khám phá',
-          ),
-          FABBottomAppBarItem(
-            iconData: SvgPicture.asset(
-              ConstantIcons.ic_category,
-              color: _indexSelected == 2
-                  ? Theme.of(context).primaryColor
-                  : ColorConstant.neutral_gray,
+            FABBottomAppBarItem(
+              iconData: SvgPicture.asset(
+                ConstantIcons.ic_category,
+                color: _indexSelected == 2
+                    ? Theme.of(context).primaryColor
+                    : ColorConstant.neutral_gray,
+              ),
+              text: 'Danh mục',
             ),
-            text: 'Danh mục',
-          ),
-          FABBottomAppBarItem(
-            iconData: SvgPicture.asset(
-              ConstantIcons.ic_account,
-              color: _indexSelected == 3
-                  ? Theme.of(context).primaryColor
-                  : ColorConstant.neutral_gray,
+            FABBottomAppBarItem(
+              iconData: SvgPicture.asset(
+                ConstantIcons.ic_account,
+                color: _indexSelected == 3
+                    ? Theme.of(context).primaryColor
+                    : ColorConstant.neutral_gray,
+              ),
+              text: 'Tài khoản',
             ),
-            text: 'Tài khoản',
-          ),
-        ],
-      ),
-      body: TabBarView(
-        controller: _controller,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          HomeScreen(),
-          NewFeedScreen(),
-          CategoryScreen(),
-          AccountScreen(),
-        ],
+          ],
+        ),
+        body: TabBarView(
+          controller: _controller,
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            HomeScreen(),
+            NewFeedScreen(),
+            CategoryScreen(),
+            AccountScreen(),
+          ],
+        ),
       ),
     );
   }

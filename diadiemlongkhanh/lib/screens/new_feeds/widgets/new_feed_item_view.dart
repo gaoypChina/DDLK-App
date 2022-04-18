@@ -467,9 +467,13 @@ class NewFeedItemView extends StatelessWidget {
                   SizedBox(
                     width: 4,
                   ),
-                  Text(
-                    'Harleys The Coffee',
-                    style: Theme.of(context).textTheme.headline2,
+                  Flexible(
+                    child: Text(
+                      'Harleys The Coffee',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
                   ),
                 ],
               ),
@@ -517,6 +521,9 @@ class NewFeedItemView extends StatelessWidget {
               )
             ],
           ),
+        ),
+        SizedBox(
+          width: 10,
         ),
         _buildFollowButton(context),
       ],

@@ -605,35 +605,39 @@ class _HomeScreenState extends State<HomeScreen>
               style: Theme.of(context).textTheme.headline4,
             ),
           ),
-          Container(
-            height: 36,
-            width: 36,
-            child: Stack(
-              children: [
-                Container(
-                  height: 36,
-                  width: 36,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    color: ColorConstant.neutral_gray_lightest,
-                  ),
-                  child: Center(
-                    child: SvgPicture.asset(ConstantIcons.ic_bell),
-                  ),
-                ),
-                Positioned(
-                  top: 2,
-                  right: 0,
-                  child: Container(
-                    height: 8,
-                    width: 8,
+          GestureDetector(
+            onTap: () =>
+                Navigator.of(context).pushNamed(RouterName.notification),
+            child: Container(
+              height: 36,
+              width: 36,
+              child: Stack(
+                children: [
+                  Container(
+                    height: 36,
+                    width: 36,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: ColorConstant.sematic_red,
+                      borderRadius: BorderRadius.circular(18),
+                      color: ColorConstant.neutral_gray_lightest,
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(ConstantIcons.ic_bell),
                     ),
                   ),
-                ),
-              ],
+                  Positioned(
+                    top: 2,
+                    right: 0,
+                    child: Container(
+                      height: 8,
+                      width: 8,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: ColorConstant.sematic_red,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         ],

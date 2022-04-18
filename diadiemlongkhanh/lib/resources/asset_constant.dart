@@ -72,4 +72,6 @@ class ConstantIcons {
   static const ic_qr_black = 'assets/icons/ic_qr_black.svg';
   static const ic_lock_fill = 'assets/icons/ic_lock_fill.svg';
   static const ic_camera = 'assets/icons/ic_camera.svg';
+  static const ic_calendar = 'assets/icons/ic_calendar.svg';
+  static const ic_expand_more = 'assets/icons/ic_expand_more.svg';
 }
