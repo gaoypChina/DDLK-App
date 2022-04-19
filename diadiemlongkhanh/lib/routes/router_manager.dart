@@ -7,6 +7,7 @@ import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/detail_notification_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/notification_screen.dart';
+import 'package:diadiemlongkhanh/screens/places/detail_place_screen.dart';
 import 'package:diadiemlongkhanh/screens/places/list_place_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/edit_profile_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/setting_profile_screen.dart';
@@ -98,6 +99,10 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => DetailNotificationScreen(),
         );
+      case RouterName.detail_place:
+        return MaterialPageRoute(
+          builder: (_) => DetailPlaceScreen(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -128,4 +133,5 @@ class RouterName {
   static const edit_profile = '/edit_profile';
   static const notification = '/notification';
   static const detail_notification = '/detail_notification';
+  static const detail_place = '/detail_place';
 }
