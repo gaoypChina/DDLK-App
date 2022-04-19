@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
+import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
@@ -20,15 +21,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       backgroundColor: ColorConstant.grey_F2F4F8,
       appBar: MyAppBar(
         title: 'Cập nhật thông tin',
-        isShowBgBackButton: false,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [_buildAvtView(), _buildInfoView(context)],
+      body: Stack(
+        children: [
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 100,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    _buildAvtView(),
+                    _buildInfoView(context),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: Colors.white,
+              child: SafeArea(
+                child: Container(
+                  height: 80,
+                  color: Colors.white,
+                  child: Center(
+                    child: MainButton(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      title: 'Cập nhật tài khoản',
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

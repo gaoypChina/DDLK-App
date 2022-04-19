@@ -18,6 +18,7 @@ class _OTPLoginScreenState extends State<OTPLoginScreen> {
       backgroundColor: Colors.white,
       appBar: MyAppBar(
         title: 'Đăng nhập',
+        isShowBgBackButton: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

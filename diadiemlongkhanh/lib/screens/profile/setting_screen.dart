@@ -55,7 +55,6 @@ class _SettingScreenState extends State<SettingScreen> {
       backgroundColor: ColorConstant.grey_F2F4F8,
       appBar: MyAppBar(
         title: 'Cài đặt',
-        isShowBgBackButton: false,
       ),
       body: ListView.builder(
         itemCount: settingItems.length,

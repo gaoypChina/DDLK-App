@@ -23,6 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
       backgroundColor: Colors.white,
       appBar: MyAppBar(
         title: 'Đăng ký',
+        isShowBgBackButton: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),

@@ -22,7 +22,6 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
       backgroundColor: ColorConstant.grey_F2F4F8,
       appBar: MyAppBar(
         title: 'Danh sách địa điểm',
-        isShowBgBackButton: false,
         actions: [
           _buildFilterButton(context),
         ],

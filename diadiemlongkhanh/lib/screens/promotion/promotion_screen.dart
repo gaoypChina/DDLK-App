@@ -22,7 +22,6 @@ class _PromotionScreenState extends State<PromotionScreen> {
       backgroundColor: ColorConstant.grey_F2F4F8,
       appBar: MyAppBar(
         title: 'Khuyến mãi',
-        isShowBgBackButton: false,
       ),
       body: SafeArea(
         child: Stack(

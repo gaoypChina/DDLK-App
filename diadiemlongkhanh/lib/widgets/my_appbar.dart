@@ -10,7 +10,7 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   MyAppBar({
     this.title,
     this.isShowBackButton = true,
-    this.isShowBgBackButton = true,
+    this.isShowBgBackButton = false,
     this.actions,
   });
   @override

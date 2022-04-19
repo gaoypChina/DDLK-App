@@ -23,7 +23,6 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
       backgroundColor: ColorConstant.grey_F2F4F8,
       appBar: MyAppBar(
         title: 'Viết đánh giá',
-        isShowBgBackButton: false,
       ),
       body: SafeArea(
         child: Stack(

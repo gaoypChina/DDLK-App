@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 class MyBackButton extends StatelessWidget {
   final bool isShowBgBackButton;
   MyBackButton({
-    this.isShowBgBackButton = true,
+    this.isShowBgBackButton = false,
   });
   @override
   Widget build(BuildContext context) {

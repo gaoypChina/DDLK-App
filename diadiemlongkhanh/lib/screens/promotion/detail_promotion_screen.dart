@@ -23,7 +23,6 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
       backgroundColor: ColorConstant.grey_F2F4F8,
       appBar: MyAppBar(
         title: 'Chi tiết khuyến mãi',
-        isShowBgBackButton: false,
       ),
       body: SafeArea(
         child: Stack(

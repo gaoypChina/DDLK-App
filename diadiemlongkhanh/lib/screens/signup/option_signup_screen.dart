@@ -16,7 +16,9 @@ class _OptionSingupScreenState extends State<OptionSingupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(),
+      appBar: MyAppBar(
+        isShowBgBackButton: true,
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
