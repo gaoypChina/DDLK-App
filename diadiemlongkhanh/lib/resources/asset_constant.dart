@@ -77,4 +77,6 @@ class ConstantIcons {
   static const ic_expand_more = 'assets/icons/ic_expand_more.svg';
   static const ic_check_circle = 'assets/icons/ic_check_circle.svg';
   static const ic_bin = 'assets/icons/ic_bin.svg';
+  static const ic_marker_filled = 'assets/icons/ic_marker_filled.svg';
+  static const ic_discountstore = 'assets/icons/ic_discountstore.svg';
 }

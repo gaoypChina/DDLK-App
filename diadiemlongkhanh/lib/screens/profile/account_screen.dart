@@ -4,6 +4,7 @@ import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
+import 'package:diadiemlongkhanh/widgets/verified_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -324,41 +325,8 @@ class _AccountScreenState extends State<AccountScreen>
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 16,
+            child: VerifiedView(
               margin: const EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 11,
-                    width: 11,
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: ColorConstant.orange_secondary,
-                    ),
-                    child: SvgPicture.asset(
-                      ConstantIcons.ic_check,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 2,
-                  ),
-                  Text(
-                    'Đã xác minh',
-                    style: TextStyle(
-                      fontSize: 8,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ),
             ),
           )
         ],
