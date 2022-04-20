@@ -77,86 +77,10 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         ]),
                       ),
                       _buildConveniencesView(context),
-                      Container(
-                        height: 183,
-                        margin: const EdgeInsets.only(
-                          top: 16,
-                          right: 16,
-                          left: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0, 12),
-                              blurRadius: 24,
-                              color:
-                                  ColorConstant.grey_shadow.withOpacity(0.08),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                        margin: const EdgeInsets.only(
-                          top: 16,
-                          right: 16,
-                          left: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0, 12),
-                              blurRadius: 24,
-                              color:
-                                  ColorConstant.grey_shadow.withOpacity(0.08),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 116,
-                        margin: const EdgeInsets.only(
-                          top: 16,
-                          right: 16,
-                          left: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0, 12),
-                              blurRadius: 24,
-                              color:
-                                  ColorConstant.grey_shadow.withOpacity(0.08),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 144,
-                        margin: const EdgeInsets.only(
-                          top: 16,
-                          right: 16,
-                          left: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0, 12),
-                              blurRadius: 24,
-                              color:
-                                  ColorConstant.grey_shadow.withOpacity(0.08),
-                            )
-                          ],
-                        ),
-                      ),
+                      _buildRatingView(context),
+                      _buildRangePriceView(context),
+                      _buildWorkHourView(context),
+                      _buildMenuView(context),
                       Container(
                         height: 265,
                         margin: const EdgeInsets.only(
@@ -253,6 +177,299 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Container _buildMenuView(BuildContext context) {
+    return Container(
+      height: 144,
+      margin: const EdgeInsets.only(
+        top: 16,
+        right: 16,
+        left: 16,
+      ),
+      padding: const EdgeInsets.only(
+        top: 16,
+        right: 16,
+        left: 16,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 12),
+            blurRadius: 24,
+            color: ColorConstant.grey_shadow.withOpacity(0.08),
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Thực đơn',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Container(
+            height: 72,
+            margin: const EdgeInsets.only(top: 16),
+            child: ListView.builder(
+              itemCount: 10,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, index) {
+                return Container(
+                  height: 72,
+                  width: 72,
+                  margin: const EdgeInsets.only(right: 8),
+                  child: Stack(
+                    children: [
+                      ClipRRectImage(
+                        height: 72,
+                        width: 72,
+                        url:
+                            'https://vuakhuyenmai.vn/wp-content/uploads/highlands-khuyen-mai-30off-8-3-2022.jpg',
+                        radius: 8,
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _buildWorkHourView(BuildContext context) {
+    return Container(
+      height: 116,
+      margin: const EdgeInsets.only(
+        top: 16,
+        right: 16,
+        left: 16,
+      ),
+      padding: const EdgeInsets.only(
+        top: 16,
+        right: 16,
+        left: 16,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 12),
+            blurRadius: 24,
+            color: ColorConstant.grey_shadow.withOpacity(0.08),
+          )
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Khung giờ mở cửa',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+              Text(
+                'Xem tất cả',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              SvgPicture.asset(
+                ConstantIcons.ic_chevron_right,
+                color: Theme.of(context).primaryColor,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Container(
+            height: 48,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: ColorConstant.neutral_gray_lightest,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Đang mở cửa',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  '8:00 - 23:00',
+                  style: Theme.of(context).textTheme.subtitle1,
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container _buildRangePriceView(BuildContext context) {
+    return Container(
+      height: 50,
+      margin: const EdgeInsets.only(
+        top: 16,
+        right: 16,
+        left: 16,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 12),
+            blurRadius: 24,
+            color: ColorConstant.grey_shadow.withOpacity(0.08),
+          )
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Khoảng giá',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Expanded(
+            child: Text(
+              'Từ 50.000đ - 150.000đ',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _buildRatingView(BuildContext context) {
+    return Container(
+      height: 183,
+      margin: const EdgeInsets.only(
+        top: 16,
+        right: 16,
+        left: 16,
+      ),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 12),
+            blurRadius: 24,
+            color: ColorConstant.grey_shadow.withOpacity(0.08),
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Đánh giá địa điểm',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+              Text(
+                '1600 đánh giá',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              _buildReviewItem(),
+              _buildReviewItem(),
+              _buildReviewItem(),
+              _buildReviewItem(),
+              _buildReviewItem(),
+              _buildReviewItem(),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReviewItem() {
+    return UnconstrainedBox(
+      child: Container(
+        height: 32,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: ColorConstant.neutral_gray_lightest,
+        ),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Vị trí',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: ColorConstant.neutral_black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' (4,5/5)',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: ColorConstant.neutral_gray,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Image.asset(
+                ConstantIcons.ic_very_good,
+                height: 16,
+                width: 16,
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
