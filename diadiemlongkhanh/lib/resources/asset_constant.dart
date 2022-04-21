@@ -79,4 +79,5 @@ class ConstantIcons {
   static const ic_bin = 'assets/icons/ic_bin.svg';
   static const ic_marker_filled = 'assets/icons/ic_marker_filled.svg';
   static const ic_discountstore = 'assets/icons/ic_discountstore.svg';
+  static const ic_book_contact = 'assets/icons/ic_book_contact.svg';
 }

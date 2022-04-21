@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 
 class LineDashedPainter extends CustomPainter {
   bool isHorizontal;
+  Color color;
   LineDashedPainter({
     this.isHorizontal = true,
+    this.color = ColorConstant.neutral_gray_lighter,
   });
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
     paint.strokeWidth = 1;
-    paint.color = ColorConstant.neutral_gray_lighter;
+    paint.color = color;
 
     var dashWidth = 6;
     var dashSpace = 4;
