@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
+import 'package:diadiemlongkhanh/widgets/search_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -74,7 +75,7 @@ class _PlacesDialogState extends State<PlacesDialog> {
               height: 1,
               color: ColorConstant.neutral_gray_lightest,
             ),
-            _buildSearchField(),
+            SearchFormField(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
@@ -86,32 +87,6 @@ class _PlacesDialogState extends State<PlacesDialog> {
               child: PlacesGridView(),
             )
           ],
-        ),
-      ),
-    );
-  }
-
-  Container _buildSearchField() {
-    return Container(
-      height: 48,
-      margin: const EdgeInsets.only(
-        top: 16,
-        right: 16,
-        left: 16,
-        bottom: 32,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: MainTextFormField(
-          fillColor: ColorConstant.neutral_gray_lightest,
-          hideBorder: true,
-          hintText: 'Nhập địa điểm cần tìm',
-          prefixIcon: SvgPicture.asset(
-            ConstantIcons.ic_search,
-          ),
         ),
       ),
     );

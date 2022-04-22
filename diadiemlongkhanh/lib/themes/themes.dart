@@ -38,6 +38,12 @@ final Map<AppThemeKeys, ThemeData> _themes = {
           fontSize: 18,
           color: ColorConstant.neutral_black,
         ),
+        headline6: TextStyle(
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.w700,
+          fontSize: 16,
+          color: ColorConstant.neutral_black,
+        ),
         subtitle1: TextStyle(
           fontFamily: 'Roboto',
           fontSize: 14,

@@ -14,6 +14,7 @@ import 'package:diadiemlongkhanh/screens/profile/setting_profile_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/setting_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/detail_promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/promotion_screen.dart';
+import 'package:diadiemlongkhanh/screens/search/search_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/option_signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/verify_phone/verify_phone_screen.dart';
@@ -103,6 +104,10 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => DetailPlaceScreen(),
         );
+      case RouterName.search:
+        return MaterialPageRoute(
+          builder: (_) => SearchScreen(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -134,4 +139,5 @@ class RouterName {
   static const notification = '/notification';
   static const detail_notification = '/detail_notification';
   static const detail_place = '/detail_place';
+  static const search = '/search';
 }

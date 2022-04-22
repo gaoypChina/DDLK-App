@@ -394,6 +394,7 @@ class NewFeedItemView extends StatelessWidget {
   Container _buildPhotosView() {
     return Container(
       height: 218,
+      width: double.infinity,
       margin: const EdgeInsets.only(top: 12),
       child: Row(
         children: [
@@ -416,6 +417,7 @@ class NewFeedItemView extends StatelessWidget {
                     radius: 8,
                     url:
                         'https://bazantravel.com/cdn/medias/uploads/83/83316-pullman-vung-tau-700x466.jpg',
+                    width: double.infinity,
                   ),
                 ),
                 SizedBox(
@@ -426,6 +428,7 @@ class NewFeedItemView extends StatelessWidget {
                     radius: 8,
                     url:
                         'https://bazantravel.com/cdn/medias/uploads/83/83316-pullman-vung-tau-700x466.jpg',
+                    width: double.infinity,
                   ),
                 ),
               ],

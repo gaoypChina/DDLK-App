@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/place_horiz_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/dots_view.dart';
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 24,
+                        height: 8,
                       ),
                       _buildSliderView(),
                       SizedBox(
@@ -275,88 +276,7 @@ class _HomeScreenState extends State<HomeScreen>
                 bottom: 40,
               ),
               itemBuilder: (_, index) {
-                return Container(
-                  width: 194,
-                  margin: const EdgeInsets.only(
-                    right: 16,
-                  ),
-                  padding: const EdgeInsets.only(
-                    top: 12,
-                    right: 12,
-                    left: 12,
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: ColorConstant.grey_shadow.withOpacity(0.12),
-                          offset: Offset(0, 12),
-                          blurRadius: 40,
-                        )
-                      ]),
-                  child: Column(
-                    children: [
-                      ClipRRectImage(
-                        url:
-                            'https://thietkecafedep.com.vn/upload/news/nha-hang-the-gangs-cao-thang-2-7874.jpg',
-                        radius: 8,
-                        width: 170,
-                        height: 170,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Đang mở cửa',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          Text(
-                            'Cách 2km',
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: ColorConstant.neutral_gray,
-                            ),
-                          )
-                        ],
-                      ),
-                      Text(
-                        'Bún riêu hột vịt lộn – Bún bò quán Nhỏ Xíu ',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            ConstantIcons.ic_marker_grey,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            'Phường Xuân An',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: ColorConstant.neutral_gray_lighter),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                );
+                return PlaceHorizItemView(context: context);
               }),
         )
       ],
@@ -554,30 +474,30 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Container _buildSearchView(BuildContext context) {
-    return Container(
-      height: 48,
-      margin: const EdgeInsets.only(
-        top: 16,
-        left: 16,
-        right: 16,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: ColorConstant.neutral_gray_lightest,
-      ),
-      child: Row(
-        children: [
-          SvgPicture.asset(ConstantIcons.ic_search),
-          SizedBox(
-            width: 16,
-          ),
-          Text(
-            'Tìm kiếm mọi thứ',
-            style: Theme.of(context).textTheme.subtitle1,
-          )
-        ],
+  Widget _buildSearchView(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => Navigator.of(context).pushNamed(RouterName.search),
+      child: Container(
+        height: 48,
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          color: ColorConstant.neutral_gray_lightest,
+        ),
+        child: Row(
+          children: [
+            SvgPicture.asset(ConstantIcons.ic_search),
+            SizedBox(
+              width: 16,
+            ),
+            Text(
+              'Tìm kiếm mọi thứ',
+              style: Theme.of(context).textTheme.subtitle1,
+            )
+          ],
+        ),
       ),
     );
   }
