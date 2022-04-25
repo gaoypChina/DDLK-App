@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
-import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/skeletion_newfeeds.dart';
+
 import 'package:flutter/material.dart';
 
 class NewFeedScreen extends StatefulWidget {
@@ -14,10 +15,20 @@ class _NewFeedScreenState extends State<NewFeedScreen>
     with AutomaticKeepAliveClientMixin {
   List<String> filterDatas = ['Tất cả', 'Đang theo dõi'];
   int _indexFilter = 0;
+  bool _isLoading = true;
   @override
   void initState() {
     print('newfeed');
     super.initState();
+    _simulateLoad();
+  }
+
+  Future _simulateLoad() async {
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -87,19 +98,21 @@ class _NewFeedScreenState extends State<NewFeedScreen>
               ),
             ];
           },
-          body: ListView.builder(
-            itemCount: 10,
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(
-              top: 24,
-              bottom: 30,
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return NewFeedItemView(
-                isShowComment: true,
-              );
-            },
-          ),
+          body: _isLoading
+              ? SkeletionNewFeeds()
+              : ListView.builder(
+                  itemCount: 10,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(
+                    top: 24,
+                    bottom: 30,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return NewFeedItemView(
+                      isShowComment: true,
+                    );
+                  },
+                ),
         ),
       ),
     );

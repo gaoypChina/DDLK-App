@@ -21,6 +21,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   int _indexSlide = 0;
+  bool isLoading = true;
+  List<String> sliderDatas = [
+    'https://aeonmall-haiphong-lechan.com.vn/wp-content/uploads/2020/12/hc-flagships-750x468-1.png',
+    'https://kenh14cdn.com/thumb_w/600/203336854389633024/2021/10/1/photo1633091620833-16330916212291420799229.jpg',
+  ];
   @override
   void initState() {
     print('home');
