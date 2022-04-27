@@ -81,4 +81,7 @@ class ConstantIcons {
   static const ic_discountstore = 'assets/icons/ic_discountstore.svg';
   static const ic_book_contact = 'assets/icons/ic_book_contact.svg';
   static const ic_fire = 'assets/icons/ic_fire.svg';
+  static const ic_share = 'assets/icons/ic_share.svg';
+  static const ic_report = 'assets/icons/ic_report.svg';
+  static const ic_plus2 = 'assets/icons/ic_plus2.svg';
 }

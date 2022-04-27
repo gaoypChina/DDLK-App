@@ -12,6 +12,7 @@ class MainTextFormField extends StatelessWidget {
   final int? maxLines;
   final Color? fillColor;
   final bool hideBorder;
+
   MainTextFormField({
     this.hintText,
     this.prefixIcon,
@@ -30,6 +31,7 @@ class MainTextFormField extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyText1,
       keyboardType: keyboardType,
       maxLines: maxLines,
+      readOnly: true,
       decoration: InputDecoration(
         fillColor: fillColor,
         filled: fillColor != null,

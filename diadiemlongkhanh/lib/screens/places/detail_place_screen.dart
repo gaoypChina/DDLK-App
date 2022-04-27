@@ -1,9 +1,13 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
+import 'package:diadiemlongkhanh/screens/review/widgets/list_review_view.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/line_dashed_painter.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
+import 'package:diadiemlongkhanh/widgets/my_back_button.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:diadiemlongkhanh/widgets/verified_view.dart';
 import 'package:flutter/material.dart';
@@ -78,134 +82,178 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstant.grey_F2F4F8,
-      appBar: MyAppBar(
-        title: 'Chi tiết địa điểm',
-      ),
-      body: Stack(
-        children: <Widget>[
-          CustomScrollView(
-            controller: scrollController,
-            // shrinkWrap: true,
-            slivers: <Widget>[
-              new SliverPadding(
-                padding: const EdgeInsets.all(0),
-                sliver: new SliverList(
-                  delegate: new SliverChildListDelegate(
-                    <Widget>[
-                      Container(
-                        height: 598,
-                        child: Stack(children: [
-                          _buildSlider(),
-                          Positioned(
-                            top: 248,
-                            left: 0,
-                            right: 0,
-                            child: _buildInfoView(context),
-                          ),
-                        ]),
-                      ),
-                      _buildConveniencesView(context),
-                      _buildRatingView(context),
-                      _buildRangePriceView(context),
-                      _buildWorkHourView(context),
-                      _buildMenuView(context),
-                      _buildMapView(context),
-                      _buildInfoContactView(context),
-                      _buildSumarryReview(context),
-                      ListView.builder(
-                        itemCount: 10,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          bottom: 30,
+      body: SafeArea(
+        child: Stack(
+          children: <Widget>[
+            CustomScrollView(
+              controller: scrollController,
+              // shrinkWrap: true,
+              slivers: <Widget>[
+                new SliverPadding(
+                  padding: const EdgeInsets.all(0),
+                  sliver: new SliverList(
+                    delegate: new SliverChildListDelegate(
+                      <Widget>[
+                        Container(
+                          height: 598,
+                          child: Stack(children: [
+                            _buildSlider(),
+                            Positioned(
+                              top: 248,
+                              left: 0,
+                              right: 0,
+                              child: _buildInfoView(context),
+                            ),
+                          ]),
                         ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return NewFeedItemView(
-                            isShowComment: true,
-                          );
-                        },
-                      ),
-                    ],
+                        _buildConveniencesView(context),
+                        _buildRatingView(context),
+                        _buildRangePriceView(context),
+                        _buildWorkHourView(context),
+                        _buildMenuView(context),
+                        _buildMapView(context),
+                        _buildInfoContactView(context),
+                        _buildSumarryReview(context),
+                        ListReviewView(
+                          padding: const EdgeInsets.only(
+                            bottom: 60,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          _buildContactView(context),
-          _buildMenuTabView(context),
-        ],
+              ],
+            ),
+            _buildAppBarView(context),
+            _buildMenuTabView(context),
+            _buildRowButtonAction(context)
+          ],
+        ),
       ),
     );
   }
 
-  Positioned _buildContactView(BuildContext context) {
+  Align _buildRowButtonAction(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        height: 56,
+        width: 244,
+        margin: const EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 32,
+              color: Theme.of(context).primaryColor.withOpacity(0.24),
+            )
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(ConstantIcons.ic_share),
+                SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  'Chia sẻ',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: ColorConstant.neutral_black,
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              width: 39,
+            ),
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).primaryColor),
+              child: Center(
+                child: SvgPicture.asset(
+                  ConstantIcons.ic_plus2,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 52,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  ConstantIcons.ic_book_mark,
+                  color: ColorConstant.neutral_black,
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  'Lưu',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: ColorConstant.neutral_black,
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Positioned _buildAppBarView(BuildContext context) {
     return Positioned(
-      top: 8,
+      top: 12,
       left: 16,
       right: 16,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
-        height: isVisibleContact ? 60.0 : 0.0,
+        height: isVisibleContact ? 36.0 : 0.0,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: NeverScrollableScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Đang mở cửa',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        '8:00 - 23:00',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      )
-                    ],
-                  ),
-                ),
+              MyBackButton(
+                color: Colors.white,
+                isShowBgBackButton: true,
               ),
-              Container(
-                height: 32,
-                width: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Theme.of(context).primaryColor,
+              InkWell(
+                onTap: () => AppUtils.showBottomDialog(
+                  context,
+                  PlaceActionDiaglo(),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      ConstantIcons.ic_book_contact,
+                child: Container(
+                  height: 36,
+                  width: 36,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    color: Colors.white,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.more_horiz,
+                      color: ColorConstant.neutral_black,
                     ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      'Gọi điện',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               )
             ],

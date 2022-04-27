@@ -29,17 +29,15 @@ class _SignupScreenState extends State<SignupScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            SegmentLoginView(
-              margin: const EdgeInsets.only(top: 50),
-              onChanged: (val) {
-                setState(() {
-                  indexSelected = val;
-                });
-              },
-            ),
-            indexSelected == 0
-                ? _buildSignupWithPhoneView()
-                : _buildSignupWithEmailView(),
+            // SegmentLoginView(
+            //   margin: const EdgeInsets.only(top: 50),
+            //   onChanged: (val) {
+            //     setState(() {
+            //       indexSelected = val;
+            //     });
+            //   },
+            // ),
+            _buildSignupWithPhoneView()
           ],
         ),
       ),

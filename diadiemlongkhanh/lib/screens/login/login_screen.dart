@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.white,
         appBar: MyAppBar(
           title: 'Đăng nhập',
-          isShowBackButton: false,
+          isShowBgBackButton: true,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         children: [
           MainTextFormField(
-            hintText: 'Nhập số điện thoại hoặc địa chỉ email',
+            hintText: 'Nhập số điện thoại',
             prefixIcon: SvgPicture.asset(
               ConstantIcons.ic_mail,
             ),
@@ -100,8 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               GestureDetector(
-                onTap: () =>
-                    Navigator.of(context).pushNamed(RouterName.option_signup),
+                onTap: () => Navigator.of(context).pushNamed(RouterName.signup),
                 child: Text(
                   ' Đăng ký',
                   style: Theme.of(context).textTheme.headline2?.apply(

@@ -1,4 +1,5 @@
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/widgets/my_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -83,6 +84,10 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
 
               onCompleted: (v) {
                 print("Completed");
+                Navigator.of(context).pushNamed(
+                  RouterName.reset_password,
+                  arguments: false,
+                );
               },
               // onTap: () {
               //   print("Pressed");

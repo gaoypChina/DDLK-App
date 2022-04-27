@@ -1,5 +1,5 @@
 import 'package:diadiemlongkhanh/screens/base_tabbar/base_tabbar_screen.dart';
-import 'package:diadiemlongkhanh/screens/create_review/create_review_screen.dart';
+
 import 'package:diadiemlongkhanh/screens/forgot_password/forgot_password_screen.dart';
 import 'package:diadiemlongkhanh/screens/forgot_password/reset_password_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
@@ -14,6 +14,7 @@ import 'package:diadiemlongkhanh/screens/profile/setting_profile_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/setting_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/detail_promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/promotion_screen.dart';
+import 'package:diadiemlongkhanh/screens/review/create_review_screen.dart';
 import 'package:diadiemlongkhanh/screens/search/search_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/option_signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/signup_screen.dart';
@@ -45,8 +46,12 @@ class RouterManager {
           builder: (_) => ForgotPasswordScreen(),
         );
       case RouterName.reset_password:
+        bool isReset = true;
+        if (settings.arguments != null) {
+          isReset = settings.arguments as bool;
+        }
         return MaterialPageRoute(
-          builder: (_) => ResetPasswordScreen(),
+          builder: (_) => ResetPasswordScreen(isReset),
         );
       case RouterName.signup:
         return MaterialPageRoute(

@@ -8,7 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+  bool isReset;
+  ResetPasswordScreen(this.isReset);
 
   @override
   _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
@@ -20,7 +21,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(
-        title: 'Đặt lại mật khẩu',
+        title: widget.isReset ? 'Đặt lại mật khẩu' : 'Đặt mật khẩu',
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

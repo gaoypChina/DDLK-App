@@ -63,8 +63,8 @@ class _OptionLoginScreenState extends State<OptionLoginScreen> {
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.of(context)
-                        .pushNamed(RouterName.option_signup),
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(RouterName.signup),
                     child: Text(
                       ' Đăng ký',
                       style: Theme.of(context).textTheme.headline2?.apply(

@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/screens/home/widgets/custom_slider_view.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_horiz_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
@@ -9,7 +10,6 @@ import 'package:diadiemlongkhanh/widgets/dots_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,10 +22,7 @@ class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   int _indexSlide = 0;
   bool isLoading = true;
-  List<String> sliderDatas = [
-    'https://aeonmall-haiphong-lechan.com.vn/wp-content/uploads/2020/12/hc-flagships-750x468-1.png',
-    'https://kenh14cdn.com/thumb_w/600/203336854389633024/2021/10/1/photo1633091620833-16330916212291420799229.jpg',
-  ];
+
   @override
   void initState() {
     print('home');
@@ -59,9 +56,8 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       _buildSliderView(),
                       SizedBox(
-                        height: 12,
+                        height: 20,
                       ),
-                      DotsView(step: 0),
                       _buildMenuView(),
                       SizedBox(
                         height: 37,
@@ -422,61 +418,8 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Container _buildSliderView() {
-    return Container(
-      height: 180,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 6,
-            bottom: 6,
-            left: 0,
-            right: 0,
-            child: ClipRRectImage(
-              radius: 12,
-              url: _indexSlide == 0
-                  ? 'https://aeonmall-haiphong-lechan.com.vn/wp-content/uploads/2020/12/hc-flagships-750x468-1.png'
-                  : 'https://kenh14cdn.com/thumb_w/600/203336854389633024/2021/10/1/photo1633091620833-16330916212291420799229.jpg',
-            ),
-          ),
-          Positioned(
-            top: 0,
-            bottom: 0,
-            left: 12,
-            right: 12,
-            child: SwipeDetector(
-              onSwipeLeft: (offset) {
-                print(offset);
-                if (_indexSlide == 1) {
-                  return;
-                }
-                setState(() {
-                  _indexSlide += 1;
-                });
-              },
-              onSwipeRight: (offset) {
-                print(offset);
-                if (_indexSlide == 0) {
-                  return;
-                }
-                setState(() {
-                  _indexSlide -= 1;
-                });
-              },
-              child: ClipRRectImage(
-                radius: 12,
-                url: _indexSlide == 1
-                    ? 'https://aeonmall-haiphong-lechan.com.vn/wp-content/uploads/2020/12/hc-flagships-750x468-1.png'
-                    : 'https://kenh14cdn.com/thumb_w/600/203336854389633024/2021/10/1/photo1633091620833-16330916212291420799229.jpg',
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+  Widget _buildSliderView() {
+    return CustomSliderView();
   }
 
   Widget _buildSearchView(BuildContext context) {
