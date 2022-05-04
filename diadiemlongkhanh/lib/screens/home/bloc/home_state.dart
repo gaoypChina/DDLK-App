@@ -16,3 +16,21 @@ class HomeGetPlaceNearDoneState extends HomeState {
   final List<PlaceModel> places;
   HomeGetPlaceNearDoneState(this.places);
 }
+
+class HomeGetPlaceHotDoneState extends HomeState {
+  final List<PlaceModel> places;
+  HomeGetPlaceHotDoneState(this.places);
+}
+
+class HomeGetVouchersDoneState extends HomeState {
+  final List<VoucherModel> vouchers;
+  HomeGetVouchersDoneState(this.vouchers);
+}
+
+class HomeGetSubCategoriesDoneState extends HomeState {
+  HomeGetSubCategoriesDoneState();
+}
+
+class HomeSelectSubCategoryState extends HomeState {
+  HomeSelectSubCategoryState();
+}

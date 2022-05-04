@@ -55,6 +55,60 @@ class _ApiClient implements ApiClient {
     return value;
   }
 
+  @override
+  Future<List<PlaceModel>?> getPlacesHot({limit = 5}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'limit': limit};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<PlaceModel>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'places/hot',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data
+        ?.map((dynamic i) => PlaceModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<VoucherModel>?> getVouchers({limit = 5}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'limit': limit};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<VoucherModel>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/vouchers',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data
+        ?.map((dynamic i) => VoucherModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<CategoryModel>?> getSubCategories() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<CategoryModel>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/sub-categories',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data
+        ?.map((dynamic i) => CategoryModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

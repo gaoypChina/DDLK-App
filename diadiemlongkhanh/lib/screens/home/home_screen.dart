@@ -1,5 +1,7 @@
+import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
+import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
@@ -8,6 +10,8 @@ import 'package:diadiemlongkhanh/screens/home/widgets/custom_slider_view.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_horiz_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/skeleton_voucher.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +38,9 @@ class _HomeScreenState extends State<HomeScreen>
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _cubit.getSlides();
       _cubit.getPlacesNear();
+      _cubit.getPlacesHot();
+      _cubit.getVouchers();
+      _cubit.getSubCategories();
     });
   }
 
@@ -84,9 +91,19 @@ class _HomeScreenState extends State<HomeScreen>
                           );
                         },
                       ),
-                      _buildListHorizontalSingleView(
-                        title: 'Tìm kiếm nhiều nhất',
-                        places: [],
+                      BlocBuilder<HomeCubit, HomeState>(
+                        buildWhen: (previous, current) =>
+                            current is HomeGetPlaceHotDoneState,
+                        builder: (_, state) {
+                          List<PlaceModel> places = [];
+                          if (state is HomeGetPlaceHotDoneState) {
+                            places = state.places;
+                          }
+                          return _buildListHorizontalSingleView(
+                            title: 'Tìm kiếm nhiều nhất',
+                            places: places,
+                          );
+                        },
                       ),
                       _buildPromotionListView(),
                       _buildGridView(context),
@@ -138,42 +155,7 @@ class _HomeScreenState extends State<HomeScreen>
     return Column(
       children: [
         _buildHeaderSection('Địa điểm mới cập nhật'),
-        Container(
-          height: 28,
-          margin: const EdgeInsets.only(top: 24),
-          child: ListView.builder(
-              itemCount: 10,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(left: 16),
-              itemBuilder: (_, index) {
-                return Container(
-                  height: 28,
-                  margin: const EdgeInsets.only(right: 16),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  decoration: BoxDecoration(
-                    color: index == 0
-                        ? ColorConstant.green_D5F4D9
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Tất cả',
-                      style: index == 0
-                          ? TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).primaryColor,
-                            )
-                          : Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ),
-                );
-              }),
-        ),
+        _buildListSubCategoriesView(context),
         PlacesGridView(
           physics: NeverScrollableScrollPhysics(),
         ),
@@ -181,69 +163,134 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Container _buildPromotionListView() {
-    return Container(
-      height: 250,
-      margin: const EdgeInsets.only(bottom: 40),
-      decoration: BoxDecoration(
-        color: ColorConstant.grey_F1F5F2,
-        image: DecorationImage(
-          image: AssetImage(ConstantImages.world_map),
-        ),
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 24,
-          ),
-          _buildHeaderSection('Khuyến mãi tháng 4'),
-          Expanded(
-            child: ListView.builder(
-                itemCount: 4,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                padding: const EdgeInsets.only(left: 16, top: 16),
-                itemBuilder: (_, index) {
-                  return Container(
-                    width: 218,
+  Widget _buildListSubCategoriesView(BuildContext context) {
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (previous, current) =>
+          current is HomeGetSubCategoriesDoneState ||
+          current is HomeSelectSubCategoryState,
+      builder: (_, state) {
+        return Container(
+          height: 28,
+          margin: const EdgeInsets.only(top: 24),
+          child: ListView.builder(
+              itemCount: _cubit.subCategories.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: 16),
+              itemBuilder: (_, index) {
+                final item = _cubit.subCategories[index];
+                return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => _cubit.selectSubCategory(index),
+                  child: Container(
+                    height: 28,
                     margin: const EdgeInsets.only(right: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRectImage(
-                          radius: 12,
-                          url:
-                              'https://images.foody.vn/res/g1/4084/prof/s1242x600/image-9700d6cc-210613161452.jpeg',
-                          height: 122,
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          'Áp dụng toàn menu',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          'Giảm giá 30%',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: ColorConstant.orange_secondary,
-                          ),
-                        )
-                      ],
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
                     ),
-                  );
-                }),
-          )
-        ],
-      ),
+                    decoration: BoxDecoration(
+                      color: index == _cubit.subCategoryIndex
+                          ? ColorConstant.green_D5F4D9
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Center(
+                      child: Text(
+                        item.name ?? '',
+                        style: index == _cubit.subCategoryIndex
+                            ? TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).primaryColor,
+                              )
+                            : Theme.of(context).textTheme.subtitle1,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+        );
+      },
+    );
+  }
+
+  Widget _buildPromotionListView() {
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (previous, current) => current is HomeGetVouchersDoneState,
+      builder: (_, state) {
+        List<VoucherModel> vouchers = [];
+        if (state is HomeGetVouchersDoneState) {
+          vouchers = state.vouchers;
+        }
+        return Container(
+          height: 250,
+          margin: const EdgeInsets.only(bottom: 40),
+          decoration: BoxDecoration(
+            color: ColorConstant.grey_F1F5F2,
+            image: DecorationImage(
+              image: AssetImage(ConstantImages.world_map),
+            ),
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 24,
+              ),
+              _buildHeaderSection('Khuyến mãi Hot'),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: vouchers.isEmpty ? 5 : vouchers.length,
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.only(left: 16, top: 16),
+                    itemBuilder: (_, index) {
+                      return Container(
+                        width: 218,
+                        margin: const EdgeInsets.only(right: 16),
+                        child: vouchers.isEmpty
+                            ? SkeletonVoucher()
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRectImage(
+                                    radius: 12,
+                                    url: AppUtils.getUrlImage(
+                                      vouchers[index].thumbnail?.path ?? '',
+                                      width: 218,
+                                      height: 122,
+                                    ),
+                                    height: 122,
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    vouchers[index].title ?? '',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        Theme.of(context).textTheme.headline2,
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    vouchers[index].content ?? '',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: ColorConstant.orange_secondary,
+                                    ),
+                                  )
+                                ],
+                              ),
+                      );
+                    }),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 
