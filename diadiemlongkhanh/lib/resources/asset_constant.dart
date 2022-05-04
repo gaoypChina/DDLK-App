@@ -9,6 +9,7 @@ class ConstantImages {
   static const star_header = 'assets/images/star_header.png';
   static const left_pin = 'assets/images/left_pin.png';
   static const new_tag = 'assets/images/new_tag.png';
+  static const placeholder = 'assets/images/placeholder.png';
 }
 
 class ConstantIcons {

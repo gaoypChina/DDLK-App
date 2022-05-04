@@ -2,10 +2,15 @@ import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/category/category_screen.dart';
+import 'package:diadiemlongkhanh/screens/home/bloc/home_cubit.dart';
 import 'package:diadiemlongkhanh/screens/home/home_screen.dart';
+import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/new_feed_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/account_screen.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'fab_custom/fab_bottom_app_bar.dart';
@@ -21,10 +26,12 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
     with SingleTickerProviderStateMixin {
   int _indexSelected = 0;
   late TabController _controller;
+  String? _token;
 
   @override
   void initState() {
     super.initState();
+    _token = injector.get<StorageService>().getToken();
     _controller = new TabController(length: 4, vsync: this);
   }
 
@@ -111,10 +118,13 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
           controller: _controller,
           physics: NeverScrollableScrollPhysics(),
           children: [
-            HomeScreen(),
+            BlocProvider(
+              create: (_) => HomeCubit(),
+              child: HomeScreen(),
+            ),
             NewFeedScreen(),
             CategoryScreen(),
-            AccountScreen(),
+            _token != null ? AccountScreen() : OptionLoginScreen(),
           ],
         ),
       ),

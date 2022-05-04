@@ -1,5 +1,7 @@
+import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,9 +10,11 @@ class PlaceHorizItemView extends StatelessWidget {
   const PlaceHorizItemView({
     Key? key,
     required this.context,
+    this.item,
   }) : super(key: key);
 
   final BuildContext context;
+  final PlaceModel? item;
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +41,11 @@ class PlaceHorizItemView extends StatelessWidget {
       child: Column(
         children: [
           ClipRRectImage(
-            url:
-                'https://thietkecafedep.com.vn/upload/news/nha-hang-the-gangs-cao-thang-2-7874.jpg',
+            url: AppUtils.getUrlImage(
+              item!.avatar?.path ?? '',
+              width: 170,
+              height: 170,
+            ),
             radius: 8,
             width: 170,
             height: 170,
@@ -50,7 +57,7 @@ class PlaceHorizItemView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Đang mở cửa',
+                AppUtils.getOpeningTitle(item!.openingStatus ?? ''),
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w500,
@@ -58,7 +65,9 @@ class PlaceHorizItemView extends StatelessWidget {
                 ),
               ),
               Text(
-                'Cách 2km',
+                AppUtils.getDistance(item!.distance ?? 0) > 0
+                    ? 'Cách ${AppUtils.getDistance(item!.distance ?? 0)}km '
+                    : '',
                 style: TextStyle(
                   fontSize: 10,
                   color: ColorConstant.neutral_gray,
@@ -67,7 +76,7 @@ class PlaceHorizItemView extends StatelessWidget {
             ],
           ),
           Text(
-            'Bún riêu hột vịt lộn – Bún bò quán Nhỏ Xíu ',
+            item!.name ?? '',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodyText1,
@@ -84,7 +93,7 @@ class PlaceHorizItemView extends StatelessWidget {
                 width: 4,
               ),
               Text(
-                'Phường Xuân An',
+                item!.region?.name ?? '',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

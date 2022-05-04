@@ -5,9 +5,11 @@ class DotsView extends StatelessWidget {
   const DotsView({
     Key? key,
     required this.step,
+    required this.length,
   }) : super(key: key);
 
   final int step;
+  final int length;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class DotsView extends StatelessWidget {
       height: 8,
       child: Center(
         child: ListView.builder(
-            itemCount: 3,
+            itemCount: length,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (_, index) {

@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:flutter/material.dart';
 
 class ClipRRectImage extends StatelessWidget {
@@ -16,8 +17,11 @@ class ClipRRectImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
-      child: Image.network(
-        url ?? '',
+      child: FadeInImage.assetNetwork(
+        placeholder: ConstantImages.placeholder,
+        fadeInDuration: Duration(milliseconds: 100),
+        fadeOutDuration: Duration(milliseconds: 100),
+        image: url ?? '',
         width: width,
         height: height,
         fit: BoxFit.cover,

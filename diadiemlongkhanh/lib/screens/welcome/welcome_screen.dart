@@ -97,7 +97,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     SizedBox(
                       height: 32,
                     ),
-                    DotsView(step: step),
+                    DotsView(
+                      step: step,
+                      length: 3,
+                    ),
                     SizedBox(
                       height: 58,
                     ),

@@ -44,6 +44,10 @@ dependencies:
   skeletons: ^0.0.3
   shared_preferences: ^2.0.7
   flutter_native_splash: ^2.1.6
+  get_it: ^7.2.0
+  location: ^4.3.0
+  equatable: ^2.0.3
+  uuid: ^3.0.6
 
   retrofit: ^3.0.1+1
   logger: ^1.1.0

@@ -1,15 +1,19 @@
+import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
+import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/screens/home/bloc/home_cubit.dart';
 import 'package:diadiemlongkhanh/screens/home/widgets/custom_slider_view.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_horiz_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
-import 'package:diadiemlongkhanh/widgets/dots_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skeletons/skeletons.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,11 +26,15 @@ class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   int _indexSlide = 0;
   bool isLoading = true;
-
+  HomeCubit get _cubit => BlocProvider.of(context);
   @override
   void initState() {
     print('home');
     super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _cubit.getSlides();
+      _cubit.getPlacesNear();
+    });
   }
 
   @override
@@ -62,11 +70,23 @@ class _HomeScreenState extends State<HomeScreen>
                       SizedBox(
                         height: 37,
                       ),
-                      _buildListHorizontalSingleView(
-                        title: 'Địa điểm gần bạn',
+                      BlocBuilder<HomeCubit, HomeState>(
+                        buildWhen: (previous, current) =>
+                            current is HomeGetPlaceNearDoneState,
+                        builder: (_, state) {
+                          List<PlaceModel> places = [];
+                          if (state is HomeGetPlaceNearDoneState) {
+                            places = state.places;
+                          }
+                          return _buildListHorizontalSingleView(
+                            title: 'Địa điểm gần bạn',
+                            places: places,
+                          );
+                        },
                       ),
                       _buildListHorizontalSingleView(
                         title: 'Tìm kiếm nhiều nhất',
+                        places: [],
                       ),
                       _buildPromotionListView(),
                       _buildGridView(context),
@@ -260,7 +280,10 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Column _buildListHorizontalSingleView({required String title}) {
+  Widget _buildListHorizontalSingleView({
+    required String title,
+    required List<PlaceModel> places,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -268,17 +291,29 @@ class _HomeScreenState extends State<HomeScreen>
         Container(
           height: 314,
           child: ListView.builder(
-              itemCount: 5,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(
-                top: 16,
-                left: 16,
-                bottom: 40,
-              ),
-              itemBuilder: (_, index) {
-                return PlaceHorizItemView(context: context);
-              }),
+            itemCount: places.isEmpty ? 10 : places.length,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.only(
+              top: 16,
+              left: 16,
+              bottom: 40,
+            ),
+            itemBuilder: (_, index) {
+              return places.isEmpty
+                  ? SkeletonAvatar(
+                      style: SkeletonAvatarStyle(
+                        width: 194,
+                        height: 314,
+                        padding: const EdgeInsets.only(right: 16),
+                      ),
+                    )
+                  : PlaceHorizItemView(
+                      context: context,
+                      item: places[index],
+                    );
+            },
+          ),
         )
       ],
     );
@@ -419,7 +454,18 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildSliderView() {
-    return CustomSliderView();
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (previous, current) => current is HomeGetSlideDoneState,
+      builder: (_, state) {
+        List<SlideModel> slides = [];
+        if (state is HomeGetSlideDoneState) {
+          slides = state.slides;
+        }
+        return CustomSliderView(
+          datas: slides,
+        );
+      },
+    );
   }
 
   Widget _buildSearchView(BuildContext context) {
