@@ -34,3 +34,13 @@ class HomeGetSubCategoriesDoneState extends HomeState {
 class HomeSelectSubCategoryState extends HomeState {
   HomeSelectSubCategoryState();
 }
+
+class HomeGetPlaceNewDoneState extends HomeState {
+  final List<PlaceModel> places;
+  HomeGetPlaceNewDoneState(this.places);
+}
+
+class HomeGetNewFeedsDoneState extends HomeState {
+  final List<NewFeedModel> newfeeds;
+  HomeGetNewFeedsDoneState(this.newfeeds);
+}

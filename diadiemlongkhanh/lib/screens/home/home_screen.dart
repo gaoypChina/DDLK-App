@@ -1,4 +1,4 @@
-import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
+import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
@@ -28,7 +28,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
-  int _indexSlide = 0;
   bool isLoading = true;
   HomeCubit get _cubit => BlocProvider.of(context);
   @override
@@ -41,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen>
       _cubit.getPlacesHot();
       _cubit.getVouchers();
       _cubit.getSubCategories();
+      _cubit.getNewFeeds();
     });
   }
 
@@ -119,16 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
                               'Khám phá',
                               showIcon: false,
                             ),
-                            ListView.builder(
-                              itemCount: 3,
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              padding:
-                                  const EdgeInsets.only(top: 16, bottom: 24),
-                              itemBuilder: (_, index) {
-                                return NewFeedItemView();
-                              },
-                            ),
+                            _buildListNewFeedsView(),
                             MainButton(
                               title: 'KHÁM PHÁ THÊM',
                               margin: const EdgeInsets.only(
@@ -151,14 +142,51 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  Widget _buildListNewFeedsView() {
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (previous, current) => current is HomeGetNewFeedsDoneState,
+      builder: (_, state) {
+        List<NewFeedModel> newfeeds = [];
+        if (state is HomeGetNewFeedsDoneState) {
+          newfeeds = state.newfeeds;
+        }
+        return ListView.builder(
+          itemCount: newfeeds.isEmpty ? 5 : newfeeds.length,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          padding: const EdgeInsets.only(top: 16, bottom: 24),
+          itemBuilder: (_, index) {
+            return newfeeds.isEmpty
+                ? SkeletonNewFeed(
+                    context,
+                  )
+                : NewFeedItemView(
+                    item: newfeeds[index],
+                  );
+          },
+        );
+      },
+    );
+  }
+
   Column _buildGridView(BuildContext context) {
     return Column(
       children: [
         _buildHeaderSection('Địa điểm mới cập nhật'),
         _buildListSubCategoriesView(context),
-        PlacesGridView(
-          physics: NeverScrollableScrollPhysics(),
-        ),
+        BlocBuilder<HomeCubit, HomeState>(
+          buildWhen: (previous, current) => current is HomeGetPlaceNewDoneState,
+          builder: (_, state) {
+            List<PlaceModel> places = [];
+            if (state is HomeGetPlaceNewDoneState) {
+              places = state.places;
+            }
+            return PlacesGridView(
+              places: places,
+              physics: NeverScrollableScrollPhysics(),
+            );
+          },
+        )
       ],
     );
   }
@@ -602,6 +630,107 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class SkeletonNewFeed extends StatelessWidget {
+  const SkeletonNewFeed(
+    this.context,
+  );
+
+  final BuildContext context;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(color: Colors.white),
+      child: SkeletonItem(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                SkeletonAvatar(
+                  style: SkeletonAvatarStyle(
+                    shape: BoxShape.circle,
+                    width: 50,
+                    height: 50,
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: SkeletonParagraph(
+                    style: SkeletonParagraphStyle(
+                        lines: 3,
+                        spacing: 6,
+                        lineStyle: SkeletonLineStyle(
+                          randomLength: true,
+                          height: 10,
+                          borderRadius: BorderRadius.circular(8),
+                          minLength: MediaQuery.of(context).size.width / 6,
+                          maxLength: MediaQuery.of(context).size.width / 3,
+                        )),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            SkeletonParagraph(
+              style: SkeletonParagraphStyle(
+                  lines: 3,
+                  spacing: 6,
+                  lineStyle: SkeletonLineStyle(
+                    randomLength: true,
+                    height: 10,
+                    borderRadius: BorderRadius.circular(8),
+                    minLength: MediaQuery.of(context).size.width / 2,
+                  )),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            SkeletonAvatar(
+              style: SkeletonAvatarStyle(
+                width: double.infinity,
+                minHeight: MediaQuery.of(context).size.height / 8,
+                maxHeight: MediaQuery.of(context).size.height / 3,
+              ),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    SkeletonAvatar(
+                        style: SkeletonAvatarStyle(width: 20, height: 20)),
+                    SizedBox(width: 8),
+                    SkeletonAvatar(
+                        style: SkeletonAvatarStyle(width: 20, height: 20)),
+                    SizedBox(width: 8),
+                    SkeletonAvatar(
+                        style: SkeletonAvatarStyle(width: 20, height: 20)),
+                  ],
+                ),
+                SkeletonLine(
+                  style: SkeletonLineStyle(
+                    height: 16,
+                    width: 64,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

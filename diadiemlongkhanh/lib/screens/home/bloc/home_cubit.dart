@@ -1,4 +1,5 @@
 import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
+import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
@@ -52,12 +53,39 @@ class HomeCubit extends Cubit<HomeState> {
     final res = await injector.get<ApiClient>().getSubCategories();
     if (res != null) {
       subCategories = res;
+      if (subCategories.length > 0) {
+        final total = CategoryModel();
+        total.id = '';
+        total.name = 'Tất cả';
+        subCategories.insert(0, total);
+      }
       emit(HomeGetSubCategoriesDoneState());
+      getPlacesNew('');
     }
   }
 
   selectSubCategory(int index) {
     subCategoryIndex = index;
-    emit(HomeSelectSubCategoryState());
+    emit(
+      HomeSelectSubCategoryState(),
+    );
+    getPlacesNew(subCategories[index].id ?? '');
+  }
+
+  getPlacesNew(String subCategory) async {
+    final res = await injector.get<ApiClient>().getPlacesNew(
+          subCategory: subCategory,
+          limit: 6,
+        );
+    if (res != null) {
+      emit(HomeGetPlaceNewDoneState(res));
+    }
+  }
+
+  getNewFeeds() async {
+    final res = await injector.get<ApiClient>().getExploresNew();
+    if (res != null) {
+      emit(HomeGetNewFeedsDoneState(res));
+    }
   }
 }

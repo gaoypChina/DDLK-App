@@ -25,6 +25,14 @@ class ClipRRectImage extends StatelessWidget {
         width: width,
         height: height,
         fit: BoxFit.cover,
+        imageErrorBuilder: (context, exception, stackTrace) {
+          return Image.asset(
+            ConstantImages.placeholder,
+            width: width,
+            height: height,
+            fit: BoxFit.cover,
+          );
+        },
       ),
     );
   }

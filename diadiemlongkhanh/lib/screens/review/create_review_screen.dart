@@ -192,7 +192,7 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
 
   Container _buildListRatingView(
     String title, {
-    int rating = 1,
+    double rating = 1,
     bool isBottomLine = true,
   }) {
     return Container(
@@ -224,7 +224,7 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 Image.asset(
-                  _getEmotion(rating),
+                  _getEmotion(rating.round()),
                   width: 32,
                   height: 32,
                 )

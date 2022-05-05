@@ -40,6 +40,7 @@ class ConstantIcons {
   static const ic_marker_grey = 'assets/icons/ic_marker_grey.svg';
   static const ic_right = 'assets/icons/ic_right.svg';
   static const ic_empty_star = 'assets/icons/ic_empty_star.svg';
+  static const ic_half_star = 'assets/icons/ic_half_star.svg';
   static const ic_fill_star = 'assets/icons/ic_fill_star.svg';
   static const ic_heart = 'assets/icons/ic_heart.svg';
   static const ic_comment = 'assets/icons/ic_comment.svg';

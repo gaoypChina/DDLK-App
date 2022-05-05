@@ -1,5 +1,7 @@
+import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
@@ -8,8 +10,10 @@ import 'package:flutter_svg/svg.dart';
 
 class NewFeedItemView extends StatelessWidget {
   final bool isShowComment;
+  final NewFeedModel? item;
   NewFeedItemView({
     this.isShowComment = false,
+    this.item,
   });
 
   @override
@@ -45,7 +49,7 @@ class NewFeedItemView extends StatelessWidget {
             height: 8,
           ),
           Text(
-            'View đẹp, menu giá phải chăng',
+            item!.content ?? '',
             style: Theme.of(context).textTheme.bodyText1,
           ),
           _buildPhotosView(),
@@ -444,8 +448,11 @@ class NewFeedItemView extends StatelessWidget {
       children: [
         ClipRRectImage(
           radius: 22,
-          url:
-              'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
+          url: AppUtils.getUrlImage(
+            item!.author?.avatar ?? '',
+            width: 44,
+            height: 44,
+          ),
           width: 44,
           height: 44,
         ),
@@ -458,7 +465,7 @@ class NewFeedItemView extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Trần Tâm',
+                    item!.author?.name ?? '',
                     style: Theme.of(context).textTheme.headline2,
                   ),
                   SizedBox(
@@ -472,7 +479,7 @@ class NewFeedItemView extends StatelessWidget {
                   ),
                   Flexible(
                     child: Text(
-                      'Harleys The Coffee',
+                      item!.place?.name ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.headline2,
@@ -486,7 +493,7 @@ class NewFeedItemView extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '4.0',
+                    AppUtils.roundedRating(item!.rateAvg ?? 0).toString(),
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
@@ -497,7 +504,7 @@ class NewFeedItemView extends StatelessWidget {
                     width: 7,
                   ),
                   MyRatingBar(
-                    rating: 4,
+                    rating: AppUtils.roundedRating(item!.rateAvg ?? 0),
                     onRatingUpdate: (rate, isEmpty) {},
                   ),
                   Container(
@@ -513,7 +520,7 @@ class NewFeedItemView extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '7 ngày trước',
+                    AppUtils.convertDatetimePrefix(item!.createdAt ?? ''),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,

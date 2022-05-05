@@ -1,6 +1,8 @@
+import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,7 +10,10 @@ import 'package:flutter_svg/svg.dart';
 class PlaceGridItemView extends StatelessWidget {
   const PlaceGridItemView({
     Key? key,
+    this.item,
   }) : super(key: key);
+
+  final PlaceModel? item;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +39,11 @@ class PlaceGridItemView extends StatelessWidget {
             children: [
               ClipRRectImage(
                 radius: 8,
-                url:
-                    'https://cdn.tgdd.vn/Files/2019/07/03/1177014/nau-banh-canh-ghe-co-gi-ma-kho-doc-ngay-bai-viet-nay-la-biet-lam-ngay-202112221144210167.jpg',
+                url: AppUtils.getUrlImage(
+                  item!.avatar?.path ?? '',
+                  width: 148,
+                  height: 148,
+                ),
                 height: 148,
                 width: double.infinity,
               ),
@@ -46,7 +54,7 @@ class PlaceGridItemView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Đang mở cửa',
+                    AppUtils.getOpeningTitle(item!.openingStatus ?? ''),
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
@@ -54,7 +62,9 @@ class PlaceGridItemView extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Cách 2km',
+                    AppUtils.getDistance(item!.distance ?? 0) > 0
+                        ? 'Cách ${AppUtils.getDistance(item!.distance ?? 0)}km '
+                        : '',
                     style: TextStyle(
                       fontSize: 10,
                       color: ColorConstant.neutral_gray,
@@ -66,7 +76,7 @@ class PlaceGridItemView extends StatelessWidget {
                 height: 4,
               ),
               Text(
-                'Bún riêu hột vịt lộn – Bún bò quán Nhỏ Xíu ',
+                item!.name ?? '',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -86,7 +96,7 @@ class PlaceGridItemView extends StatelessWidget {
                     width: 4,
                   ),
                   Text(
-                    'Phường Xuân An',
+                    item!.region?.name ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

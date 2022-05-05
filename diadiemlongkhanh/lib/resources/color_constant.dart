@@ -19,3 +19,9 @@ class ColorConstant {
   static const green_D5F4D9 = Color(0xffD5F4D9);
   static const grey_F2F4F8 = Color(0xffF2F4F8);
 }
+
+class AppConstant {
+  static const int MINUTE = 60;
+  static const int HOUR = 3600;
+  static const int DAY = 86400;
+}

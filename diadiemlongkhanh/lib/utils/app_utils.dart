@@ -1,5 +1,7 @@
 import 'package:diadiemlongkhanh/config/env_config.dart';
+import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AppUtils {
   static showBottomDialog(
@@ -57,5 +59,35 @@ class AppUtils {
     }
     final klm = (meters / 1000).round();
     return klm;
+  }
+
+  static double roundedRating(double rating) {
+    final point = rating.roundToDouble();
+    if (point - rating == 0.5) {
+      return rating;
+    }
+    return point;
+  }
+
+  static String convertDatetimePrefix(String time) {
+    var postTime = DateTime.parse(time);
+    var currentTime = DateTime.now();
+
+    final distance = currentTime.difference(postTime).inSeconds;
+    if (distance < AppConstant.DAY) {
+      if (distance < AppConstant.MINUTE) {
+        return 'Ngay bây giờ';
+      } else {
+        if (distance < AppConstant.HOUR) {
+          double minutes = distance / AppConstant.MINUTE;
+          return '${minutes.truncate()} phút trước';
+        } else {
+          double hours = distance / AppConstant.HOUR;
+          return '${hours.truncate()}giờ trước';
+        }
+      }
+    } else {
+      return DateFormat('dd-MM-yyyy HH:mm').format(postTime);
+    }
   }
 }

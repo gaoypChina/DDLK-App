@@ -1,9 +1,11 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'dart:math' as math;
 
 class MyRatingBar extends StatelessWidget {
-  final int rating;
+  final double rating;
   final Function(int, bool) onRatingUpdate;
   final Widget? emptyStar;
   final Widget? fillStar;
@@ -31,84 +33,151 @@ class MyRatingBar extends StatelessWidget {
       _buildRatingStar(3),
       _buildRatingStar(4),
     ];
-    switch (rating) {
-      case 1:
-        list[0] = _buildRatingStar(
-          0,
-          isEmpty: false,
-        );
-        break;
-      case 2:
-        list[0] = _buildRatingStar(
-          0,
-          isEmpty: false,
-        );
-        list[1] = _buildRatingStar(
-          1,
-          isEmpty: false,
-        );
-        break;
-      case 3:
-        list[0] = _buildRatingStar(
-          0,
-          isEmpty: false,
-        );
-        list[1] = _buildRatingStar(
-          1,
-          isEmpty: false,
-        );
-        list[2] = _buildRatingStar(
-          2,
-          isEmpty: false,
-        );
-        break;
-      case 4:
-        list[0] = _buildRatingStar(
-          0,
-          isEmpty: false,
-        );
-        list[1] = _buildRatingStar(
-          1,
-          isEmpty: false,
-        );
-        list[2] = _buildRatingStar(
-          2,
-          isEmpty: false,
-        );
-        list[3] = _buildRatingStar(
-          3,
-          isEmpty: false,
-        );
-        break;
-      case 5:
-        list[0] = _buildRatingStar(
-          0,
-          isEmpty: false,
-        );
-        list[1] = _buildRatingStar(
-          1,
-          isEmpty: false,
-        );
-        list[2] = _buildRatingStar(
-          2,
-          isEmpty: false,
-        );
-        list[3] = _buildRatingStar(
-          3,
-          isEmpty: false,
-        );
-        list[4] = _buildRatingStar(
-          4,
-          isEmpty: false,
-        );
-        break;
+    final point = AppUtils.roundedRating(rating);
+    if (point == 0.5) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+        isHalf: true,
+      );
+    } else if (point == 1) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+      );
+    } else if (point == 1.5) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+      );
+      list[1] = _buildRatingStar(
+        1,
+        isEmpty: false,
+        isHalf: true,
+      );
+    } else if (point == 2) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+      );
+      list[1] = _buildRatingStar(
+        1,
+        isEmpty: false,
+      );
+    } else if (point == 2.5) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+      );
+      list[1] = _buildRatingStar(
+        1,
+        isEmpty: false,
+      );
+      list[2] = _buildRatingStar(
+        2,
+        isEmpty: false,
+        isHalf: true,
+      );
+    } else if (point == 3) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+      );
+      list[1] = _buildRatingStar(
+        1,
+        isEmpty: false,
+      );
+      list[2] = _buildRatingStar(
+        2,
+        isEmpty: false,
+      );
+    } else if (point == 3.5) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+      );
+      list[1] = _buildRatingStar(
+        1,
+        isEmpty: false,
+      );
+      list[2] = _buildRatingStar(
+        2,
+        isEmpty: false,
+      );
+      list[3] = _buildRatingStar(
+        3,
+        isEmpty: false,
+        isHalf: true,
+      );
+    } else if (point == 4) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+      );
+      list[1] = _buildRatingStar(
+        1,
+        isEmpty: false,
+      );
+      list[2] = _buildRatingStar(
+        2,
+        isEmpty: false,
+      );
+      list[3] = _buildRatingStar(
+        3,
+        isEmpty: false,
+      );
+    } else if (point == 4.5) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+      );
+      list[1] = _buildRatingStar(
+        1,
+        isEmpty: false,
+      );
+      list[2] = _buildRatingStar(
+        2,
+        isEmpty: false,
+      );
+      list[3] = _buildRatingStar(
+        3,
+        isEmpty: false,
+      );
+      list[4] = _buildRatingStar(
+        4,
+        isEmpty: false,
+        isHalf: true,
+      );
+    } else if (point == 5) {
+      list[0] = _buildRatingStar(
+        0,
+        isEmpty: false,
+      );
+      list[1] = _buildRatingStar(
+        1,
+        isEmpty: false,
+      );
+      list[2] = _buildRatingStar(
+        2,
+        isEmpty: false,
+      );
+      list[3] = _buildRatingStar(
+        3,
+        isEmpty: false,
+      );
+      list[4] = _buildRatingStar(
+        4,
+        isEmpty: false,
+      );
     }
+
     return list;
   }
 
   Widget _buildRatingStar(
     int index, {
     bool isEmpty = true,
+    bool isHalf = false,
   }) {
     return InkWell(
       onTap: () {
@@ -119,7 +188,9 @@ class MyRatingBar extends StatelessWidget {
           : SvgPicture.asset(
               isEmpty
                   ? ConstantIcons.ic_empty_star
-                  : ConstantIcons.ic_fill_star,
+                  : isHalf
+                      ? ConstantIcons.ic_half_star
+                      : ConstantIcons.ic_fill_star,
               width: 11,
               height: 10,
             ),
