@@ -61,17 +61,17 @@ class NewFeedItemView extends StatelessWidget {
           ),
           _buildInputCommentField(),
           isShowComment ? _buildListCommentView(context) : SizedBox.shrink(),
-          SizedBox(
-            height: (item!.commentCount ?? 0) > 0 ? 24 : 0,
-          ),
-          (item!.commentCount ?? 0) > 0
-              ? Center(
-                  child: Text(
-                    'Xem tất cả ${item!.commentCount ?? 0} bình luận',
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                )
-              : SizedBox.shrink()
+          // SizedBox(
+          //   height: (item!.commentCount ?? 0) > 0 ? 24 : 0,
+          // ),
+          // (item!.commentCount ?? 0) > 0
+          //     ? Center(
+          //         child: Text(
+          //           'Xem tất cả ${item!.commentCount ?? 0} bình luận',
+          //           style: Theme.of(context).textTheme.headline2,
+          //         ),
+          //       )
+          //     : SizedBox.shrink()
         ],
       ),
     );

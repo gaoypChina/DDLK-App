@@ -95,13 +95,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                       ),
                       width: 68,
                       height: 59,
-                    )
-                        // Image.asset(
-                        //   ConstantIcons.ic_food,
-                        //   width: 68,
-                        //   height: 59,
-                        // ),
-                        ),
+                    )),
                   ),
                   Text(
                     item.name ?? '',

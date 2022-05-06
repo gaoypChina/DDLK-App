@@ -70,7 +70,6 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                   return _cubit.newfeeds.isEmpty
                       ? ShimmerNewFeed(context)
                       : NewFeedItemView(
-                          isShowComment: true,
                           item: _cubit.newfeeds[index],
                         );
                 },
