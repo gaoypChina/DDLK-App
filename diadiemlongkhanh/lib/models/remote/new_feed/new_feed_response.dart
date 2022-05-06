@@ -21,7 +21,8 @@ class NewFeedModel {
   late bool isExplore;
   @JsonKey(defaultValue: false)
   late bool isHide;
-  List<ThumbnailModel>? images;
+  @JsonKey(defaultValue: [])
+  late List<ThumbnailModel> images;
   @JsonKey(defaultValue: false)
   late bool deleted;
   PlaceModel? place;

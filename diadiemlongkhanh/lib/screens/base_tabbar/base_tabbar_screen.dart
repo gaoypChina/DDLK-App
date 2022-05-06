@@ -5,6 +5,7 @@ import 'package:diadiemlongkhanh/screens/category/category_screen.dart';
 import 'package:diadiemlongkhanh/screens/home/bloc/home_cubit.dart';
 import 'package:diadiemlongkhanh/screens/home/home_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
+import 'package:diadiemlongkhanh/screens/new_feeds/bloc/new_feed_cubit.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/new_feed_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/account_screen.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
@@ -28,11 +29,36 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
   late TabController _controller;
   String? _token;
 
+  List<Widget> tabs = [];
+
   @override
   void initState() {
     super.initState();
     _token = injector.get<StorageService>().getToken();
+    tabs = [
+      BlocProvider(
+        create: (_) => HomeCubit(),
+        child: HomeScreen(),
+      ),
+      BlocProvider(
+        create: (_) => NewFeedCubit(),
+        child: NewFeedScreen(),
+      ),
+      CategoryScreen(),
+      _token != null ? AccountScreen() : OptionLoginScreen(),
+    ];
     _controller = new TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   _selectedTab(int index) {
@@ -44,6 +70,7 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
 
   @override
   Widget build(BuildContext context) {
+    print('build');
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -117,15 +144,7 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
         body: TabBarView(
           controller: _controller,
           physics: NeverScrollableScrollPhysics(),
-          children: [
-            BlocProvider(
-              create: (_) => HomeCubit(),
-              child: HomeScreen(),
-            ),
-            NewFeedScreen(),
-            CategoryScreen(),
-            _token != null ? AccountScreen() : OptionLoginScreen(),
-          ],
+          children: tabs,
         ),
       ),
     );

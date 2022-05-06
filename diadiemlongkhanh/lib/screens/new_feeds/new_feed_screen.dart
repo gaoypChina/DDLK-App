@@ -1,8 +1,10 @@
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/screens/new_feeds/bloc/new_feed_cubit.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
-import 'package:diadiemlongkhanh/screens/skeleton_view/skeletion_newfeeds.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_newfeed.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewFeedScreen extends StatefulWidget {
   const NewFeedScreen({Key? key}) : super(key: key);
@@ -16,18 +18,13 @@ class _NewFeedScreenState extends State<NewFeedScreen>
   List<String> filterDatas = ['Tất cả', 'Đang theo dõi'];
   int _indexFilter = 0;
   bool _isLoading = true;
+  NewFeedCubit get _cubit => BlocProvider.of(context);
   @override
   void initState() {
     print('newfeed');
     super.initState();
-    _simulateLoad();
-  }
-
-  Future _simulateLoad() async {
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        _isLoading = false;
-      });
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _cubit.getNewFeeds();
     });
   }
 
@@ -55,65 +52,74 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                 forceElevated: innerBoxIsScrolled,
               ),
               SliverToBoxAdapter(
-                child: Container(
-                  height: 28,
-                  margin: const EdgeInsets.only(
-                    top: 24,
-                    left: 16,
-                    right: 16,
-                  ),
-                  child: ListView.builder(
-                    itemCount: filterDatas.length,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (_, index) {
-                      return Container(
-                        height: 28,
-                        margin: const EdgeInsets.only(right: 8),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                          color: index == _indexFilter
-                              ? Theme.of(context).primaryColor
-                              : Colors.transparent,
-                        ),
-                        child: Center(
-                          child: Text(
-                            filterDatas[index],
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: index == _indexFilter
-                                  ? FontWeight.w500
-                                  : FontWeight.w400,
-                              color: index == _indexFilter
-                                  ? Colors.white
-                                  : ColorConstant.neutral_gray,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                child: _buildListFiltersView(context),
               ),
             ];
           },
-          body: _isLoading
-              ? SkeletionNewFeeds()
-              : ListView.builder(
-                  itemCount: 10,
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(
-                    top: 24,
-                    bottom: 30,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return NewFeedItemView(
-                      isShowComment: true,
-                    );
-                  },
+          body: BlocBuilder<NewFeedCubit, NewFeedState>(
+            buildWhen: (previous, current) => current is NewFeedGetDoneState,
+            builder: (context, state) {
+              return ListView.builder(
+                itemCount: _cubit.newfeeds.isEmpty ? 5 : _cubit.newfeeds.length,
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(
+                  top: 24,
+                  bottom: 30,
                 ),
+                itemBuilder: (BuildContext context, int index) {
+                  return _cubit.newfeeds.isEmpty
+                      ? ShimmerNewFeed(context)
+                      : NewFeedItemView(
+                          isShowComment: true,
+                          item: _cubit.newfeeds[index],
+                        );
+                },
+              );
+            },
+          ),
         ),
+      ),
+    );
+  }
+
+  Container _buildListFiltersView(BuildContext context) {
+    return Container(
+      height: 28,
+      margin: const EdgeInsets.only(
+        top: 24,
+        left: 16,
+        right: 16,
+      ),
+      child: ListView.builder(
+        itemCount: filterDatas.length,
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (_, index) {
+          return Container(
+            height: 28,
+            margin: const EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              color: index == _indexFilter
+                  ? Theme.of(context).primaryColor
+                  : Colors.transparent,
+            ),
+            child: Center(
+              child: Text(
+                filterDatas[index],
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight:
+                      index == _indexFilter ? FontWeight.w500 : FontWeight.w400,
+                  color: index == _indexFilter
+                      ? Colors.white
+                      : ColorConstant.neutral_gray,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

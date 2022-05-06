@@ -15,6 +15,7 @@ class PlaceModel {
   AddressModel? address;
   String? openingStatus;
   RegionModel? region;
+  double? avgRate;
   PlaceModel();
   factory PlaceModel.fromJson(Map<String, dynamic> json) =>
       _$PlaceModelFromJson(json);

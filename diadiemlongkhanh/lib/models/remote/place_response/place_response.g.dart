@@ -20,7 +20,8 @@ PlaceModel _$PlaceModelFromJson(Map<String, dynamic> json) => PlaceModel()
   ..openingStatus = json['openingStatus'] as String?
   ..region = json['region'] == null
       ? null
-      : RegionModel.fromJson(json['region'] as Map<String, dynamic>);
+      : RegionModel.fromJson(json['region'] as Map<String, dynamic>)
+  ..avgRate = (json['avgRate'] as num?)?.toDouble();
 
 Map<String, dynamic> _$PlaceModelToJson(PlaceModel instance) =>
     <String, dynamic>{
@@ -32,6 +33,7 @@ Map<String, dynamic> _$PlaceModelToJson(PlaceModel instance) =>
       'address': instance.address,
       'openingStatus': instance.openingStatus,
       'region': instance.region,
+      'avgRate': instance.avgRate,
     };
 
 RegionModel _$RegionModelFromJson(Map<String, dynamic> json) =>

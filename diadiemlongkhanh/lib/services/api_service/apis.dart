@@ -6,4 +6,6 @@ class Apis {
   static const sub_categories = '/sub-categories';
   static const places_new = '/places/new';
   static const explores_new = '/explores/new';
+  static const explores = '/explores';
+  static const categories = '/categories';
 }

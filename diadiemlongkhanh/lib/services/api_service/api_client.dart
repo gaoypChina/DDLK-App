@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
+import 'package:diadiemlongkhanh/models/remote/new_feed/result_new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
@@ -45,4 +46,13 @@ abstract class ApiClient {
   Future<List<NewFeedModel>?> getExploresNew({
     @Query('limit') int limit = 5,
   });
+
+  @GET(Apis.explores)
+  Future<ResultNewFeedModel?> getExplores({
+    @Query('page') int page = 1,
+    @Query('pageSize') int pageSize = 10,
+  });
+
+  @GET(Apis.categories)
+  Future<List<CategoryModel>?> getCategories();
 }

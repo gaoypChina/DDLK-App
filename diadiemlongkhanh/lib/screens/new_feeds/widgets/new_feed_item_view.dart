@@ -1,4 +1,5 @@
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
+import 'package:diadiemlongkhanh/models/remote/thumnail/thumbnail_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
@@ -61,14 +62,16 @@ class NewFeedItemView extends StatelessWidget {
           _buildInputCommentField(),
           isShowComment ? _buildListCommentView(context) : SizedBox.shrink(),
           SizedBox(
-            height: 24,
+            height: (item!.commentCount ?? 0) > 0 ? 24 : 0,
           ),
-          Center(
-            child: Text(
-              'Xem tất cả 10 bình luận',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-          )
+          (item!.commentCount ?? 0) > 0
+              ? Center(
+                  child: Text(
+                    'Xem tất cả ${item!.commentCount ?? 0} bình luận',
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                )
+              : SizedBox.shrink()
         ],
       ),
     );
@@ -233,12 +236,16 @@ class NewFeedItemView extends StatelessWidget {
         children: [
           Row(
             children: [
-              SvgPicture.asset(ConstantIcons.ic_heart),
+              SvgPicture.asset(
+                ConstantIcons.ic_heart,
+                color:
+                    item!.isLiked ? null : ColorConstant.neutral_gray_lighter,
+              ),
               SizedBox(
                 width: 5,
               ),
               Text(
-                '6 Thích',
+                '${item!.likeCount ?? 0} Thích',
                 style: TextStyle(
                   fontSize: 10,
                   color: ColorConstant.neutral_gray,
@@ -256,7 +263,7 @@ class NewFeedItemView extends StatelessWidget {
                 width: 6,
               ),
               Text(
-                '10 Bình luận',
+                '${item!.commentCount ?? 0} Bình luận',
                 style: TextStyle(
                   fontSize: 10,
                   color: ColorConstant.neutral_gray,
@@ -264,24 +271,6 @@ class NewFeedItemView extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
-            width: 18,
-          ),
-          Row(
-            children: [
-              SvgPicture.asset(ConstantIcons.ic_eye),
-              SizedBox(
-                width: 4,
-              ),
-              Text(
-                '10 Lượt xem',
-                style: TextStyle(
-                  fontSize: 10,
-                  color: ColorConstant.neutral_gray,
-                ),
-              )
-            ],
-          )
         ],
       ),
     );
@@ -311,8 +300,11 @@ class NewFeedItemView extends StatelessWidget {
         children: [
           ClipRRectImage(
             radius: 4,
-            url:
-                'https://bazantravel.com/cdn/medias/uploads/83/83316-pullman-vung-tau-700x466.jpg',
+            url: AppUtils.getUrlImage(
+              item!.place?.avatar?.path ?? '',
+              width: 64,
+              height: 64,
+            ),
             width: 64,
             height: 64,
           ),
@@ -328,7 +320,7 @@ class NewFeedItemView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        'Harleys The Coffee',
+                        item!.place?.name ?? '',
                         style: Theme.of(context).textTheme.headline2,
                       ),
                     ),
@@ -336,7 +328,9 @@ class NewFeedItemView extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      'Cách 2km',
+                      AppUtils.getDistance(item!.place?.distance ?? 0) > 0
+                          ? 'Cách ${AppUtils.getDistance(item!.place?.distance ?? 0)}km '
+                          : '',
                       style: TextStyle(
                         fontSize: 10,
                         color: ColorConstant.neutral_gray,
@@ -356,7 +350,7 @@ class NewFeedItemView extends StatelessWidget {
                       width: 4,
                     ),
                     Text(
-                      'Phường Xuân An',
+                      item!.place?.address?.specific ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -371,7 +365,8 @@ class NewFeedItemView extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '4.0',
+                      AppUtils.roundedRating(item!.place?.avgRate ?? 0)
+                          .toString(),
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
@@ -382,7 +377,7 @@ class NewFeedItemView extends StatelessWidget {
                       width: 7,
                     ),
                     MyRatingBar(
-                      rating: 4,
+                      rating: item!.place?.avgRate ?? 0,
                       onRatingUpdate: (rate, isEmpty) {},
                     ),
                   ],
@@ -395,51 +390,195 @@ class NewFeedItemView extends StatelessWidget {
     );
   }
 
+  Widget _buildDoublePhotoView(
+    List<ThumbnailModel> images,
+  ) {
+    return Row(
+      children: [
+        Expanded(
+          child: ClipRRectImage(
+            radius: 8,
+            url: AppUtils.getUrlImage(
+              images.first.path ?? '',
+            ),
+            height: double.infinity,
+          ),
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Expanded(
+          child: ClipRRectImage(
+            radius: 8,
+            url: AppUtils.getUrlImage(
+              images.last.path ?? '',
+            ),
+            height: double.infinity,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildThreePhotoView(List<ThumbnailModel> images) {
+    return Row(
+      children: [
+        Expanded(
+          child: ClipRRectImage(
+            radius: 8,
+            url: AppUtils.getUrlImage(
+              images.first.path ?? '',
+            ),
+            height: double.infinity,
+          ),
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Expanded(
+          child: Column(
+            children: [
+              Expanded(
+                child: ClipRRectImage(
+                  radius: 8,
+                  url: AppUtils.getUrlImage(
+                    images[1].path ?? '',
+                  ),
+                  width: double.infinity,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Expanded(
+                child: ClipRRectImage(
+                  radius: 8,
+                  url: AppUtils.getUrlImage(
+                    images.last.path ?? '',
+                  ),
+                  width: double.infinity,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFourPhotoView(
+    List<ThumbnailModel> images, {
+    bool isMulti = false,
+  }) {
+    return Column(
+      children: [
+        Expanded(
+          child: ClipRRectImage(
+            radius: 8,
+            url: AppUtils.getUrlImage(
+              images.first.path ?? '',
+            ),
+            width: double.infinity,
+            height: double.infinity,
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Expanded(
+            child: Row(
+          children: [
+            Expanded(
+              child: ClipRRectImage(
+                radius: 8,
+                url: AppUtils.getUrlImage(
+                  images[1].path ?? '',
+                ),
+                height: double.infinity,
+              ),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: ClipRRectImage(
+                radius: 8,
+                url: AppUtils.getUrlImage(
+                  images[2].path ?? '',
+                ),
+                height: double.infinity,
+              ),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: Stack(
+                children: [
+                  ClipRRectImage(
+                    radius: 8,
+                    url: AppUtils.getUrlImage(
+                      images[3].path ?? '',
+                    ),
+                    height: double.infinity,
+                  ),
+                  isMulti
+                      ? Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '+5',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink()
+                ],
+              ),
+            ),
+          ],
+        ))
+      ],
+    );
+  }
+
   Container _buildPhotosView() {
+    final images = item!.images;
+    Widget photoView = SizedBox.shrink();
+    switch (images.length) {
+      case 1:
+        photoView = ClipRRectImage(
+          radius: 8,
+          url: AppUtils.getUrlImage(
+            images.first.path ?? '',
+          ),
+          width: double.infinity,
+          height: double.infinity,
+        );
+        break;
+      case 2:
+        photoView = _buildDoublePhotoView(images);
+        break;
+      case 3:
+        photoView = _buildThreePhotoView(images);
+        break;
+      case 4:
+        photoView = _buildFourPhotoView(images);
+        break;
+      default:
+        photoView = _buildFourPhotoView(images, isMulti: true);
+    }
     return Container(
       height: 218,
       width: double.infinity,
       margin: const EdgeInsets.only(top: 12),
-      child: Row(
-        children: [
-          Expanded(
-            child: ClipRRectImage(
-              radius: 8,
-              url:
-                  'https://bazantravel.com/cdn/medias/uploads/83/83316-pullman-vung-tau-700x466.jpg',
-              height: double.infinity,
-            ),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: ClipRRectImage(
-                    radius: 8,
-                    url:
-                        'https://bazantravel.com/cdn/medias/uploads/83/83316-pullman-vung-tau-700x466.jpg',
-                    width: double.infinity,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Expanded(
-                  child: ClipRRectImage(
-                    radius: 8,
-                    url:
-                        'https://bazantravel.com/cdn/medias/uploads/83/83316-pullman-vung-tau-700x466.jpg',
-                    width: double.infinity,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      child: photoView,
     );
   }
 
@@ -504,7 +643,7 @@ class NewFeedItemView extends StatelessWidget {
                     width: 7,
                   ),
                   MyRatingBar(
-                    rating: AppUtils.roundedRating(item!.rateAvg ?? 0),
+                    rating: item!.rateAvg ?? 0,
                     onRatingUpdate: (rate, isEmpty) {},
                   ),
                   Container(
@@ -543,32 +682,8 @@ class NewFeedItemView extends StatelessWidget {
   Container _buildFollowButton(BuildContext context) {
     return Container(
       height: 24,
-      width: 60,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(
-          color: Theme.of(context).primaryColor,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            ConstantIcons.ic_plus,
-            color: Theme.of(context).primaryColor,
-            width: 12,
-            height: 12,
-          ),
-          Text(
-            'Theo dõi',
-            style: TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).primaryColor,
-            ),
-          )
-        ],
-      ),
+      width: 24,
+      child: Icon(Icons.more_horiz),
     );
   }
 }

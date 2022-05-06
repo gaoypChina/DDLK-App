@@ -1,4 +1,6 @@
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -38,24 +40,14 @@ class PlacesGridView extends StatelessWidget {
         return places.isEmpty
             ? Container(
                 height: 238,
-                child: SkeletonItem(
-                  child: Column(
-                    children: [
-                      SkeletonAvatar(
-                        style: SkeletonAvatarStyle(
-                          height: 148,
-                          width: double.infinity,
-                        ),
-                      ),
-                      SkeletonParagraph(
-                        style: SkeletonParagraphStyle(
-                          lines: 3,
-                          spacing: 5,
-                          padding: const EdgeInsets.only(top: 8),
-                        ),
-                      )
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    ShimmerImage(
+                      height: 148,
+                      width: double.infinity,
+                    ),
+                    ShimmerParagraph()
+                  ],
                 ),
               )
             : PlaceGridItemView(

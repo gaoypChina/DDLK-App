@@ -1,4 +1,5 @@
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/dots_view.dart';
@@ -78,11 +79,8 @@ class _CustomSliderViewState extends State<CustomSliderView> {
             horizontal: 16,
           ),
           child: widget.datas.isEmpty
-              ? SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                    width: double.infinity,
-                    height: 180,
-                  ),
+              ? ShimmerImage(
+                  height: 180,
                 )
               : Stack(
                   children: [

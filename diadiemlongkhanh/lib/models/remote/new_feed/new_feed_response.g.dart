@@ -18,8 +18,9 @@ NewFeedModel _$NewFeedModelFromJson(Map<String, dynamic> json) => NewFeedModel()
   ..isExplore = json['isExplore'] as bool? ?? false
   ..isHide = json['isHide'] as bool? ?? false
   ..images = (json['images'] as List<dynamic>?)
-      ?.map((e) => ThumbnailModel.fromJson(e as Map<String, dynamic>))
-      .toList()
+          ?.map((e) => ThumbnailModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      []
   ..deleted = json['deleted'] as bool? ?? false
   ..place = json['place'] == null
       ? null

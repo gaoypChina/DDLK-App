@@ -62,11 +62,17 @@ class AppUtils {
   }
 
   static double roundedRating(double rating) {
-    final point = rating.roundToDouble();
-    if (point - rating == 0.5) {
-      return rating;
+    var point = rating;
+    var full = point.truncate();
+
+    var half = (point - full);
+    if (half >= 0.25) {
+      half = 0.5;
+    } else {
+      half = 0;
     }
-    return point;
+
+    return full + half;
   }
 
   static String convertDatetimePrefix(String time) {

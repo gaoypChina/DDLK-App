@@ -10,14 +10,18 @@ import 'package:diadiemlongkhanh/screens/home/widgets/custom_slider_view.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_horiz_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_newfeed.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_paragraph.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/skeleton_voucher.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:skeletons/skeletons.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -30,18 +34,32 @@ class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   bool isLoading = true;
   HomeCubit get _cubit => BlocProvider.of(context);
+  bool _isScroll = false;
   @override
   void initState() {
     print('home');
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _cubit.getSlides();
-      _cubit.getPlacesNear();
-      _cubit.getPlacesHot();
-      _cubit.getVouchers();
-      _cubit.getSubCategories();
-      _cubit.getNewFeeds();
+      getData();
     });
+  }
+
+  getData() async {
+    _cubit.getSlides();
+
+    Future.delayed(
+      Duration(seconds: 1),
+      () {
+        setState(() {
+          _isScroll = true;
+        });
+        _cubit.getPlacesNear();
+        _cubit.getPlacesHot();
+        _cubit.getVouchers();
+        _cubit.getSubCategories();
+        _cubit.getNewFeeds();
+      },
+    );
   }
 
   @override
@@ -64,6 +82,9 @@ class _HomeScreenState extends State<HomeScreen>
               _buildSearchView(context),
               Expanded(
                 child: SingleChildScrollView(
+                  physics: _isScroll
+                      ? ScrollPhysics()
+                      : NeverScrollableScrollPhysics(),
                   child: Column(
                     children: [
                       SizedBox(
@@ -157,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen>
           padding: const EdgeInsets.only(top: 16, bottom: 24),
           itemBuilder: (_, index) {
             return newfeeds.isEmpty
-                ? SkeletonNewFeed(
+                ? ShimmerNewFeed(
                     context,
                   )
                 : NewFeedItemView(
@@ -376,12 +397,9 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             itemBuilder: (_, index) {
               return places.isEmpty
-                  ? SkeletonAvatar(
-                      style: SkeletonAvatarStyle(
-                        width: 194,
-                        height: 314,
-                        padding: const EdgeInsets.only(right: 16),
-                      ),
+                  ? ShimmerImage(
+                      width: 194,
+                      height: 314,
                     )
                   : PlaceHorizItemView(
                       context: context,
@@ -572,166 +590,77 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildHeaderView() {
+    final token = injector.get<StorageService>().getToken();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(22),
-            child: Image.network(
-              'https://photo-cms-nghenhinvietnam.zadn.vn/w700/Uploaded/2022/cadwpqrnd/2022_03_06/anya_taylor_joy_900x506_pvfv.jpg',
-              fit: BoxFit.cover,
-              width: 44,
-              height: 44,
-            ),
-          ),
-          SizedBox(
-            width: 8,
-          ),
-          Expanded(
-            child: Text(
-              'User Name Here',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ),
-          GestureDetector(
-            onTap: () =>
-                Navigator.of(context).pushNamed(RouterName.notification),
-            child: Container(
-              height: 36,
-              width: 36,
-              child: Stack(
-                children: [
-                  Container(
-                    height: 36,
-                    width: 36,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                      color: ColorConstant.neutral_gray_lightest,
-                    ),
-                    child: Center(
-                      child: SvgPicture.asset(ConstantIcons.ic_bell),
-                    ),
-                  ),
-                  Positioned(
-                    top: 2,
-                    right: 0,
-                    child: Container(
-                      height: 8,
-                      width: 8,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: ColorConstant.sematic_red,
-                      ),
-                    ),
-                  ),
-                ],
+      child: token == null
+          ? Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Đăng nhập/Đăng ký',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class SkeletonNewFeed extends StatelessWidget {
-  const SkeletonNewFeed(
-    this.context,
-  );
-
-  final BuildContext context;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(color: Colors.white),
-      child: SkeletonItem(
-        child: Column(
-          children: [
-            Row(
+            )
+          : Row(
               children: [
-                SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                    shape: BoxShape.circle,
-                    width: 50,
-                    height: 50,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(22),
+                  child: Image.network(
+                    'https://photo-cms-nghenhinvietnam.zadn.vn/w700/Uploaded/2022/cadwpqrnd/2022_03_06/anya_taylor_joy_900x506_pvfv.jpg',
+                    fit: BoxFit.cover,
+                    width: 44,
+                    height: 44,
                   ),
                 ),
                 SizedBox(
                   width: 8,
                 ),
                 Expanded(
-                  child: SkeletonParagraph(
-                    style: SkeletonParagraphStyle(
-                        lines: 3,
-                        spacing: 6,
-                        lineStyle: SkeletonLineStyle(
-                          randomLength: true,
-                          height: 10,
-                          borderRadius: BorderRadius.circular(8),
-                          minLength: MediaQuery.of(context).size.width / 6,
-                          maxLength: MediaQuery.of(context).size.width / 3,
-                        )),
+                  child: Text(
+                    'User Name Here',
+                    style: Theme.of(context).textTheme.headline4,
                   ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            SkeletonParagraph(
-              style: SkeletonParagraphStyle(
-                  lines: 3,
-                  spacing: 6,
-                  lineStyle: SkeletonLineStyle(
-                    randomLength: true,
-                    height: 10,
-                    borderRadius: BorderRadius.circular(8),
-                    minLength: MediaQuery.of(context).size.width / 2,
-                  )),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            SkeletonAvatar(
-              style: SkeletonAvatarStyle(
-                width: double.infinity,
-                minHeight: MediaQuery.of(context).size.height / 8,
-                maxHeight: MediaQuery.of(context).size.height / 3,
-              ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    SkeletonAvatar(
-                        style: SkeletonAvatarStyle(width: 20, height: 20)),
-                    SizedBox(width: 8),
-                    SkeletonAvatar(
-                        style: SkeletonAvatarStyle(width: 20, height: 20)),
-                    SizedBox(width: 8),
-                    SkeletonAvatar(
-                        style: SkeletonAvatarStyle(width: 20, height: 20)),
-                  ],
                 ),
-                SkeletonLine(
-                  style: SkeletonLineStyle(
-                    height: 16,
-                    width: 64,
-                    borderRadius: BorderRadius.circular(8),
+                GestureDetector(
+                  onTap: () =>
+                      Navigator.of(context).pushNamed(RouterName.notification),
+                  child: Container(
+                    height: 36,
+                    width: 36,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 36,
+                          width: 36,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            color: ColorConstant.neutral_gray_lightest,
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(ConstantIcons.ic_bell),
+                          ),
+                        ),
+                        Positioned(
+                          top: 2,
+                          right: 0,
+                          child: Container(
+                            height: 8,
+                            width: 8,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: ColorConstant.sematic_red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 }
