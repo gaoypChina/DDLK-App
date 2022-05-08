@@ -7,6 +7,7 @@ import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/detail_notification_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/notification_screen.dart';
+import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
 import 'package:diadiemlongkhanh/screens/places/detail_place_screen.dart';
 import 'package:diadiemlongkhanh/screens/places/list_place_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/edit_profile_screen.dart';
@@ -21,6 +22,7 @@ import 'package:diadiemlongkhanh/screens/signup/signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/verify_phone/verify_phone_screen.dart';
 import 'package:diadiemlongkhanh/screens/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RouterManager {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -107,7 +109,10 @@ class RouterManager {
         );
       case RouterName.detail_place:
         return MaterialPageRoute(
-          builder: (_) => DetailPlaceScreen(),
+          builder: (_) => BlocProvider(
+            create: (_) => DetailPlaceCubit(settings.arguments as String),
+            child: DetailPlaceScreen(),
+          ),
         );
       case RouterName.search:
         return MaterialPageRoute(

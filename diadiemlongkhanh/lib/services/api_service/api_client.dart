@@ -55,4 +55,7 @@ abstract class ApiClient {
 
   @GET(Apis.categories)
   Future<List<CategoryModel>?> getCategories();
+
+  @GET('${Apis.place}/{id}')
+  Future<PlaceModel?> getDetailPlace(@Path() String id);
 }
