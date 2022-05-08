@@ -38,6 +38,7 @@ class ConstantIcons {
   static const ic_travel = 'assets/icons/ic_travel.png';
   static const ic_chevron_right = 'assets/icons/ic_chevron_right.svg';
   static const ic_marker_grey = 'assets/icons/ic_marker_grey.svg';
+  static const ic_primary_marker = 'assets/icons/ic_primary_marker.svg';
   static const ic_right = 'assets/icons/ic_right.svg';
   static const ic_empty_star = 'assets/icons/ic_empty_star.svg';
   static const ic_half_star = 'assets/icons/ic_half_star.svg';

@@ -11,3 +11,5 @@ class DetailPlaceGetDoneState extends DetailPlaceState {
   final PlaceModel place;
   DetailPlaceGetDoneState(this.place);
 }
+
+class DetailPlaceGetReviewsDoneState extends DetailPlaceState {}

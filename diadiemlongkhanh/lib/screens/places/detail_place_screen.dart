@@ -43,7 +43,8 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     super.initState();
     // _handleListenerScroll();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      // _cubit.getDetail();
+      _cubit.getDetail();
+      _cubit.getReviews();
     });
   }
 
@@ -108,11 +109,18 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     delegate: new SliverChildListDelegate(
                       <Widget>[
                         _buildInfoDetailPlaceView(context),
-                        ListReviewView(
-                          padding: const EdgeInsets.only(
-                            bottom: 60,
-                          ),
-                        ),
+                        BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
+                          buildWhen: (previous, current) =>
+                              current is DetailPlaceGetReviewsDoneState,
+                          builder: (_, state) {
+                            return ListReviewView(
+                              reviews: _cubit.reviews,
+                              padding: const EdgeInsets.only(
+                                bottom: 60,
+                              ),
+                            );
+                          },
+                        )
                       ],
                     ),
                   ),
@@ -155,9 +163,9 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             _buildRangePriceView(place),
             _buildWorkHourView(place),
             _buildMenuView(place),
-            _buildMapView(context),
-            _buildInfoContactView(context),
-            _buildSumarryReview(context),
+            _buildMapView(place),
+            _buildInfoContactView(place),
+            _buildSumarryReview(place),
           ],
         );
       },
@@ -363,7 +371,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Padding _buildSumarryReview(BuildContext context) {
+  Padding _buildSumarryReview(PlaceModel? place) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -379,7 +387,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               SizedBox(
                 height: 4,
               ),
-              Text('1600 đánh giá')
+              Text('${place?.reviewCount ?? 0} đánh giá')
             ],
           ),
           Container(
@@ -416,7 +424,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Container _buildInfoContactView(BuildContext context) {
+  Container _buildInfoContactView(PlaceModel? place) {
     return Container(
       margin: const EdgeInsets.only(
         top: 16,
@@ -487,7 +495,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Container _buildMapView(BuildContext context) {
+  Container _buildMapView(PlaceModel? place) {
     return Container(
       height: 265,
       margin: const EdgeInsets.only(
@@ -521,25 +529,30 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
           SizedBox(
             height: 16,
           ),
-          Row(
-            children: [
-              SvgPicture.asset(
-                ConstantIcons.ic_marker_filled,
-                color: Theme.of(context).primaryColor,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                'Số xxx, đường xxx, Phường Xuân An',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ],
-          )
+          place == null
+              ? Expanded(
+                  child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: ShimmerImage(),
+                ))
+              : Row(
+                  children: [
+                    SvgPicture.asset(
+                      ConstantIcons.ic_primary_marker,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      place.address?.specific ?? '',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ],
+                )
         ],
       ),
     );
@@ -717,30 +730,28 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
           )
         ],
       ),
-      child: place == null
-          ? Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: ShimmerImage())
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Khoảng giá',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                Expanded(
-                  child: Text(
-                    'Từ 50.000đ - 150.000đ',
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
-              ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Khoảng giá',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Expanded(
+            child: Text(
+              place != null
+                  ? 'Từ ${AppUtils.formatCurrency(place.price?.min ?? 0)}đ - ${AppUtils.formatCurrency(place.price?.max ?? 0)}đ'
+                  : '',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -764,29 +775,31 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
           )
         ],
       ),
-      child: place == null
-          ? ShimmerImage()
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Đánh giá địa điểm',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                    ),
-                    Text(
-                      '1600 đánh giá',
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Đánh giá địa điểm',
+                  style: Theme.of(context).textTheme.headline4,
                 ),
-                SizedBox(
-                  height: 16,
-                ),
-                Wrap(
+              ),
+              Text(
+                '${place?.reviewCount ?? 0} đánh giá',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          place == null
+              ? Expanded(
+                  child: ShimmerImage(),
+                )
+              : Wrap(
                   spacing: 10,
                   runSpacing: 10,
                   children: [
@@ -798,8 +811,8 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     _buildReviewItem(),
                   ],
                 )
-              ],
-            ),
+        ],
+      ),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
@@ -10,10 +11,23 @@ part 'detail_place_state.dart';
 class DetailPlaceCubit extends Cubit<DetailPlaceState> {
   DetailPlaceCubit(this.id) : super(DetailPlaceInitalState());
   String id;
+  List<NewFeedModel> reviews = [];
   getDetail() async {
     final res = await injector.get<ApiClient>().getDetailPlace(id);
     if (res != null) {
       emit(DetailPlaceGetDoneState(res));
+    }
+  }
+
+  getReviews() async {
+    try {
+      final res = await injector.get<ApiClient>().getReviewsOfPlace(id);
+      if (res != null) {
+        reviews = res.result;
+        emit(DetailPlaceGetReviewsDoneState());
+      }
+    } catch (error) {
+      print(error);
     }
   }
 }

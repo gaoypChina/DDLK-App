@@ -96,4 +96,9 @@ class AppUtils {
       return DateFormat('dd-MM-yyyy HH:mm').format(postTime);
     }
   }
+
+  static String formatCurrency(int value) {
+    final oCcy = new NumberFormat("#,##0", "vi_VN");
+    return oCcy.format(value);
+  }
 }

@@ -55,13 +55,17 @@ PlaceModel _$PlaceModelFromJson(Map<String, dynamic> json) => PlaceModel()
   ..phone = json['phone'] as String?
   ..video = json['video'] as String?
   ..imageCount = json['imageCount'] as int?
+  ..reviewCount = json['reviewCount'] as int?
   ..openingType = json['openingType'] as String?
   ..openingTime = json['openingTime'] == null
       ? null
       : OpeningTimeModel.fromJson(json['openingTime'] as Map<String, dynamic>)
   ..rate = json['rate'] == null
       ? null
-      : RateModel.fromJson(json['rate'] as Map<String, dynamic>);
+      : RateModel.fromJson(json['rate'] as Map<String, dynamic>)
+  ..price = json['price'] == null
+      ? null
+      : PriceModel.fromJson(json['price'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$PlaceModelToJson(PlaceModel instance) =>
     <String, dynamic>{
@@ -91,9 +95,11 @@ Map<String, dynamic> _$PlaceModelToJson(PlaceModel instance) =>
       'phone': instance.phone,
       'video': instance.video,
       'imageCount': instance.imageCount,
+      'reviewCount': instance.reviewCount,
       'openingType': instance.openingType,
       'openingTime': instance.openingTime,
       'rate': instance.rate,
+      'price': instance.price,
     };
 
 RegionModel _$RegionModelFromJson(Map<String, dynamic> json) =>

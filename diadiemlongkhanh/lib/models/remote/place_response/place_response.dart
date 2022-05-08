@@ -46,9 +46,11 @@ class PlaceModel {
   String? phone;
   String? video;
   int? imageCount;
+  int? reviewCount;
   String? openingType;
   OpeningTimeModel? openingTime;
   RateModel? rate;
+  PriceModel? price;
 
   PlaceModel();
   factory PlaceModel.fromJson(Map<String, dynamic> json) =>

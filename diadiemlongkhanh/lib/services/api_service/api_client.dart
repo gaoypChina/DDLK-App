@@ -53,6 +53,13 @@ abstract class ApiClient {
     @Query('pageSize') int pageSize = 10,
   });
 
+  @GET('${Apis.place}/{id}/reviews')
+  Future<ResultNewFeedModel?> getReviewsOfPlace(
+    @Path() String id, {
+    @Query('page') int page = 1,
+    @Query('pageSize') int pageSize = 10,
+  });
+
   @GET(Apis.categories)
   Future<List<CategoryModel>?> getCategories();
 

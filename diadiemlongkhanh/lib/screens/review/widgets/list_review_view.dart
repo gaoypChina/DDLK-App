@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
@@ -8,11 +9,15 @@ import 'package:flutter_svg/svg.dart';
 
 class ListReviewView extends StatelessWidget {
   final EdgeInsets? padding;
-  ListReviewView({this.padding});
+  final List<NewFeedModel> reviews;
+  ListReviewView({
+    this.padding,
+    required this.reviews,
+  });
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: reviews.length,
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       padding: padding,
@@ -210,6 +215,9 @@ class ListReviewView extends StatelessWidget {
               'https://bangsport.net/wp-content/uploads/2021/12/3139455-64344828-2560-1440.jpg',
           width: 44,
           height: 44,
+        ),
+        SizedBox(
+          width: 4,
         ),
         Expanded(
           child: Column(

@@ -170,6 +170,28 @@ class _ApiClient implements ApiClient {
   }
 
   @override
+  Future<ResultNewFeedModel?> getReviewsOfPlace(id,
+      {page = 1, pageSize = 10}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize
+    };
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<ResultNewFeedModel>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/place/${id}/reviews',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data == null
+        ? null
+        : ResultNewFeedModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<List<CategoryModel>?> getCategories() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
