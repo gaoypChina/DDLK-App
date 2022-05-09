@@ -12,9 +12,11 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
   DetailPlaceCubit(this.id) : super(DetailPlaceInitalState());
   String id;
   List<NewFeedModel> reviews = [];
+  PlaceModel? place;
   getDetail() async {
     final res = await injector.get<ApiClient>().getDetailPlace(id);
     if (res != null) {
+      place = res;
       emit(DetailPlaceGetDoneState(res));
     }
   }
@@ -29,5 +31,25 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
     } catch (error) {
       print(error);
     }
+  }
+
+  changePage(int index) {
+    emit(DetailPlaceChangePagePhotoState(index));
+  }
+
+  String getRatingTitle(String key) {
+    switch (key) {
+      case 'position':
+        return 'Vị trí';
+      case 'view':
+        return 'Không gian';
+      case 'Đồ uống':
+        return 'Không gian';
+      case 'service':
+        return 'Phục vụ';
+      case 'price':
+        return 'Giá cả';
+    }
+    return '';
   }
 }

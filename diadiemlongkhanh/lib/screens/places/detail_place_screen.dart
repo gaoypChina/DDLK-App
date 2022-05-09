@@ -9,6 +9,7 @@ import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_paragraph.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
+import 'package:diadiemlongkhanh/widgets/full_image_view.dart';
 import 'package:diadiemlongkhanh/widgets/line_dashed_painter.dart';
 import 'package:diadiemlongkhanh/widgets/my_back_button.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
@@ -44,7 +45,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     // _handleListenerScroll();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _cubit.getDetail();
-      _cubit.getReviews();
+      // _cubit.getReviews();
     });
   }
 
@@ -137,38 +138,57 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
   }
 
   Widget _buildInfoDetailPlaceView(BuildContext context) {
-    return BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
-      buildWhen: (previous, current) => current is DetailPlaceGetDoneState,
-      builder: (context, state) {
-        PlaceModel? place;
-        if (state is DetailPlaceGetDoneState) {
-          place = state.place;
-        }
-        return Column(
-          children: [
-            Container(
+    return Column(
+      children: [
+        BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
+          buildWhen: (previous, current) =>
+              current is DetailPlaceGetDoneState ||
+              current is DetailPlaceChangePagePhotoState,
+          builder: (context, state) {
+            int currentIndex = 0;
+
+            if (state is DetailPlaceChangePagePhotoState) {
+              currentIndex = state.index;
+            }
+            return Container(
               height: 598,
               child: Stack(children: [
-                _buildSlider(),
+                _buildSlider(
+                  _cubit.place,
+                  currentIndex,
+                ),
                 Positioned(
                   top: 248,
                   left: 0,
                   right: 0,
-                  child: _buildInfoView(place),
+                  child: _buildInfoView(_cubit.place),
                 ),
               ]),
-            ),
-            _buildConveniencesView(place),
-            _buildRatingView(place),
-            _buildRangePriceView(place),
-            _buildWorkHourView(place),
-            _buildMenuView(place),
-            _buildMapView(place),
-            _buildInfoContactView(place),
-            _buildSumarryReview(place),
-          ],
-        );
-      },
+            );
+          },
+        ),
+        BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
+          buildWhen: (previous, current) => current is DetailPlaceGetDoneState,
+          builder: (context, state) {
+            PlaceModel? place;
+            if (state is DetailPlaceGetDoneState) {
+              place = state.place;
+            }
+            return Column(
+              children: [
+                _buildConveniencesView(place),
+                _buildRatingView(place),
+                _buildRangePriceView(place),
+                _buildWorkHourView(place),
+                _buildMenuView(place),
+                _buildMapView(place),
+                _buildInfoContactView(place),
+                _buildSumarryReview(place),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -595,10 +615,10 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             child: place == null
                 ? ShimmerImage()
                 : ListView.builder(
-                    itemCount: 10,
-                    shrinkWrap: true,
+                    itemCount: place.menu.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (_, index) {
+                      final item = place.menu[index];
                       return Container(
                         height: 72,
                         width: 72,
@@ -606,10 +626,23 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         child: Stack(
                           children: [
                             ClipRRectImage(
+                              onPressed: () => AppUtils.showBottomDialog(
+                                context,
+                                FullImageView(
+                                  AppUtils.getUrlImage(
+                                    item.path ?? '',
+                                    width: 72,
+                                    height: 72,
+                                  ),
+                                ),
+                              ),
                               height: 72,
                               width: 72,
-                              url:
-                                  'https://vuakhuyenmai.vn/wp-content/uploads/highlands-khuyen-mai-30off-8-3-2022.jpg',
+                              url: AppUtils.getUrlImage(
+                                item.path ?? '',
+                                width: 72,
+                                height: 72,
+                              ),
                               radius: 8,
                             )
                           ],
@@ -803,12 +836,11 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   spacing: 10,
                   runSpacing: 10,
                   children: [
-                    _buildReviewItem(),
-                    _buildReviewItem(),
-                    _buildReviewItem(),
-                    _buildReviewItem(),
-                    _buildReviewItem(),
-                    _buildReviewItem(),
+                    _buildReviewItem('Vị trí'),
+                    _buildReviewItem('Không gian'),
+                    _buildReviewItem('đồ uống'),
+                    _buildReviewItem('phục vụ'),
+                    _buildReviewItem('giá cả'),
                   ],
                 )
         ],
@@ -816,7 +848,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Widget _buildReviewItem() {
+  Widget _buildReviewItem(String title) {
     return UnconstrainedBox(
       child: Container(
         height: 32,
@@ -833,7 +865,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Vị trí',
+                      text: title,
                       style: TextStyle(
                         fontSize: 12,
                         color: ColorConstant.neutral_black,
@@ -1048,7 +1080,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                                 width: 8,
                               ),
                               Text(
-                                '(1600 đánh giá)',
+                                '(${place.reviewCount ?? 0} đánh giá)',
                                 style: TextStyle(
                                   fontSize: 10,
                                   color: ColorConstant.neutral_gray,
@@ -1125,10 +1157,11 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   height: 72,
                   margin: const EdgeInsets.only(top: 24),
                   child: ListView.builder(
-                    itemCount: 10,
+                    itemCount: place.photos.length,
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (_, index) {
+                      final item = place.photos[index];
                       return Container(
                         height: 72,
                         width: 72,
@@ -1138,8 +1171,11 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                             ClipRRectImage(
                               height: 72,
                               width: 72,
-                              url:
-                                  'https://vuakhuyenmai.vn/wp-content/uploads/highlands-khuyen-mai-30off-8-3-2022.jpg',
+                              url: AppUtils.getUrlImage(
+                                item.path ?? '',
+                                width: 72,
+                                height: 72,
+                              ),
                               radius: 8,
                             )
                           ],
@@ -1183,44 +1219,59 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Container _buildSlider() {
+  Container _buildSlider(PlaceModel? place, int currentIndex) {
+    final width = MediaQuery.of(context).size.width;
     return Container(
       height: 268,
-      child: Stack(children: [
-        PageView.builder(
-          itemCount: 10,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (_, index) {
-            return ClipRRectImage(
-              height: double.infinity,
-              width: double.infinity,
-              url:
-                  'https://aeonmall-haiphong-lechan.com.vn/wp-content/uploads/2020/12/hc-flagships-750x468-1.png',
-            );
-          },
-        ),
-        Positioned(
-          right: 16,
-          bottom: 32,
-          child: Container(
-            width: 52,
-            height: 22,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(11),
-              color: Colors.black.withOpacity(0.5),
-            ),
-            child: Center(
-              child: Text(
-                '1/12',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
+      child: Stack(
+        children: [
+          place == null
+              ? ShimmerImage()
+              : PageView.builder(
+                  itemCount: place.photos.length,
+                  scrollDirection: Axis.horizontal,
+                  onPageChanged: (index) {
+                    print(index);
+                    _cubit.changePage(index);
+                  },
+                  itemBuilder: (_, index) {
+                    final item = place.photos[index];
+                    return ClipRRectImage(
+                      height: double.infinity,
+                      width: double.infinity,
+                      url: AppUtils.getUrlImage(
+                        item.path ?? '',
+                        width: width,
+                        height: 268,
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ),
-          ),
-        )
-      ]),
+          place == null
+              ? SizedBox.shrink()
+              : Positioned(
+                  right: 16,
+                  bottom: 32,
+                  child: Container(
+                    width: 52,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${currentIndex + 1}/${place.photos.length}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+        ],
+      ),
     );
   }
 }

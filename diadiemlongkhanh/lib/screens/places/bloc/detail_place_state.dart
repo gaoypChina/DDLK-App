@@ -13,3 +13,8 @@ class DetailPlaceGetDoneState extends DetailPlaceState {
 }
 
 class DetailPlaceGetReviewsDoneState extends DetailPlaceState {}
+
+class DetailPlaceChangePagePhotoState extends DetailPlaceState {
+  final int index;
+  DetailPlaceChangePagePhotoState(this.index);
+}
