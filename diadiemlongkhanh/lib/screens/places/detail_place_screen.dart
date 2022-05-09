@@ -838,9 +838,9 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   children: [
                     _buildReviewItem('Vị trí'),
                     _buildReviewItem('Không gian'),
-                    _buildReviewItem('đồ uống'),
-                    _buildReviewItem('phục vụ'),
-                    _buildReviewItem('giá cả'),
+                    _buildReviewItem('Đồ uống'),
+                    _buildReviewItem('Phục vụ'),
+                    _buildReviewItem('Giá cả'),
                   ],
                 )
         ],
