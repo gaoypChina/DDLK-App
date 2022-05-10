@@ -11,4 +11,14 @@ class StorageService {
   String? getToken() {
     return shared.getString('token');
   }
+
+  Future<bool> saveKeyWords(String value) async {
+    List<String> currentList = await getKeyWords() ?? [];
+    currentList.add(value);
+    return shared.setStringList('key_words', currentList);
+  }
+
+  Future<List<String>?> getKeyWords() async {
+    return shared.getStringList('key_words');
+  }
 }

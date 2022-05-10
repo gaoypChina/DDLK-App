@@ -16,6 +16,7 @@ import 'package:diadiemlongkhanh/screens/profile/setting_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/detail_promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/review/create_review_screen.dart';
+import 'package:diadiemlongkhanh/screens/search/bloc/search_cubit.dart';
 import 'package:diadiemlongkhanh/screens/search/search_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/option_signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/signup_screen.dart';
@@ -116,7 +117,10 @@ class RouterManager {
         );
       case RouterName.search:
         return MaterialPageRoute(
-          builder: (_) => SearchScreen(),
+          builder: (_) => BlocProvider(
+            create: (_) => SearchCubit(),
+            child: SearchScreen(),
+          ),
         );
       default:
         return MaterialPageRoute(

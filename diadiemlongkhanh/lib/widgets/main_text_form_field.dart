@@ -12,6 +12,7 @@ class MainTextFormField extends StatelessWidget {
   final int? maxLines;
   final Color? fillColor;
   final bool hideBorder;
+  final Function(String)? onChanged;
 
   MainTextFormField({
     this.hintText,
@@ -24,6 +25,7 @@ class MainTextFormField extends StatelessWidget {
     this.maxLines,
     this.fillColor,
     this.hideBorder = false,
+    this.onChanged,
   });
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class MainTextFormField extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyText1,
       keyboardType: keyboardType,
       maxLines: maxLines,
-      readOnly: true,
+      onChanged: onChanged,
       decoration: InputDecoration(
         fillColor: fillColor,
         filled: fillColor != null,

@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/result_new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
+import 'package:diadiemlongkhanh/models/remote/place_response/result_place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:dio/dio.dart';
@@ -65,4 +66,7 @@ abstract class ApiClient {
 
   @GET('${Apis.place}/{id}')
   Future<PlaceModel?> getDetailPlace(@Path() String id);
+
+  @POST('${Apis.place_search}')
+  Future<ResultPlaceModel?> searchPlaces(@Body() data);
 }
