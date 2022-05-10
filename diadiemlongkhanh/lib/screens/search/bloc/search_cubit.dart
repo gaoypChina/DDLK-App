@@ -27,12 +27,12 @@ class SearchCubit extends Cubit<SearchState> {
   searchKeyWord(String v) async {
     dataSearch.keyword = v;
     if (v.isEmpty) {
+      places.clear();
       emit(SearchClearKeyWordDoneState());
+      getHistorySearch();
       return;
     }
-    Future.delayed(Duration(seconds: 1), () {
-      searchPlaces();
-    });
+    searchPlaces();
   }
 
   searchPlaces() async {
@@ -44,5 +44,9 @@ class SearchCubit extends Cubit<SearchState> {
       places = res.result;
       emit(SearchGetPlacesDoneState());
     }
+  }
+
+  saveHistorySearch(String val) {
+    injector.get<StorageService>().saveKeyWords(val);
   }
 }

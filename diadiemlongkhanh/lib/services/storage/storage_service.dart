@@ -14,7 +14,13 @@ class StorageService {
 
   Future<bool> saveKeyWords(String value) async {
     List<String> currentList = await getKeyWords() ?? [];
-    currentList.add(value);
+    if (!currentList.contains(value)) {
+      if (currentList.length > 10) {
+        currentList.removeLast();
+      }
+      currentList.insert(0, value);
+    }
+
     return shared.setStringList('key_words', currentList);
   }
 

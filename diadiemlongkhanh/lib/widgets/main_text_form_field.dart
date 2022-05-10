@@ -13,6 +13,7 @@ class MainTextFormField extends StatelessWidget {
   final Color? fillColor;
   final bool hideBorder;
   final Function(String)? onChanged;
+  final TextEditingController? controller;
 
   MainTextFormField({
     this.hintText,
@@ -26,6 +27,7 @@ class MainTextFormField extends StatelessWidget {
     this.fillColor,
     this.hideBorder = false,
     this.onChanged,
+    this.controller,
   });
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class MainTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       maxLines: maxLines,
       onChanged: onChanged,
+      controller: controller,
       decoration: InputDecoration(
         fillColor: fillColor,
         filled: fillColor != null,

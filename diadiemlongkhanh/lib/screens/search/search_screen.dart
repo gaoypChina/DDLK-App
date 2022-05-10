@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_horiz_item_view.dart';
 import 'package:diadiemlongkhanh/screens/search/bloc/search_cubit.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
@@ -20,6 +23,17 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   SearchCubit get _cubit => BlocProvider.of(context);
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _cubit.getHistorySearch();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -43,6 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     return _buildListPlaceView();
                   }
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildHistorySearch(),
                       _buildHotPlaces(),
@@ -96,100 +111,110 @@ class _SearchScreenState extends State<SearchScreen> {
         padding: const EdgeInsets.all(16),
         itemBuilder: (_, index) {
           final item = _cubit.places[index];
-          return Container(
-            height: 112,
-            padding: const EdgeInsets.all(8),
-            margin: const EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: ColorConstant.green_shadow.withOpacity(0.12),
-                  offset: Offset(0, 15),
-                  blurRadius: 40,
-                )
-              ],
-            ),
-            child: Row(
-              children: [
-                ClipRRectImage(
-                  width: 96,
-                  height: double.infinity,
-                  radius: 8,
-                  url: AppUtils.getUrlImage(
-                    item.avatar?.path ?? '',
+          return InkWell(
+            onTap: () {
+              _cubit.saveHistorySearch(_searchController.text);
+              Navigator.of(context).pushNamed(
+                RouterName.detail_place,
+                arguments: item.id,
+              );
+            },
+            child: Container(
+              height: 112,
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorConstant.green_shadow.withOpacity(0.12),
+                    offset: Offset(0, 15),
+                    blurRadius: 40,
+                  )
+                ],
+              ),
+              child: Row(
+                children: [
+                  ClipRRectImage(
                     width: 96,
-                    height: 96,
+                    height: double.infinity,
+                    radius: 8,
+                    url: AppUtils.getUrlImage(
+                      item.avatar?.path ?? '',
+                      width: 96,
+                      height: 96,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.name ?? '',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        item.address?.specific ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: ColorConstant.neutral_gray,
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.name ?? '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.headline4,
                         ),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            AppUtils.roundedRating(item.avgRate ?? 0)
-                                .toString(),
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: ColorConstant.neutral_gray_lighter,
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          item.address?.specific ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: ColorConstant.neutral_gray,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              AppUtils.roundedRating(item.avgRate ?? 0)
+                                  .toString(),
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: ColorConstant.neutral_gray_lighter,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          MyRatingBar(
-                            rating: item.avgRate ?? 0,
-                            onRatingUpdate: (rate, isEmpty) {},
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            AppUtils.getOpeningTitle(item.openingStatus ?? ''),
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).primaryColor,
+                            SizedBox(
+                              width: 7,
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                            MyRatingBar(
+                              rating: item.avgRate ?? 0,
+                              onRatingUpdate: (rate, isEmpty) {},
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              AppUtils.getOpeningTitle(
+                                  item.openingStatus ?? ''),
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -325,7 +350,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: ListView.builder(
                   itemCount: keywords.length,
                   scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
                   padding: const EdgeInsets.only(
                     left: 16,
                     bottom: 16,
@@ -392,10 +416,8 @@ class _SearchScreenState extends State<SearchScreen> {
           Expanded(
             child: MainTextFormField(
               hideBorder: true,
+              controller: _searchController,
               maxLines: 1,
-              onChanged: (val) {
-                _cubit.searchKeyWord(val);
-              },
               hintText: 'Nhập địa điểm cần tìm',
             ),
           ),
