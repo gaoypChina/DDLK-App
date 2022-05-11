@@ -1,18 +1,50 @@
+import 'package:diadiemlongkhanh/models/remote/body_search/search_model.dart';
+import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class FilterPlaceScreen extends StatefulWidget {
-  const FilterPlaceScreen({Key? key}) : super(key: key);
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+class FilterPlaceScreen extends StatefulWidget {
+  const FilterPlaceScreen({
+    Key? key,
+    this.categories,
+    this.searchData,
+    this.complete,
+  }) : super(key: key);
+  final List<CategoryModel>? categories;
+  final SearchModel? searchData;
+  final Function(SearchModel)? complete;
   @override
   _FilterPlaceScreenState createState() => _FilterPlaceScreenState();
 }
 
 class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
   bool isGps = true;
+  List<CategoryModel> _categories = [];
+
+  double _maxSliderValue = 2000000;
+  double _lowerValue = 0;
+  double _upperValue = 2000000;
+
+  bool _nearMe = false;
+  bool _isOpening = false;
+  List<String> _categoriesSelected = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.searchData != null) {
+      _nearMe = widget.searchData!.nearby;
+      _isOpening = widget.searchData!.nearby;
+    }
+    _categories = widget.categories ?? [];
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -71,20 +103,28 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                           SizedBox(
                             height: 18,
                           ),
-                          Text(
+                          _buildBoolFilter(
                             'Vị trí',
-                            style: Theme.of(context).textTheme.headline4,
+                            'Gần tôi nhất',
+                            value: _nearMe,
+                            onChanged: (val) {
+                              setState(() {
+                                _nearMe = !_nearMe;
+                              });
+                            },
                           ),
                           SizedBox(
-                            height: 12,
+                            height: 16,
                           ),
-                          _buildCheckBoxView('Gần tôi nhất'),
-                          SizedBox(
-                            height: 28,
-                          ),
-                          Container(
-                            height: 1,
-                            color: ColorConstant.neutral_gray_lightest,
+                          _buildBoolFilter(
+                            'Trạng thái',
+                            'Đang mở cửa',
+                            value: _isOpening,
+                            onChanged: (val) {
+                              setState(() {
+                                _isOpening = !_isOpening;
+                              });
+                            },
                           ),
                           SizedBox(
                             height: 16,
@@ -93,29 +133,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                             'Dịch vụ',
                             style: Theme.of(context).textTheme.headline4,
                           ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          _buildCheckBoxView('Ăn uống'),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          _buildCheckBoxView('Nhà hàng'),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          _buildCheckBoxView('Khách sạn'),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          _buildCheckBoxView('Du lịch'),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          _buildCheckBoxView('Spa'),
-                          SizedBox(
-                            height: 24,
-                          ),
+                          _buildCategoriesView(),
                           Container(
                             height: 1,
                             color: ColorConstant.neutral_gray_lightest,
@@ -123,51 +141,48 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                           SizedBox(
                             height: 16,
                           ),
-                          Text(
-                            'Quan tâm nhiều',
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          _buildCheckBoxView(
-                            'Giảm dần',
-                            isSquare: false,
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          _buildCheckBoxView(
-                            'Tăng dần',
-                            isSquare: false,
-                          ),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          Container(
-                            height: 1,
-                            color: ColorConstant.neutral_gray_lightest,
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            'Quan tâm nhiều',
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          _buildCheckBoxView(
-                            'Giảm dần',
-                            isSquare: false,
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          _buildCheckBoxView(
-                            'Tăng dần',
-                            isSquare: false,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Giá: ${AppUtils.formatCurrency(_lowerValue.round())}₫ - ${AppUtils.formatCurrency(_upperValue.round())}₫',
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                              SizedBox(
+                                height: 12,
+                              ),
+                              SfRangeSlider(
+                                min: 0,
+                                max: _maxSliderValue,
+                                showLabels: true,
+                                enableTooltip: true,
+                                showTicks: true,
+                                stepSize: 10000,
+                                inactiveColor: ColorConstant.border_gray,
+                                activeColor: Theme.of(context).primaryColor,
+                                labelFormatterCallback: (dynamic actualValue,
+                                    String formattedText) {
+                                  return AppUtils.formatCurrency(
+                                      int.parse(formattedText));
+                                },
+                                tooltipTextFormatterCallback:
+                                    (dynamic actualValue,
+                                        String formattedText) {
+                                  final value = actualValue as double;
+                                  return AppUtils.formatCurrency(value.round());
+                                },
+                                values: SfRangeValues(
+                                  _lowerValue,
+                                  _upperValue,
+                                ),
+                                onChanged: (SfRangeValues value) {
+                                  setState(() {
+                                    _lowerValue = value.start;
+                                    _upperValue = value.end;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -182,6 +197,19 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                     ),
                     MainButton(
                       title: 'Xác nhận',
+                      onPressed: () {
+                        if (widget.complete != null) {
+                          widget.complete!(
+                            SearchModel(
+                              nearby: _nearMe,
+                              opening: _isOpening,
+                              price:
+                                  '${_lowerValue.round()}-${_upperValue.round()}',
+                            ),
+                          );
+                        }
+                        Navigator.of(context).pop();
+                      },
                       margin: const EdgeInsets.only(
                         bottom: 24,
                         left: 16,
@@ -198,20 +226,82 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
     );
   }
 
+  ListView _buildCategoriesView() {
+    return ListView.builder(
+      itemCount: _categories.length,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(top: 12, bottom: 12),
+      itemBuilder: (_, index) {
+        final item = _categories[index];
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: _buildCheckBoxView(
+              item.name ?? '', _categoriesSelected.contains(item.id),
+              onChanged: (val) {
+            print(val);
+            if (!val) {
+              if (!_categoriesSelected.contains(item.id)) {
+                setState(() {
+                  _categoriesSelected.add(item.id ?? '');
+                });
+              }
+            } else {
+              setState(() {
+                _categoriesSelected
+                    .removeAt(_categoriesSelected.indexOf(item.id ?? ''));
+              });
+            }
+          }),
+        );
+      },
+    );
+  }
+
+  Widget _buildBoolFilter(
+    String title,
+    String titleFilter, {
+    bool value = false,
+    Function(bool)? onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        _buildCheckBoxView(
+          titleFilter,
+          value,
+          onChanged: onChanged,
+        ),
+        SizedBox(
+          height: 28,
+        ),
+        Container(
+          height: 1,
+          color: ColorConstant.neutral_gray_lightest,
+        ),
+      ],
+    );
+  }
+
   Widget _buildCheckBoxView(
-    String title, {
+    String title,
+    bool value, {
     bool isSquare = true,
+    Function(bool)? onChanged,
   }) {
     return Row(
       children: [
         AppCheckbox(
-          value: isGps,
+          value: value,
           isSquare: isSquare,
-          onChanged: (val) {
-            setState(() {
-              isGps = !isGps;
-            });
-          },
+          onChanged: onChanged,
         ),
         SizedBox(
           width: 8,

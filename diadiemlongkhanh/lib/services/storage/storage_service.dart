@@ -24,6 +24,19 @@ class StorageService {
     return shared.setStringList('key_words', currentList);
   }
 
+  deleteKeyWord(String value) async {
+    List<String> currentList = await getKeyWords() ?? [];
+    final index = currentList.indexOf(value);
+    if (index != -1) {
+      currentList.removeAt(index);
+    }
+    return shared.setStringList('key_words', currentList);
+  }
+
+  deleteAllKeyWords() async {
+    return shared.remove('key_words');
+  }
+
   Future<List<String>?> getKeyWords() async {
     return shared.getStringList('key_words');
   }

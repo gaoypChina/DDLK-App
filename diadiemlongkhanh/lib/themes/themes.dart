@@ -7,6 +7,7 @@ final Map<AppThemeKeys, ThemeData> _themes = {
   AppThemeKeys.light: ThemeData(
     primaryColor: ColorConstant.green_primary,
     fontFamily: 'Roboto',
+    sliderTheme: SliderThemeData(overlayShape: SliderComponentShape.noOverlay),
     textTheme: TextTheme(
         headline1: TextStyle(
           fontFamily: 'Roboto',

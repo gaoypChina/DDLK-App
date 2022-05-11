@@ -7,10 +7,16 @@ class SearchModel {
   String? keyword;
   int? page;
   int? pageSize;
+  bool opening;
+  bool nearby;
+  String? price;
 
   SearchModel({
     this.page,
     this.pageSize,
+    this.opening = true,
+    this.nearby = false,
+    this.price,
   });
 
   Map<String, dynamic> toJson() => _$SearchModelToJson(this);

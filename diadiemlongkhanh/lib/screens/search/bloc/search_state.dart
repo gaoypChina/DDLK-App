@@ -15,3 +15,5 @@ class SearchGetHistoryDoneState extends SearchState {
 class SearchGetPlacesDoneState extends SearchState {}
 
 class SearchClearKeyWordDoneState extends SearchState {}
+
+class SearchGetSubCategoriesDoneState extends SearchState {}

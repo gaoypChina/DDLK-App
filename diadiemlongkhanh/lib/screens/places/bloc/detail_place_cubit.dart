@@ -14,10 +14,14 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
   List<NewFeedModel> reviews = [];
   PlaceModel? place;
   getDetail() async {
-    final res = await injector.get<ApiClient>().getDetailPlace(id);
-    if (res != null) {
-      place = res;
-      emit(DetailPlaceGetDoneState(res));
+    try {
+      final res = await injector.get<ApiClient>().getDetailPlace(id);
+      if (res != null) {
+        place = res;
+        emit(DetailPlaceGetDoneState(res));
+      }
+    } catch (error) {
+      print(error);
     }
   }
 
