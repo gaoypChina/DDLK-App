@@ -359,16 +359,18 @@ class _SearchScreenState extends State<SearchScreen> {
                       'Tìm kiếm gần đây',
                       style: Theme.of(context).textTheme.headline6,
                     ),
-                    GestureDetector(
-                      onTap: () => _cubit.deleteAllKeyWords(),
-                      child: Text(
-                        'Xóa tất cả',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    )
+                    keywords.isEmpty
+                        ? SizedBox.shrink()
+                        : GestureDetector(
+                            onTap: () => _cubit.deleteAllKeyWords(),
+                            child: Text(
+                              'Xóa tất cả',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          )
                   ],
                 ),
               ),
