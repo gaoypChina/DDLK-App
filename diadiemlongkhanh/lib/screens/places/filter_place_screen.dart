@@ -39,8 +39,8 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
   void initState() {
     super.initState();
     if (widget.searchData != null) {
-      _nearMe = widget.searchData!.nearby;
-      _isOpening = widget.searchData!.nearby;
+      _nearMe = widget.searchData!.nearby == 'me';
+      _isOpening = widget.searchData!.opening;
     }
     _categories = widget.categories ?? [];
   }
@@ -201,7 +201,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                         if (widget.complete != null) {
                           widget.complete!(
                             SearchModel(
-                              nearby: _nearMe,
+                              nearby: _nearMe ? 'me' : '',
                               opening: _isOpening,
                               price:
                                   '${_lowerValue.round()}-${_upperValue.round()}',

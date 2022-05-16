@@ -4,6 +4,7 @@ import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dar
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -15,6 +16,8 @@ class SearchCubit extends Cubit<SearchState> {
     dataSearch = SearchModel(
       pageSize: 10,
       page: _page,
+      lat: GlobalValue.lat,
+      long: GlobalValue.long,
     );
   }
   int _page = 1;

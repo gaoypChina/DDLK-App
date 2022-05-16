@@ -1,4 +1,5 @@
 import 'package:diadiemlongkhanh/config/env_config.dart';
+import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -100,5 +101,28 @@ class AppUtils {
   static String formatCurrency(int value) {
     final oCcy = new NumberFormat("#,##0", "vi_VN");
     return oCcy.format(value);
+  }
+
+  static String getTimeOpening(OpeningTimeModel time) {
+    var date = DateTime.now();
+    final day = DateFormat('EEE').format(date);
+    print(day);
+    switch (day.toLowerCase()) {
+      case 'mon':
+        return time.mon ?? '';
+      case 'tue':
+        return time.tue ?? '';
+      case 'wed':
+        return time.wed ?? '';
+      case 'thu':
+        return time.thu ?? '';
+      case 'fri':
+        return time.fri ?? '';
+      case 'sat':
+        return time.sat ?? '';
+      case 'sun':
+        return time.sun ?? '';
+    }
+    return '';
   }
 }

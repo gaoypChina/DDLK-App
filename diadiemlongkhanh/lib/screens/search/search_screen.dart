@@ -49,6 +49,7 @@ class _SearchScreenState extends State<SearchScreen> {
           actions: [
             FilterButton(
               onPressed: () {
+                FocusScope.of(context).unfocus();
                 AppUtils.showBottomDialog(
                   context,
                   FilterPlaceScreen(
@@ -121,124 +122,141 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  Widget _buildEmptyView() {
+    return Column(
+      children: [
+        Image.asset(ConstantImages.no_data),
+        SizedBox(
+          height: 30,
+        ),
+        Text(
+          'Không tìm thấy kết quả tìm kiếm của bạn',
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+      ],
+    );
+  }
+
   Widget _buildListPlaceView() {
     return Container(
       color: Colors.white,
-      child: ListView.builder(
-        itemCount: _cubit.places.length,
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(16),
-        itemBuilder: (_, index) {
-          final item = _cubit.places[index];
-          return InkWell(
-            onTap: () {
-              _cubit.saveHistorySearch(_searchController.text);
-              Navigator.of(context).pushNamed(
-                RouterName.detail_place,
-                arguments: item.id,
-              );
-            },
-            child: Container(
-              height: 112,
-              padding: const EdgeInsets.all(8),
-              margin: const EdgeInsets.only(bottom: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: ColorConstant.green_shadow.withOpacity(0.12),
-                    offset: Offset(0, 15),
-                    blurRadius: 40,
-                  )
-                ],
-              ),
-              child: Row(
-                children: [
-                  ClipRRectImage(
-                    width: 96,
-                    height: double.infinity,
-                    radius: 8,
-                    url: AppUtils.getUrlImage(
-                      item.avatar?.path ?? '',
-                      width: 96,
-                      height: 96,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.name ?? '',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          item.address?.specific ?? '',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: ColorConstant.neutral_gray,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              AppUtils.roundedRating(item.avgRate ?? 0)
-                                  .toString(),
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                                color: ColorConstant.neutral_gray_lighter,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 7,
-                            ),
-                            MyRatingBar(
-                              rating: item.avgRate ?? 0,
-                              onRatingUpdate: (rate, isEmpty) {},
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              AppUtils.getOpeningTitle(
-                                  item.openingStatus ?? ''),
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ],
+      child: _cubit.places.isEmpty
+          ? _buildEmptyView()
+          : ListView.builder(
+              itemCount: _cubit.places.length,
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(16),
+              itemBuilder: (_, index) {
+                final item = _cubit.places[index];
+                return InkWell(
+                  onTap: () {
+                    _cubit.saveHistorySearch(_searchController.text);
+                    Navigator.of(context).pushNamed(
+                      RouterName.detail_place,
+                      arguments: item.id,
+                    );
+                  },
+                  child: Container(
+                    height: 112,
+                    padding: const EdgeInsets.all(8),
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColorConstant.green_shadow.withOpacity(0.12),
+                          offset: Offset(0, 15),
+                          blurRadius: 40,
                         )
                       ],
                     ),
+                    child: Row(
+                      children: [
+                        ClipRRectImage(
+                          width: 96,
+                          height: double.infinity,
+                          radius: 8,
+                          url: AppUtils.getUrlImage(
+                            item.avatar?.path ?? '',
+                            width: 96,
+                            height: 96,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.name ?? '',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                item.address?.specific ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: ColorConstant.neutral_gray,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    AppUtils.roundedRating(item.avgRate ?? 0)
+                                        .toString(),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500,
+                                      color: ColorConstant.neutral_gray_lighter,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 7,
+                                  ),
+                                  MyRatingBar(
+                                    rating: item.avgRate ?? 0,
+                                    onRatingUpdate: (rate, isEmpty) {},
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    AppUtils.getOpeningTitle(
+                                        item.openingStatus ?? ''),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 
@@ -387,37 +405,44 @@ class _SearchScreenState extends State<SearchScreen> {
                     bottom: 16,
                   ),
                   itemBuilder: (_, index) {
-                    return Container(
-                      height: 36,
-                      margin: const EdgeInsets.only(right: 8),
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            keywords[index],
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: ColorConstant.neutral_black,
+                    return GestureDetector(
+                      onTap: () {
+                        _searchController.text = keywords[index];
+                        _cubit.searchKeyWord(_searchController.text);
+                      },
+                      child: Container(
+                        height: 36,
+                        margin: const EdgeInsets.only(right: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              keywords[index],
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: ColorConstant.neutral_black,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 14,
-                          ),
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () => _cubit.deleteKeyWord(keywords[index]),
-                            child: SvgPicture.asset(
-                              ConstantIcons.ic_close,
-                              color: ColorConstant.neutral_gray,
-                              width: 16,
-                              height: 16,
+                            SizedBox(
+                              width: 14,
                             ),
-                          )
-                        ],
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () =>
+                                  _cubit.deleteKeyWord(keywords[index]),
+                              child: SvgPicture.asset(
+                                ConstantIcons.ic_close,
+                                color: ColorConstant.neutral_gray,
+                                width: 16,
+                                height: 16,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   },

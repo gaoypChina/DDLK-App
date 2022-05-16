@@ -8,6 +8,7 @@ class BenefitModel {
   String? id;
   String? name;
   String? icon;
+  String? code;
 
   BenefitModel();
   factory BenefitModel.fromJson(Map<String, dynamic> json) =>

@@ -142,12 +142,12 @@ Map<String, dynamic> _$OpeningTimeModelToJson(OpeningTimeModel instance) =>
     };
 
 RateModel _$RateModelFromJson(Map<String, dynamic> json) => RateModel()
-  ..summary = json['summary'] as String?
-  ..position = json['position'] as String?
-  ..view = json['view'] as String?
-  ..drink = json['drink'] as String?
-  ..service = json['service'] as String?
-  ..price = json['price'] as String?;
+  ..summary = (json['summary'] as num?)?.toDouble()
+  ..position = (json['position'] as num?)?.toDouble()
+  ..view = (json['view'] as num?)?.toDouble()
+  ..drink = (json['drink'] as num?)?.toDouble()
+  ..service = (json['service'] as num?)?.toDouble()
+  ..price = (json['price'] as num?)?.toDouble();
 
 Map<String, dynamic> _$RateModelToJson(RateModel instance) => <String, dynamic>{
       'summary': instance.summary,

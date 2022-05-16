@@ -98,12 +98,12 @@ class OpeningTimeModel {
 
 @JsonSerializable()
 class RateModel {
-  String? summary;
-  String? position;
-  String? view;
-  String? drink;
-  String? service;
-  String? price;
+  double? summary;
+  double? position;
+  double? view;
+  double? drink;
+  double? service;
+  double? price;
 
   RateModel();
   factory RateModel.fromJson(Map<String, dynamic> json) =>

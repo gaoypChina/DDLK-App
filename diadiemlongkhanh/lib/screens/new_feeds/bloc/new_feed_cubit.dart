@@ -12,10 +12,15 @@ class NewFeedCubit extends Cubit<NewFeedState> {
   int page = 1;
   List<NewFeedModel> newfeeds = [];
   getNewFeeds() async {
-    final res = await injector.get<ApiClient>().getExplores();
-    if (res != null) {
-      newfeeds = res.result;
-      emit(NewFeedGetDoneState());
+    try {
+      final res = await injector.get<ApiClient>().getExplores();
+      print(res);
+      if (res != null) {
+        newfeeds = res.result;
+        emit(NewFeedGetDoneState());
+      }
+    } catch (error) {
+      print(error);
     }
   }
 }

@@ -9,11 +9,13 @@ part of 'benefit_response.dart';
 BenefitModel _$BenefitModelFromJson(Map<String, dynamic> json) => BenefitModel()
   ..id = json['_id'] as String?
   ..name = json['name'] as String?
-  ..icon = json['icon'] as String?;
+  ..icon = json['icon'] as String?
+  ..code = json['code'] as String?;
 
 Map<String, dynamic> _$BenefitModelToJson(BenefitModel instance) =>
     <String, dynamic>{
       '_id': instance.id,
       'name': instance.name,
       'icon': instance.icon,
+      'code': instance.code,
     };

@@ -5,6 +5,7 @@ import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -26,8 +27,8 @@ class HomeCubit extends Cubit<HomeState> {
 
   getPlacesNear() async {
     final res = await injector.get<ApiClient>().getPlacesNear(
-          10.9238253,
-          107.1943696,
+          GlobalValue.lat ?? 0,
+          GlobalValue.long ?? 0,
           5,
         );
     if (res != null) {

@@ -4,6 +4,7 @@ import 'package:diadiemlongkhanh/config/env_config.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/themes/themes.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
@@ -75,6 +76,10 @@ class _MyAppState extends State<MyApp> {
     }
 
     _locationData = await location.getLocation();
+    print(_locationData?.latitude);
+    print(_locationData?.longitude);
+    GlobalValue.lat = _locationData?.latitude;
+    GlobalValue.long = _locationData?.longitude;
   }
 
   @override

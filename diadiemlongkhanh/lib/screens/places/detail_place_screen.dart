@@ -1,7 +1,6 @@
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
-import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/review/widgets/list_review_view.dart';
@@ -45,7 +44,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     // _handleListenerScroll();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _cubit.getDetail();
-      // _cubit.getReviews();
+      _cubit.getReviews();
     });
   }
 
@@ -563,12 +562,15 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      place.address?.specific ?? '',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColor,
+                    Expanded(
+                      child: Text(
+                        place.address?.specific ?? '',
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                   ],
@@ -732,7 +734,9 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         width: 10,
                       ),
                       Text(
-                        '8:00 - 23:00',
+                        place.openingTime != null
+                            ? AppUtils.getTimeOpening(place.openingTime!)
+                            : '',
                         style: Theme.of(context).textTheme.subtitle1,
                       )
                     ],
@@ -836,11 +840,26 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   spacing: 10,
                   runSpacing: 10,
                   children: [
-                    _buildReviewItem('Vị trí'),
-                    _buildReviewItem('Không gian'),
-                    _buildReviewItem('Đồ uống'),
-                    _buildReviewItem('Phục vụ'),
-                    _buildReviewItem('Giá cả'),
+                    _buildReviewItem(
+                      'Vị trí',
+                      place.rate?.position ?? 0,
+                    ),
+                    _buildReviewItem(
+                      'Không gian',
+                      place.rate?.view ?? 0,
+                    ),
+                    _buildReviewItem(
+                      'Đồ uống',
+                      place.rate?.drink ?? 0,
+                    ),
+                    _buildReviewItem(
+                      'Phục vụ',
+                      place.rate?.service ?? 0,
+                    ),
+                    _buildReviewItem(
+                      'Giá cả',
+                      place.rate?.price ?? 0,
+                    ),
                   ],
                 )
         ],
@@ -848,7 +867,10 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Widget _buildReviewItem(String title) {
+  Widget _buildReviewItem(
+    String title,
+    double value,
+  ) {
     return UnconstrainedBox(
       child: Container(
         height: 32,
@@ -872,9 +894,9 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                       ),
                     ),
                     TextSpan(
-                      text: ' (4,5/5)',
+                      text: ' ($value/5.0)',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: ColorConstant.neutral_gray,
                       ),
                     ),
@@ -966,9 +988,9 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         ),
                         child: Row(
                           children: [
-                            FaIcon(
-                              IconDataRegular(
-                                getHexFromStr('f017'),
+                            Icon(
+                              IconDataSolid(
+                                getHexFromStr(item.code ?? ''),
                               ),
                               size: 20,
                             ),
@@ -1073,7 +1095,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                           Row(
                             children: [
                               MyRatingBar(
-                                rating: 4,
+                                rating: place.rate?.summary ?? 0,
                                 onRatingUpdate: (rate, isEmpty) {},
                               ),
                               SizedBox(

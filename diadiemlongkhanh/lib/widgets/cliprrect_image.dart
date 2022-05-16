@@ -21,26 +21,36 @@ class ClipRRectImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(radius),
-        child: FadeInImage.assetNetwork(
-          placeholder: ConstantImages.placeholder,
-          fadeInDuration: Duration(milliseconds: 100),
-          fadeOutDuration: Duration(milliseconds: 100),
-          image: url ?? '',
-          width: width,
-          height: height,
-          fit: BoxFit.cover,
-          imageErrorBuilder: (context, exception, stackTrace) {
-            return Image.asset(
-              ConstantImages.placeholder,
-              width: width,
-              height: height,
-              fit: BoxFit.cover,
-            );
-          },
-        ),
-      ),
+      child: url == null || url!.contains('svg')
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(radius),
+              child: Image.asset(
+                ConstantImages.placeholder,
+                width: width,
+                height: height,
+                fit: BoxFit.cover,
+              ),
+            )
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(radius),
+              child: FadeInImage.assetNetwork(
+                placeholder: ConstantImages.placeholder,
+                fadeInDuration: Duration(milliseconds: 100),
+                fadeOutDuration: Duration(milliseconds: 100),
+                image: url ?? '',
+                width: width,
+                height: height,
+                fit: BoxFit.cover,
+                imageErrorBuilder: (context, exception, stackTrace) {
+                  return Image.asset(
+                    ConstantImages.placeholder,
+                    width: width,
+                    height: height,
+                    fit: BoxFit.cover,
+                  );
+                },
+              ),
+            ),
     );
   }
 }

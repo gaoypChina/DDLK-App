@@ -10,6 +10,7 @@ class ConstantImages {
   static const left_pin = 'assets/images/left_pin.png';
   static const new_tag = 'assets/images/new_tag.png';
   static const placeholder = 'assets/images/placeholder.png';
+  static const no_data = 'assets/images/no_data.png';
 }
 
 class ConstantIcons {

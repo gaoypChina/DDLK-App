@@ -4,19 +4,24 @@ part 'search_model.g.dart';
 
 @JsonSerializable()
 class SearchModel {
+  @JsonKey(name: 'q')
   String? keyword;
   int? page;
   int? pageSize;
   bool opening;
-  bool nearby;
+  String nearby;
   String? price;
+  double? lat;
+  double? long;
 
   SearchModel({
     this.page,
     this.pageSize,
     this.opening = true,
-    this.nearby = false,
+    this.nearby = '',
     this.price,
+    this.lat,
+    this.long,
   });
 
   Map<String, dynamic> toJson() => _$SearchModelToJson(this);

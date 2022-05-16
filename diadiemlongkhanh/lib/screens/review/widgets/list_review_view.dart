@@ -1,6 +1,8 @@
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
+import 'package:diadiemlongkhanh/models/remote/thumnail/thumbnail_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
@@ -22,6 +24,7 @@ class ListReviewView extends StatelessWidget {
       shrinkWrap: true,
       padding: padding,
       itemBuilder: (_, index) {
+        final item = reviews[index];
         return Container(
           margin: const EdgeInsets.only(
             bottom: 16,
@@ -48,29 +51,33 @@ class ListReviewView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeaderInfoView(context),
+              _buildHeaderInfoView(
+                context,
+                item,
+              ),
               SizedBox(
                 height: 8,
               ),
               Text(
-                'View đẹp, menu giá phải chăng',
+                item.content ?? '',
+                maxLines: 1,
                 style: Theme.of(context).textTheme.bodyText1,
               ),
-              _buildListPictureView(),
-              _buildBehaviorView(),
+              _buildListPictureView(item.images),
+              _buildBehaviorView(item),
               SizedBox(
                 height: 16,
               ),
               _buildInputCommentField(),
-              SizedBox(
-                height: 24,
-              ),
-              Center(
-                child: Text(
-                  'Xem tất cả 10 bình luận',
-                  style: Theme.of(context).textTheme.headline2,
-                ),
-              )
+              // SizedBox(
+              //   height: 24,
+              // ),
+              // Center(
+              //   child: Text(
+              //     'Xem tất cả 10 bình luận',
+              //     style: Theme.of(context).textTheme.headline2,
+              //   ),
+              // )
             ],
           ),
         );
@@ -108,7 +115,7 @@ class ListReviewView extends StatelessWidget {
     );
   }
 
-  Container _buildBehaviorView() {
+  Container _buildBehaviorView(NewFeedModel item) {
     return Container(
       height: 48,
       decoration: BoxDecoration(
@@ -127,7 +134,7 @@ class ListReviewView extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                '6 Thích',
+                '${item.likeCount ?? 0} Thích',
                 style: TextStyle(
                   fontSize: 10,
                   color: ColorConstant.neutral_gray,
@@ -145,7 +152,7 @@ class ListReviewView extends StatelessWidget {
                 width: 6,
               ),
               Text(
-                '10 Bình luận',
+                '${item.commentCount ?? 0} Bình luận',
                 style: TextStyle(
                   fontSize: 10,
                   color: ColorConstant.neutral_gray,
@@ -153,38 +160,39 @@ class ListReviewView extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
-            width: 18,
-          ),
-          Row(
-            children: [
-              SvgPicture.asset(ConstantIcons.ic_eye),
-              SizedBox(
-                width: 4,
-              ),
-              Text(
-                '10 Lượt xem',
-                style: TextStyle(
-                  fontSize: 10,
-                  color: ColorConstant.neutral_gray,
-                ),
-              )
-            ],
-          )
+          // SizedBox(
+          //   width: 18,
+          // ),
+          // Row(
+          //   children: [
+          //     SvgPicture.asset(ConstantIcons.ic_eye),
+          //     SizedBox(
+          //       width: 4,
+          //     ),
+          //     Text(
+          //       '10 Lượt xem',
+          //       style: TextStyle(
+          //         fontSize: 10,
+          //         color: ColorConstant.neutral_gray,
+          //       ),
+          //     )
+          //   ],
+          // )
         ],
       ),
     );
   }
 
-  Container _buildListPictureView() {
+  Container _buildListPictureView(List<ThumbnailModel> photos) {
     return Container(
       height: 72,
       margin: const EdgeInsets.only(top: 12),
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: photos.length,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (_, index) {
+          final item = photos[index];
           return Container(
             height: 72,
             width: 72,
@@ -194,8 +202,11 @@ class ListReviewView extends StatelessWidget {
                 ClipRRectImage(
                   height: 72,
                   width: 72,
-                  url:
-                      'https://vuakhuyenmai.vn/wp-content/uploads/highlands-khuyen-mai-30off-8-3-2022.jpg',
+                  url: AppUtils.getUrlImage(
+                    item.path ?? '',
+                    width: 72,
+                    height: 72,
+                  ),
                   radius: 8,
                 )
               ],
@@ -206,13 +217,16 @@ class ListReviewView extends StatelessWidget {
     );
   }
 
-  Row _buildHeaderInfoView(BuildContext context) {
+  Row _buildHeaderInfoView(
+    BuildContext context,
+    NewFeedModel item,
+  ) {
     return Row(
       children: [
         ClipRRectImage(
           radius: 22,
-          url:
-              'https://bangsport.net/wp-content/uploads/2021/12/3139455-64344828-2560-1440.jpg',
+          url: AppUtils.getUrlImage(item.author?.avatar ?? '',
+              width: 44, height: 44),
           width: 44,
           height: 44,
         ),
@@ -224,7 +238,7 @@ class ListReviewView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Trần Tâm',
+                item.author?.name ?? '',
                 style: Theme.of(context).textTheme.headline2,
               ),
               SizedBox(
@@ -233,7 +247,7 @@ class ListReviewView extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '4.0',
+                    AppUtils.roundedRating(item.rateAvg ?? 0).toString(),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -244,7 +258,7 @@ class ListReviewView extends StatelessWidget {
                     width: 7,
                   ),
                   MyRatingBar(
-                    rating: 4,
+                    rating: item.rateAvg ?? 0,
                     onRatingUpdate: (rate, isEmpty) {},
                   ),
                   Container(
@@ -260,7 +274,7 @@ class ListReviewView extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '7 ngày trước',
+                    AppUtils.convertDatetimePrefix(item.createdAt ?? ''),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
