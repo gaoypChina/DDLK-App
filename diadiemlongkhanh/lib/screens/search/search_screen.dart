@@ -47,18 +47,38 @@ class _SearchScreenState extends State<SearchScreen> {
         appBar: MyAppBar(
           title: 'Tìm kiếm',
           actions: [
-            FilterButton(
-              onPressed: () {
-                FocusScope.of(context).unfocus();
-                AppUtils.showBottomDialog(
-                  context,
-                  FilterPlaceScreen(
-                    categories: _cubit.categories,
-                    searchData: _cubit.dataSearch,
-                    complete: (val) {
-                      _cubit.filterComplete(val);
-                    },
-                  ),
+            BlocBuilder<SearchCubit, SearchState>(
+              builder: (_, state) {
+                if (_cubit.places.isEmpty) {
+                  return SizedBox.shrink();
+                }
+                int numFilter = 0;
+                if (_cubit.dataSearch.nearby != '') {
+                  numFilter += 1;
+                }
+                if (_cubit.dataSearch.opening) {
+                  numFilter += 1;
+                }
+                if (_cubit.dataSearch.categories != null &&
+                    _cubit.dataSearch.categories!.isNotEmpty) {
+                  numFilter += 1;
+                }
+
+                return FilterButton(
+                  numFilter: numFilter == 0 ? null : numFilter,
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    AppUtils.showBottomDialog(
+                      context,
+                      FilterPlaceScreen(
+                        categories: _cubit.categories,
+                        searchData: _cubit.dataSearch,
+                        complete: (val) {
+                          _cubit.filterComplete(val);
+                        },
+                      ),
+                    );
+                  },
                 );
               },
             ),
@@ -123,17 +143,27 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildEmptyView() {
-    return Column(
-      children: [
-        Image.asset(ConstantImages.no_data),
-        SizedBox(
-          height: 30,
-        ),
-        Text(
-          'Không tìm thấy kết quả tìm kiếm của bạn',
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-      ],
+    return Container(
+      color: Colors.white,
+      width: double.infinity,
+      padding: const EdgeInsets.only(top: 30),
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        children: [
+          Image.asset(
+            ConstantImages.no_data,
+            height: 188,
+            width: 287,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            'Không tìm thấy kết quả tìm kiếm của bạn',
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+        ],
+      ),
     );
   }
 
@@ -310,30 +340,33 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     itemBuilder: (_, index) {
                       final item = _cubit.subCategories[index];
-                      return Container(
-                        height: 36,
-                        margin: const EdgeInsets.only(right: 8),
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              item.name ?? '',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: ColorConstant.neutral_black,
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: 36,
+                          margin: const EdgeInsets.only(right: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                item.name ?? '',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: ColorConstant.neutral_black,
+                                ),
                               ),
-                            ),
-                            // SvgPicture.asset(
-                            //   ConstantIcons.ic_close,
-                            //   color: ColorConstant.neutral_gray,
-                            //   width: 16,
-                            //   height: 16,
-                            // )
-                          ],
+                              // SvgPicture.asset(
+                              //   ConstantIcons.ic_close,
+                              //   color: ColorConstant.neutral_gray,
+                              //   width: 16,
+                              //   height: 16,
+                              // )
+                            ],
+                          ),
                         ),
                       );
                     }),

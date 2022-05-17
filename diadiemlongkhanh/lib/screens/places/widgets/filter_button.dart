@@ -8,8 +8,10 @@ class FilterButton extends StatelessWidget {
   const FilterButton({
     Key? key,
     this.onPressed,
+    this.numFilter,
   }) : super(key: key);
   final Function()? onPressed;
+  final int? numFilter;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -32,31 +34,33 @@ class FilterButton extends StatelessWidget {
                       height: 18,
                     ),
                   ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      height: 12,
-                      width: 12,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: ColorConstant.sematic_red,
-                        border: Border.all(
-                          color: Colors.white,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '4',
-                          style: TextStyle(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                  numFilter != null
+                      ? Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Container(
+                            height: 12,
+                            width: 12,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              color: ColorConstant.sematic_red,
+                              border: Border.all(
+                                color: Colors.white,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                numFilter.toString(),
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  )
+                        )
+                      : SizedBox.shrink(),
                 ],
               ),
             ),

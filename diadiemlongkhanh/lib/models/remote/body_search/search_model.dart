@@ -13,6 +13,7 @@ class SearchModel {
   String? price;
   double? lat;
   double? long;
+  List<String>? categories;
 
   SearchModel({
     this.page,
@@ -22,6 +23,7 @@ class SearchModel {
     this.price,
     this.lat,
     this.long,
+    this.categories,
   });
 
   Map<String, dynamic> toJson() => _$SearchModelToJson(this);

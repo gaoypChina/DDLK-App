@@ -3,6 +3,7 @@ import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -108,6 +109,11 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                             'Gần tôi nhất',
                             value: _nearMe,
                             onChanged: (val) {
+                              if (GlobalValue.lat == null) {
+                                AppUtils.showOkDialog(context,
+                                    'Vui lòng cho phép ứng dụng truy cập địa điểm để thực hiện chức năng này');
+                                return;
+                              }
                               setState(() {
                                 _nearMe = !_nearMe;
                               });
@@ -203,6 +209,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                             SearchModel(
                               nearby: _nearMe ? 'me' : '',
                               opening: _isOpening,
+                              categories: _categoriesSelected,
                               price:
                                   '${_lowerValue.round()}-${_upperValue.round()}',
                             ),

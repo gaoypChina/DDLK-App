@@ -73,6 +73,7 @@ class SearchCubit extends Cubit<SearchState> {
     dataSearch.nearby = data.nearby;
     dataSearch.opening = data.opening;
     dataSearch.price = data.price;
+    // dataSearch.categories = data.categories;
     searchPlaces();
   }
 

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:diadiemlongkhanh/config/env_config.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -131,5 +134,109 @@ class AppUtils {
     String format = 'dd/MM/yyyy',
   }) {
     return DateFormat(format).format(date);
+  }
+
+  static showOkDialog(
+    BuildContext context,
+    String msg, {
+    bool isCancel = false,
+    Function()? okAction,
+  }) async {
+    if (Platform.isAndroid) {
+      await _showAndroidOkDialog(
+        context,
+        msg,
+        okAction: okAction,
+        isCancel: isCancel,
+      );
+    } else {
+      await _showIosOKDialog(
+        context,
+        msg,
+        okAction: okAction,
+        isCancel: isCancel,
+      );
+    }
+  }
+
+  static _showIosOKDialog(
+    BuildContext context,
+    String msg, {
+    bool isCancel = false,
+    Function()? okAction,
+  }) async {
+    var actions = [
+      CupertinoDialogAction(
+        child: Text('Đồng ý'),
+        onPressed: () {
+          Navigator.of(context).pop();
+          if (okAction != null) {
+            okAction();
+          }
+        },
+      )
+    ];
+    if (isCancel) {
+      actions.add(
+        CupertinoDialogAction(
+          child: Text('Huỷ bỏ'),
+          isDestructiveAction: true,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+    }
+    await showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('Thông báo'),
+        content: Text(msg),
+        actions: actions,
+      ),
+    );
+  }
+
+  static _showAndroidOkDialog(
+    BuildContext context,
+    String msg, {
+    bool isCancel = false,
+    Function()? okAction,
+  }) async {
+    var actions = [
+      TextButton(
+        child: Text("Đồng ý"),
+        onPressed: () {
+          Navigator.of(context).pop();
+          if (okAction != null) {
+            okAction();
+          }
+        },
+      )
+    ];
+    if (isCancel)
+      actions.add(
+        TextButton(
+          child: Text('Huỷ bỏ'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Thông báo"),
+      content: Text(msg),
+      actions: actions,
+    );
+
+    // show the dialog
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

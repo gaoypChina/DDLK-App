@@ -634,8 +634,6 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                                 FullImageView(
                                   AppUtils.getUrlImage(
                                     item.path ?? '',
-                                    width: 72,
-                                    height: 72,
                                   ),
                                 ),
                               ),
@@ -1205,6 +1203,14 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         child: Stack(
                           children: [
                             ClipRRectImage(
+                              onPressed: () => AppUtils.showBottomDialog(
+                                context,
+                                FullImageView(
+                                  AppUtils.getUrlImage(
+                                    item.path ?? '',
+                                  ),
+                                ),
+                              ),
                               height: 72,
                               width: 72,
                               url: AppUtils.getUrlImage(
