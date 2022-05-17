@@ -125,4 +125,11 @@ class AppUtils {
     }
     return '';
   }
+
+  static String convertDateToString(
+    DateTime date, {
+    String format = 'dd/MM/yyyy',
+  }) {
+    return DateFormat(format).format(date);
+  }
 }

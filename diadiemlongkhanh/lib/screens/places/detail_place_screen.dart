@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dar
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/all_opening_time_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/review/widgets/list_review_view.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
@@ -697,11 +698,19 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         style: Theme.of(context).textTheme.headline4,
                       ),
                     ),
-                    Text(
-                      'Xem tất cả',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).primaryColor,
+                    GestureDetector(
+                      onTap: () => AppUtils.showBottomDialog(
+                        context,
+                        AllOpeningTimeView(
+                          openingTime: place.openingTime,
+                        ),
+                      ),
+                      child: Text(
+                        'Xem tất cả',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                     SvgPicture.asset(
@@ -715,6 +724,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 ),
                 Container(
                   height: 48,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: ColorConstant.neutral_gray_lightest,
@@ -733,11 +743,15 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text(
-                        place.openingTime != null
-                            ? AppUtils.getTimeOpening(place.openingTime!)
-                            : '',
-                        style: Theme.of(context).textTheme.subtitle1,
+                      Expanded(
+                        child: Text(
+                          place.openingTime != null
+                              ? AppUtils.getTimeOpening(place.openingTime!)
+                              : '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
                       )
                     ],
                   ),
