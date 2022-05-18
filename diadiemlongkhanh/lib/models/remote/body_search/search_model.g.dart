@@ -17,6 +17,9 @@ SearchModel _$SearchModelFromJson(Map<String, dynamic> json) => SearchModel(
       categories: (json['categories'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      subCategories: (json['subCategories'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     )..keyword = json['q'] as String?;
 
 Map<String, dynamic> _$SearchModelToJson(SearchModel instance) =>
@@ -30,4 +33,5 @@ Map<String, dynamic> _$SearchModelToJson(SearchModel instance) =>
       'lat': instance.lat,
       'long': instance.long,
       'categories': instance.categories,
+      'subCategories': instance.subCategories,
     };

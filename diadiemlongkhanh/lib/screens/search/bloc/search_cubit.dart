@@ -73,7 +73,7 @@ class SearchCubit extends Cubit<SearchState> {
     dataSearch.nearby = data.nearby;
     dataSearch.opening = data.opening;
     dataSearch.price = data.price;
-    // dataSearch.categories = data.categories;
+    dataSearch.categories = data.categories;
     searchPlaces();
   }
 
@@ -88,6 +88,19 @@ class SearchCubit extends Cubit<SearchState> {
         subCategories.insert(0, total);
       }
       emit(SearchGetSubCategoriesDoneState());
+    }
+  }
+
+  searchPlaceWithSubCategory(CategoryModel subCategory) async {
+    final subCateSelected = [subCategory.id ?? ''];
+    dataSearch.subCategories = subCateSelected;
+    final res = await injector.get<ApiClient>().searchPlaces(
+          dataSearch.toJson(),
+        );
+    print(res);
+    if (res != null) {
+      places = res.result;
+      emit(SearchGetPlacesDoneState());
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/screens/base_tabbar/base_tabbar_screen.dart';
 
 import 'package:diadiemlongkhanh/screens/forgot_password/forgot_password_screen.dart';
@@ -5,6 +6,7 @@ import 'package:diadiemlongkhanh/screens/forgot_password/reset_password_screen.d
 import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
+import 'package:diadiemlongkhanh/screens/new_feeds/detail_review_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/detail_notification_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/notification_screen.dart';
 import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
@@ -122,6 +124,16 @@ class RouterManager {
             child: SearchScreen(),
           ),
         );
+      case RouterName.detail_review:
+        NewFeedModel? item;
+        if (settings.arguments != null) {
+          item = settings.arguments as NewFeedModel;
+        }
+        return MaterialPageRoute(
+          builder: (_) => DetailReviewScreen(
+            item: item,
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -154,4 +166,5 @@ class RouterName {
   static const detail_notification = '/detail_notification';
   static const detail_place = '/detail_place';
   static const search = '/search';
+  static const detail_review = '/detail_review';
 }

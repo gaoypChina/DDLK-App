@@ -183,6 +183,10 @@ class _HomeScreenState extends State<HomeScreen>
                   )
                 : NewFeedItemView(
                     item: newfeeds[index],
+                    nextToDetail: () => Navigator.of(context).pushNamed(
+                      RouterName.detail_review,
+                      arguments: newfeeds[index],
+                    ),
                   );
           },
         );

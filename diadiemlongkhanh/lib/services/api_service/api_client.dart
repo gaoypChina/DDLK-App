@@ -1,4 +1,5 @@
 import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
+import 'package:diadiemlongkhanh/models/remote/comment/comment_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/result_new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
@@ -69,4 +70,7 @@ abstract class ApiClient {
 
   @POST('${Apis.place_search}')
   Future<ResultPlaceModel?> searchPlaces(@Body() data);
+
+  @GET('${Apis.review}/{id}/comments')
+  Future<List<CommentModel>?> getCommentyOfReview(@Path() String id);
 }

@@ -10,4 +10,5 @@ class Apis {
   static const categories = '/categories';
   static const place = '/place';
   static const place_search = 'places/search';
+  static const review = '/review';
 }

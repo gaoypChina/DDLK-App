@@ -1,9 +1,11 @@
+import 'package:diadiemlongkhanh/models/remote/comment/comment_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/thumnail/thumbnail_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
+import 'package:diadiemlongkhanh/widgets/full_image_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +13,18 @@ import 'package:flutter_svg/svg.dart';
 
 class NewFeedItemView extends StatelessWidget {
   final bool isShowComment;
+  final Function()? nextToDetail;
   final NewFeedModel? item;
+  final EdgeInsetsGeometry? margin;
+  final BoxDecoration? decoration;
+  final List<CommentModel>? comments;
   NewFeedItemView({
     this.isShowComment = false,
+    this.nextToDetail,
     this.item,
+    this.margin,
+    this.decoration,
+    this.comments,
   });
 
   @override
@@ -26,22 +36,26 @@ class NewFeedItemView extends StatelessWidget {
         right: 12,
         bottom: 16,
       ),
-      margin: const EdgeInsets.only(
-        bottom: 16,
-        left: 16,
-        right: 16,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: ColorConstant.grey_shadow.withOpacity(0.12),
-            offset: Offset(0, 12),
-            blurRadius: 40,
-          )
-        ],
-      ),
+      margin: margin != null
+          ? margin
+          : const EdgeInsets.only(
+              bottom: 16,
+              left: 16,
+              right: 16,
+            ),
+      decoration: decoration != null
+          ? decoration
+          : BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: ColorConstant.grey_shadow.withOpacity(0.12),
+                  offset: Offset(0, 12),
+                  blurRadius: 40,
+                )
+              ],
+            ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -53,14 +67,14 @@ class NewFeedItemView extends StatelessWidget {
             item!.content ?? '',
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          _buildPhotosView(),
+          _buildPhotosView(context),
           _buildInfoView(context),
           _buildBehaviorView(),
           SizedBox(
             height: 16,
           ),
           _buildInputCommentField(),
-          isShowComment ? _buildListCommentView(context) : SizedBox.shrink(),
+          comments != null ? _buildListCommentView(context) : SizedBox.shrink(),
           // SizedBox(
           //   height: (item!.commentCount ?? 0) > 0 ? 24 : 0,
           // ),
@@ -78,14 +92,16 @@ class NewFeedItemView extends StatelessWidget {
   }
 
   ListView _buildListCommentView(BuildContext context) {
+    final _comments = comments ?? [];
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
-      itemCount: 3,
+      itemCount: _comments.length,
       padding: const EdgeInsets.only(
         top: 16,
       ),
       shrinkWrap: true,
       itemBuilder: (_, index) {
+        final item = _comments[index];
         return Padding(
           padding: const EdgeInsets.only(
             bottom: 18,
@@ -94,8 +110,11 @@ class NewFeedItemView extends StatelessWidget {
             children: [
               ClipRRectImage(
                 radius: 18,
-                url:
-                    'https://bangsport.net/wp-content/uploads/2021/12/3139455-64344828-2560-1440.jpg',
+                url: AppUtils.getUrlImage(
+                  item.author?.avatar ?? '',
+                  width: 36,
+                  height: 36,
+                ),
                 width: 36,
                 height: 36,
               ),
@@ -121,14 +140,14 @@ class NewFeedItemView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Bửu Quang',
+                            item.author?.name ?? '',
                             style: Theme.of(context).textTheme.headline2,
                           ),
                           SizedBox(
                             height: 8,
                           ),
                           Text(
-                            'Địa điểm xịn ghê, bữa nào mình phải ghé thăm mới được',
+                            item.content ?? '',
                             maxLines: null,
                             style: TextStyle(
                               fontSize: 12,
@@ -144,7 +163,7 @@ class NewFeedItemView extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '7 ngày trước',
+                          AppUtils.convertDatetimePrefix(item.createdAt ?? ''),
                           style: TextStyle(
                             fontSize: 10,
                             color: ColorConstant.neutral_gray,
@@ -237,9 +256,9 @@ class NewFeedItemView extends StatelessWidget {
           Row(
             children: [
               SvgPicture.asset(
-                ConstantIcons.ic_heart,
-                color:
-                    item!.isLiked ? null : ColorConstant.neutral_gray_lighter,
+                item!.isLiked
+                    ? ConstantIcons.ic_heart
+                    : ConstantIcons.ic_heart_outline,
               ),
               SizedBox(
                 width: 5,
@@ -256,20 +275,23 @@ class NewFeedItemView extends StatelessWidget {
           SizedBox(
             width: 18,
           ),
-          Row(
-            children: [
-              SvgPicture.asset(ConstantIcons.ic_comment),
-              SizedBox(
-                width: 6,
-              ),
-              Text(
-                '${item!.commentCount ?? 0} Bình luận',
-                style: TextStyle(
-                  fontSize: 10,
-                  color: ColorConstant.neutral_gray,
+          GestureDetector(
+            onTap: nextToDetail,
+            child: Row(
+              children: [
+                SvgPicture.asset(ConstantIcons.ic_comment),
+                SizedBox(
+                  width: 6,
                 ),
-              )
-            ],
+                Text(
+                  '${item!.commentCount ?? 0} Bình luận',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: ColorConstant.neutral_gray,
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),
@@ -391,6 +413,7 @@ class NewFeedItemView extends StatelessWidget {
   }
 
   Widget _buildDoublePhotoView(
+    BuildContext context,
     List<ThumbnailModel> images,
   ) {
     return Row(
@@ -402,6 +425,14 @@ class NewFeedItemView extends StatelessWidget {
               images.first.path ?? '',
             ),
             height: double.infinity,
+            onPressed: () => AppUtils.showBottomDialog(
+              context,
+              FullImageView(
+                AppUtils.getUrlImage(
+                  images.first.path ?? '',
+                ),
+              ),
+            ),
           ),
         ),
         SizedBox(
@@ -414,13 +445,24 @@ class NewFeedItemView extends StatelessWidget {
               images.last.path ?? '',
             ),
             height: double.infinity,
+            onPressed: () => AppUtils.showBottomDialog(
+              context,
+              FullImageView(
+                AppUtils.getUrlImage(
+                  images.last.path ?? '',
+                ),
+              ),
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildThreePhotoView(List<ThumbnailModel> images) {
+  Widget _buildThreePhotoView(
+    BuildContext context,
+    List<ThumbnailModel> images,
+  ) {
     return Row(
       children: [
         Expanded(
@@ -430,6 +472,14 @@ class NewFeedItemView extends StatelessWidget {
               images.first.path ?? '',
             ),
             height: double.infinity,
+            onPressed: () => AppUtils.showBottomDialog(
+              context,
+              FullImageView(
+                AppUtils.getUrlImage(
+                  images.first.path ?? '',
+                ),
+              ),
+            ),
           ),
         ),
         SizedBox(
@@ -445,6 +495,14 @@ class NewFeedItemView extends StatelessWidget {
                     images[1].path ?? '',
                   ),
                   width: double.infinity,
+                  onPressed: () => AppUtils.showBottomDialog(
+                    context,
+                    FullImageView(
+                      AppUtils.getUrlImage(
+                        images[1].path ?? '',
+                      ),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(
@@ -457,6 +515,14 @@ class NewFeedItemView extends StatelessWidget {
                     images.last.path ?? '',
                   ),
                   width: double.infinity,
+                  onPressed: () => AppUtils.showBottomDialog(
+                    context,
+                    FullImageView(
+                      AppUtils.getUrlImage(
+                        images.last.path ?? '',
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -467,6 +533,7 @@ class NewFeedItemView extends StatelessWidget {
   }
 
   Widget _buildFourPhotoView(
+    BuildContext context,
     List<ThumbnailModel> images, {
     bool isMulti = false,
   }) {
@@ -480,6 +547,14 @@ class NewFeedItemView extends StatelessWidget {
             ),
             width: double.infinity,
             height: double.infinity,
+            onPressed: () => AppUtils.showBottomDialog(
+              context,
+              FullImageView(
+                AppUtils.getUrlImage(
+                  images.first.path ?? '',
+                ),
+              ),
+            ),
           ),
         ),
         SizedBox(
@@ -495,6 +570,14 @@ class NewFeedItemView extends StatelessWidget {
                   images[1].path ?? '',
                 ),
                 height: double.infinity,
+                onPressed: () => AppUtils.showBottomDialog(
+                  context,
+                  FullImageView(
+                    AppUtils.getUrlImage(
+                      images[1].path ?? '',
+                    ),
+                  ),
+                ),
               ),
             ),
             SizedBox(
@@ -507,6 +590,14 @@ class NewFeedItemView extends StatelessWidget {
                   images[2].path ?? '',
                 ),
                 height: double.infinity,
+                onPressed: () => AppUtils.showBottomDialog(
+                  context,
+                  FullImageView(
+                    AppUtils.getUrlImage(
+                      images[2].path ?? '',
+                    ),
+                  ),
+                ),
               ),
             ),
             SizedBox(
@@ -548,7 +639,7 @@ class NewFeedItemView extends StatelessWidget {
     );
   }
 
-  Container _buildPhotosView() {
+  Container _buildPhotosView(BuildContext context) {
     final images = item!.images;
     Widget photoView = SizedBox.shrink();
     switch (images.length) {
@@ -560,19 +651,31 @@ class NewFeedItemView extends StatelessWidget {
           ),
           width: double.infinity,
           height: double.infinity,
+          onPressed: () => AppUtils.showBottomDialog(
+            context,
+            FullImageView(
+              AppUtils.getUrlImage(
+                images.first.path ?? '',
+              ),
+            ),
+          ),
         );
         break;
       case 2:
-        photoView = _buildDoublePhotoView(images);
+        photoView = _buildDoublePhotoView(context, images);
         break;
       case 3:
-        photoView = _buildThreePhotoView(images);
+        photoView = _buildThreePhotoView(context, images);
         break;
       case 4:
-        photoView = _buildFourPhotoView(images);
+        photoView = _buildFourPhotoView(context, images);
         break;
       default:
-        photoView = _buildFourPhotoView(images, isMulti: true);
+        photoView = _buildFourPhotoView(
+          context,
+          images,
+          isMulti: true,
+        );
     }
     return Container(
       height: 218,
