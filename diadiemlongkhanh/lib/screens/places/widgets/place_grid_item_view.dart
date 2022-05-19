@@ -18,7 +18,10 @@ class PlaceGridItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(RouterName.detail_place),
+      onTap: () => Navigator.of(context).pushNamed(
+        RouterName.detail_place,
+        arguments: item?.id,
+      ),
       child: Container(
         height: 238,
         decoration: BoxDecoration(

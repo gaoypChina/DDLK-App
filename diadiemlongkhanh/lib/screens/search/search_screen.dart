@@ -32,6 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _cubit.getPlacesHot();
       _cubit.getHistorySearch();
       _cubit.getSubCategories();
       _cubit.getCategories();
@@ -116,25 +117,34 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 },
               ),
-
-              // Container(
-              //   height: 314,
-              //   child: ListView.builder(
-              //     itemCount: 5,
-              //     shrinkWrap: true,
-              //     scrollDirection: Axis.horizontal,
-              //     padding: const EdgeInsets.only(
-              //       top: 16,
-              //       left: 16,
-              //       bottom: 40,
-              //     ),
-              //     itemBuilder: (_, index) {
-              //       return PlaceHorizItemView(
-              //         context: context,
-              //       );
-              //     },
-              //   ),
-              // )
+              Container(
+                height: 314,
+                child: BlocBuilder<SearchCubit, SearchState>(
+                  buildWhen: (previous, current) =>
+                      current is SearchPlacesGetHotDoneState,
+                  builder: (_, state) {
+                    if (state is SearchPlacesGetHotDoneState) {
+                      return ListView.builder(
+                        itemCount: state.places.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.only(
+                          top: 16,
+                          left: 16,
+                          bottom: 40,
+                        ),
+                        itemBuilder: (_, index) {
+                          return PlaceHorizItemView(
+                            context: context,
+                            item: state.places[index],
+                          );
+                        },
+                      );
+                    }
+                    return SizedBox.shrink();
+                  },
+                ),
+              )
             ],
           ),
         ),
@@ -341,7 +351,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     itemBuilder: (_, index) {
                       final item = _cubit.subCategories[index];
                       return GestureDetector(
-                        onTap: () => _cubit.searchPlaceWithSubCategory(item),
+                        onTap: () => Navigator.of(context).pushNamed(
+                          RouterName.list_places,
+                          arguments: {'sub_category': item},
+                        ),
                         child: Container(
                           height: 36,
                           margin: const EdgeInsets.only(right: 8),
@@ -489,79 +502,68 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildSearchView() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Text('Trở về'),
+    return Container(
+      height: 48,
+      margin: const EdgeInsets.only(
+        top: 24,
+        bottom: 12,
+        left: 16,
+        right: 16,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: ColorConstant.border_gray,
         ),
-        Expanded(
-          child: Container(
-            height: 48,
-            margin: const EdgeInsets.only(
-              top: 24,
-              bottom: 12,
-              left: 16,
-              right: 16,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: ColorConstant.border_gray,
-              ),
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  ConstantIcons.ic_search,
-                ),
-                Expanded(
-                  child: MainTextFormField(
-                    hideBorder: true,
-                    controller: _searchController,
-                    maxLines: 1,
-                    hintText: 'Nhập địa điểm cần tìm',
-                    onChanged: (val) {
-                      _debouncer.run(() {
-                        print(val);
-                        _cubit.searchKeyWord(val);
-                      });
-                    },
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 9,
-                    horizontal: 16,
-                  ),
-                  width: 1,
-                  color: ColorConstant.border_gray,
-                ),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      ConstantIcons.ic_gps,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Gần đây',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    )
-                  ],
-                )
-              ],
+      ),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            ConstantIcons.ic_search,
+          ),
+          Expanded(
+            child: MainTextFormField(
+              hideBorder: true,
+              controller: _searchController,
+              maxLines: 1,
+              hintText: 'Nhập địa điểm cần tìm',
+              onChanged: (val) {
+                _debouncer.run(() {
+                  print(val);
+                  _cubit.searchKeyWord(val);
+                });
+              },
             ),
           ),
-        ),
-      ],
+          // Container(
+          //   margin: const EdgeInsets.symmetric(
+          //     vertical: 9,
+          //     horizontal: 16,
+          //   ),
+          //   width: 1,
+          //   color: ColorConstant.border_gray,
+          // ),
+          // Row(
+          //   children: [
+          //     SvgPicture.asset(
+          //       ConstantIcons.ic_gps,
+          //     ),
+          //     SizedBox(
+          //       width: 10,
+          //     ),
+          //     Text(
+          //       'Gần đây',
+          //       style: TextStyle(
+          //         fontSize: 14,
+          //         color: Theme.of(context).primaryColor,
+          //       ),
+          //     )
+          //   ],
+          // )
+        ],
+      ),
     );
   }
 }

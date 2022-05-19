@@ -301,41 +301,48 @@ class _HomeScreenState extends State<HomeScreen>
                         margin: const EdgeInsets.only(right: 16),
                         child: vouchers.isEmpty
                             ? SkeletonVoucher()
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRectImage(
-                                    radius: 12,
-                                    url: AppUtils.getUrlImage(
-                                      vouchers[index].thumbnail?.path ?? '',
-                                      width: 218,
+                            : GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () => Navigator.of(context).pushNamed(
+                                  RouterName.detail_promotion,
+                                  arguments: vouchers[index].id,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRectImage(
+                                      radius: 12,
+                                      url: AppUtils.getUrlImage(
+                                        vouchers[index].thumbnail?.path ?? '',
+                                        width: 218,
+                                        height: 122,
+                                      ),
                                       height: 122,
                                     ),
-                                    height: 122,
-                                  ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(
-                                    vouchers[index].title ?? '',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.headline2,
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    vouchers[index].content ?? '',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: ColorConstant.orange_secondary,
+                                    SizedBox(
+                                      height: 8,
                                     ),
-                                  )
-                                ],
+                                    Text(
+                                      vouchers[index].title ?? '',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style:
+                                          Theme.of(context).textTheme.headline2,
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      vouchers[index].content ?? '',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: ColorConstant.orange_secondary,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                       );
                     }),
@@ -447,8 +454,12 @@ class _HomeScreenState extends State<HomeScreen>
             children: [
               _buildMenuItem(
                 title: 'Gần đây',
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(RouterName.list_places),
+                onPressed: () => Navigator.of(context).pushNamed(
+                  RouterName.list_places,
+                  arguments: {
+                    'near_me': true,
+                  },
+                ),
                 icon: Image.asset(
                   ConstantIcons.ic_map,
                   width: 46,

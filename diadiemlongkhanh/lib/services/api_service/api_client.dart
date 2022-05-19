@@ -30,10 +30,14 @@ abstract class ApiClient {
   Future<List<PlaceModel>?> getPlacesHot({
     @Query('limit') int limit = 5,
   });
+
   @GET(Apis.vouchers)
   Future<List<VoucherModel>?> getVouchers({
     @Query('limit') int limit = 5,
   });
+
+  @GET('${Apis.voucher}/{id}')
+  Future<VoucherModel?> getDetailVoucher(@Path() String id);
 
   @GET(Apis.sub_categories)
   Future<List<CategoryModel>?> getSubCategories();

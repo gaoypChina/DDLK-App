@@ -986,7 +986,6 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 ? ShimmerImage()
                 : ListView.builder(
                     itemCount: place.benefits.length,
-                    shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (_, index) {
                       final item = place.benefits[index];

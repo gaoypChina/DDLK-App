@@ -92,6 +92,23 @@ class _ApiClient implements ApiClient {
   }
 
   @override
+  Future<VoucherModel?> getDetailVoucher(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<VoucherModel>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/voucher/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : VoucherModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<List<CategoryModel>?> getSubCategories() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

@@ -57,8 +57,12 @@ class _CategoryScreenState extends State<CategoryScreen>
         itemBuilder: (_, index) {
           final item = categories[index];
           return InkWell(
-            onTap: () =>
-                Navigator.of(context).pushNamed(RouterName.list_places),
+            onTap: () => Navigator.of(context).pushNamed(
+              RouterName.list_places,
+              arguments: {
+                'category': item,
+              },
+            ),
             child: Container(
               height: 100,
               margin: const EdgeInsets.only(bottom: 16),

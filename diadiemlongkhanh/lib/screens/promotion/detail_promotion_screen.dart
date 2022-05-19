@@ -1,12 +1,16 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/screens/promotion/bloc/detail_promotion_cubit.dart';
 import 'package:diadiemlongkhanh/screens/promotion/code_promotion_dialog.dart';
 import 'package:diadiemlongkhanh/screens/promotion/widgets/list_promotion_view.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/line_dashed_painter.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class DetailPromotionScreen extends StatefulWidget {
@@ -17,6 +21,15 @@ class DetailPromotionScreen extends StatefulWidget {
 }
 
 class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
+  DetailPromotionCubit get _cubit => BlocProvider.of(context);
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _cubit.getDetailVoucher();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +58,18 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildVoucherView(),
-                    _buildContentView(context),
+                    BlocBuilder<DetailPromotionCubit, DetailPromotionState>(
+                      buildWhen: (previous, current) =>
+                          current is DetailPromotionGetDoneState,
+                      builder: (_, state) {
+                        return Column(
+                          children: [
+                            _buildVoucherView(),
+                            _buildContentView(),
+                          ],
+                        );
+                      },
+                    ),
                     SizedBox(
                       height: 40,
                     ),
@@ -70,7 +93,7 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
     );
   }
 
-  Container _buildContentView(BuildContext context) {
+  Container _buildContentView() {
     return Container(
       margin: const EdgeInsets.only(
         top: 16,
@@ -90,24 +113,32 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
         ],
       ),
       child: Text(
-        '-  Từ ngày 12-12-2022 đến 12-01-2023 giảm 30% khi thanh toán tại Mono Coffee Lab\n-  Áp dụng toàn bộ menu tại Mono Coffee Lab\n-  Không áp dụng ngày lễ',
+        _cubit.voucher?.content ?? '',
         style: Theme.of(context).textTheme.bodyText1,
       ),
     );
   }
 
   Container _buildVoucherView() {
+    final voucher = _cubit.voucher;
     return Container(
-      height: 480,
+      height: 500,
       child: Stack(
         children: [
-          ClipRRectImage(
-            radius: 8,
-            height: 286,
-            width: double.infinity,
-            url:
-                'https://img.giftpop.vn/brand/GOGIHOUSE/MP1905280011_BASIC_origin.jpg',
-          ),
+          voucher == null
+              ? ShimmerImage(
+                  height: 286,
+                )
+              : ClipRRectImage(
+                  radius: 8,
+                  height: 286,
+                  width: double.infinity,
+                  url: AppUtils.getUrlImage(
+                    _cubit.voucher?.thumbnail?.path ?? '',
+                    height: 286,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                ),
           Positioned(
             top: 250,
             left: 16,
@@ -115,11 +146,11 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
             child: Column(
               children: [
                 Container(
-                  height: 229,
+                  height: 249,
                   child: Column(
                     children: [
                       Container(
-                        height: 152,
+                        height: 172,
                         width: double.infinity,
                         padding: const EdgeInsets.only(
                           left: 16,
@@ -142,11 +173,11 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Giảm giá 30%',
-                              maxLines: 1,
+                              voucher?.title ?? '',
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontSize: 24,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w500,
                                 color: ColorConstant.orange_secondary,
                               ),
@@ -155,7 +186,7 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                               height: 8,
                             ),
                             Text(
-                              'Mono Coffee Lab',
+                              voucher!.place?.name ?? '',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.headline4,
@@ -262,8 +293,11 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                           children: [
                             ClipRRectImage(
                               radius: 22,
-                              url:
-                                  'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
+                              url: AppUtils.getUrlImage(
+                                voucher.place?.avatar?.path ?? '',
+                                width: 44,
+                                height: 44,
+                              ),
                               height: 44,
                               width: 44,
                             ),
@@ -276,7 +310,9 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Mono Coffee Lab',
+                                    voucher.place?.name ?? '',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                     style:
                                         Theme.of(context).textTheme.headline4,
                                   ),
@@ -317,39 +353,39 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              width: 98,
-                              height: 28,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    ConstantIcons.ic_book_mark,
-                                    width: 11,
-                                    height: 14,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    'Lưu địa điểm',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
+                            // SizedBox(
+                            //   width: 10,
+                            // ),
+                            // Container(
+                            //   width: 98,
+                            //   height: 28,
+                            //   decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(14),
+                            //     border: Border.all(
+                            //         color: Theme.of(context).primaryColor),
+                            //   ),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: [
+                            //       SvgPicture.asset(
+                            //         ConstantIcons.ic_book_mark,
+                            //         width: 11,
+                            //         height: 14,
+                            //       ),
+                            //       SizedBox(
+                            //         width: 4,
+                            //       ),
+                            //       Text(
+                            //         'Lưu địa điểm',
+                            //         style: TextStyle(
+                            //           fontSize: 10,
+                            //           fontWeight: FontWeight.w500,
+                            //           color: Theme.of(context).primaryColor,
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // )
                           ],
                         ),
                       ),

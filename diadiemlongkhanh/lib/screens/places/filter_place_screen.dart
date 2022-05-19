@@ -42,8 +42,19 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
     if (widget.searchData != null) {
       _nearMe = widget.searchData!.nearby == 'me';
       _isOpening = widget.searchData!.opening;
+      _categoriesSelected = widget.searchData!.categories ?? [];
     }
     _categories = widget.categories ?? [];
+  }
+
+  resetFilter() {
+    setState(() {
+      _nearMe = false;
+      _isOpening = true;
+      _lowerValue = 0;
+      _upperValue = 2000000;
+      _categoriesSelected.clear();
+    });
   }
 
   @override
@@ -83,11 +94,14 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                     'Bộ lọc',
                     style: Theme.of(context).textTheme.headline3,
                   ),
-                  Text(
-                    'Đặt lại',
-                    style: Theme.of(context).textTheme.headline4?.apply(
-                          color: Theme.of(context).primaryColor,
-                        ),
+                  GestureDetector(
+                    onTap: resetFilter,
+                    child: Text(
+                      'Đặt lại',
+                      style: Theme.of(context).textTheme.headline4?.apply(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                    ),
                   )
                 ],
               ),

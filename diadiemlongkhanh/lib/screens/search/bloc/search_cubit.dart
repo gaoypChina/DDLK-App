@@ -48,6 +48,15 @@ class SearchCubit extends Cubit<SearchState> {
     searchPlaces();
   }
 
+  getPlacesHot() async {
+    final res = await injector.get<ApiClient>().getPlacesHot();
+    if (res != null) {
+      emit(
+        SearchPlacesGetHotDoneState(res),
+      );
+    }
+  }
+
   deleteKeyWord(String val) async {
     await injector.get<StorageService>().deleteKeyWord(val);
     getHistorySearch();

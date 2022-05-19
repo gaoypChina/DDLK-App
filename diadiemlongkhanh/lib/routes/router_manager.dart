@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/screens/base_tabbar/base_tabbar_screen.dart';
 
@@ -10,11 +11,13 @@ import 'package:diadiemlongkhanh/screens/new_feeds/detail_review_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/detail_notification_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/notification_screen.dart';
 import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
+import 'package:diadiemlongkhanh/screens/places/bloc/list_places_cubit.dart';
 import 'package:diadiemlongkhanh/screens/places/detail_place_screen.dart';
 import 'package:diadiemlongkhanh/screens/places/list_place_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/edit_profile_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/setting_profile_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/setting_screen.dart';
+import 'package:diadiemlongkhanh/screens/promotion/bloc/detail_promotion_cubit.dart';
 import 'package:diadiemlongkhanh/screens/promotion/detail_promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/review/create_review_screen.dart';
@@ -83,12 +86,41 @@ class RouterManager {
           builder: (_) => PromotionScreen(),
         );
       case RouterName.detail_promotion:
+        String? id;
+        if (settings.arguments != null) {
+          id = settings.arguments as String;
+        }
         return MaterialPageRoute(
-          builder: (_) => DetailPromotionScreen(),
+          builder: (_) => BlocProvider(
+            create: (_) => DetailPromotionCubit(id: id),
+            child: DetailPromotionScreen(),
+          ),
         );
       case RouterName.list_places:
+        CategoryModel? subCategory;
+        CategoryModel? category;
+        bool nearMe = false;
+        if (settings.arguments != null) {
+          final arguments = settings.arguments as Map<String, dynamic>;
+          if (arguments['sub_category'] != null) {
+            subCategory = arguments['sub_category'] as CategoryModel;
+          }
+          if (arguments['category'] != null) {
+            category = arguments['category'] as CategoryModel;
+          }
+          if (arguments['near_me'] != null) {
+            nearMe = arguments['near_me'] as bool;
+          }
+        }
         return MaterialPageRoute(
-          builder: (_) => ListPlaceScreen(),
+          builder: (_) => BlocProvider(
+            create: (_) => ListPlacesCubit(
+              subCategory: subCategory,
+              category: category,
+              nearMe: nearMe,
+            ),
+            child: ListPlaceScreen(),
+          ),
         );
       case RouterName.setting:
         return MaterialPageRoute(
