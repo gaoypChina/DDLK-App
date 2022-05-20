@@ -3,10 +3,13 @@ import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -40,6 +43,17 @@ class HomeCubit extends Cubit<HomeState> {
     final res = await injector.get<ApiClient>().getPlacesHot();
     if (res != null) {
       emit(HomeGetPlaceHotDoneState(res));
+    }
+  }
+
+  likePost(BuildContext context) async {
+    final token = await injector.get<StorageService>().getToken();
+    if (token == null) {
+      Navigator.of(context).pushNamed(
+        RouterName.option_login,
+        arguments: true,
+      );
+      return;
     }
   }
 

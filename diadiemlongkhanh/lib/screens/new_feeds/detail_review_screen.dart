@@ -42,16 +42,18 @@ class _DetailReviewScreenState extends State<DetailReviewScreen> {
       appBar: MyAppBar(
         title: 'Bài của ${widget.item?.author?.name ?? ''}',
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            NewFeedItemView(
-              item: widget.item,
-              margin: const EdgeInsets.all(0),
-              decoration: BoxDecoration(),
-              comments: comments,
-            )
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              NewFeedItemView(
+                item: widget.item,
+                margin: const EdgeInsets.all(0),
+                decoration: BoxDecoration(),
+                comments: comments,
+              )
+            ],
+          ),
         ),
       ),
     );

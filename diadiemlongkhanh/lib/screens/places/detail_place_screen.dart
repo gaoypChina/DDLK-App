@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/models/local/local_social_model.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
@@ -445,6 +446,18 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
   }
 
   Container _buildInfoContactView(PlaceModel? place) {
+    List<LocalSocialModel> socials = [];
+    if (place?.social != null) {
+      if (place?.social?.facebook != null) {
+        socials.add(LocalSocialModel(
+            icon: ConstantIcons.ic_fb, value: place?.social?.facebook ?? ''));
+      }
+      if (place?.social?.instagram != null) {
+        socials.add(LocalSocialModel(
+            icon: ConstantIcons.ic_instagram,
+            value: place?.social?.instagram ?? ''));
+      }
+    }
     return Container(
       margin: const EdgeInsets.only(
         top: 16,
@@ -471,46 +484,67 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             style: Theme.of(context).textTheme.headline4,
           ),
           ListView.builder(
-            itemCount: 5,
+            itemCount: socials.length,
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: const EdgeInsets.only(top: 18),
             itemBuilder: (_, index) {
-              return Container(
-                height: 48,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset(ConstantIcons.ic_fb),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          'https://www.facebook.com/bhdstarcineplex',
-                          style: Theme.of(context).textTheme.subtitle1,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      child: CustomPaint(
-                        painter: LineDashedPainter(
-                          isHorizontal: false,
-                          color: ColorConstant.border_gray,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+              final item = socials[index];
+              return _buildItemContact(
+                item.icon,
+                item.value,
               );
             },
           )
         ],
+      ),
+    );
+  }
+
+  Widget _buildItemContact(
+    String icon,
+    String value,
+  ) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => AppUtils.launchLink(value),
+      child: Container(
+        height: 48,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                SvgPicture.asset(icon),
+                SizedBox(
+                  width: 4,
+                ),
+                Expanded(
+                  child: Text(
+                    value,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.subtitle1?.apply(
+                          decoration: TextDecoration.underline,
+                        ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Container(
+              width: double.infinity,
+              child: CustomPaint(
+                painter: LineDashedPainter(
+                  isHorizontal: false,
+                  color: ColorConstant.border_gray,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

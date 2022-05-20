@@ -18,6 +18,7 @@ class NewFeedItemView extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final BoxDecoration? decoration;
   final List<CommentModel>? comments;
+  final Function()? likePressed;
   NewFeedItemView({
     this.isShowComment = false,
     this.nextToDetail,
@@ -25,6 +26,7 @@ class NewFeedItemView extends StatelessWidget {
     this.margin,
     this.decoration,
     this.comments,
+    this.likePressed,
   });
 
   @override
@@ -253,24 +255,27 @@ class NewFeedItemView extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Row(
-            children: [
-              SvgPicture.asset(
-                item!.isLiked
-                    ? ConstantIcons.ic_heart
-                    : ConstantIcons.ic_heart_outline,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                '${item!.likeCount ?? 0} Thích',
-                style: TextStyle(
-                  fontSize: 10,
-                  color: ColorConstant.neutral_gray,
+          GestureDetector(
+            onTap: likePressed,
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  item!.isLiked
+                      ? ConstantIcons.ic_heart
+                      : ConstantIcons.ic_heart_outline,
                 ),
-              )
-            ],
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  '${item!.likeCount ?? 0} Thích',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: ColorConstant.neutral_gray,
+                  ),
+                )
+              ],
+            ),
           ),
           SizedBox(
             width: 18,

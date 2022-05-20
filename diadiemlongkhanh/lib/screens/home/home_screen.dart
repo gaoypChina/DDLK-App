@@ -74,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen>
         child: Padding(
           padding: const EdgeInsets.only(
             top: 16,
-            bottom: 30,
           ),
           child: Column(
             children: [
@@ -148,7 +147,10 @@ class _HomeScreenState extends State<HomeScreen>
                                 right: 16,
                                 bottom: 30,
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
                           ],
                         ),
                       ),
@@ -187,6 +189,7 @@ class _HomeScreenState extends State<HomeScreen>
                       RouterName.detail_review,
                       arguments: newfeeds[index],
                     ),
+                    likePressed: () => _cubit.likePost(context),
                   );
           },
         );
@@ -615,11 +618,17 @@ class _HomeScreenState extends State<HomeScreen>
       child: token == null
           ? Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                'Đăng nhập/Đăng ký',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).primaryColor,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).pushNamed(
+                  RouterName.option_login,
+                  arguments: true,
+                ),
+                child: Text(
+                  'Đăng nhập/Đăng ký',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
             )

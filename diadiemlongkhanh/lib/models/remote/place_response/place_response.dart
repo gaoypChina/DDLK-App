@@ -51,6 +51,7 @@ class PlaceModel {
   OpeningTimeModel? openingTime;
   RateModel? rate;
   PriceModel? price;
+  SocialModel? social;
 
   PlaceModel();
   factory PlaceModel.fromJson(Map<String, dynamic> json) =>
@@ -108,4 +109,13 @@ class RateModel {
   RateModel();
   factory RateModel.fromJson(Map<String, dynamic> json) =>
       _$RateModelFromJson(json);
+}
+
+@JsonSerializable()
+class SocialModel {
+  String? facebook;
+  String? instagram;
+  SocialModel();
+  factory SocialModel.fromJson(Map<String, dynamic> json) =>
+      _$SocialModelFromJson(json);
 }

@@ -1,10 +1,15 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/widgets/list_option_login_view.dart';
+import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 
 class OptionLoginScreen extends StatefulWidget {
-  const OptionLoginScreen({Key? key}) : super(key: key);
+  const OptionLoginScreen({
+    Key? key,
+    this.isBack = false,
+  }) : super(key: key);
+  final bool isBack;
 
   @override
   _OptionLoginScreenState createState() => _OptionLoginScreenState();
@@ -15,9 +20,9 @@ class _OptionLoginScreenState extends State<OptionLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
+      appBar: MyAppBar(
+        isShowBackButton: widget.isBack,
+        isShowBgBackButton: true,
       ),
       body: Center(
         child: SingleChildScrollView(

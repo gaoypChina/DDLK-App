@@ -6,6 +6,7 @@ import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppUtils {
   static showBottomDialog(
@@ -238,5 +239,12 @@ class AppUtils {
         return alert;
       },
     );
+  }
+
+  static Future<void> launchLink(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+      return;
+    }
   }
 }

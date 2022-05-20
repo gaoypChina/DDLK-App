@@ -34,8 +34,14 @@ class RouterManager {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouterName.option_login:
+        bool isBack = false;
+        if (settings.arguments != null) {
+          isBack = settings.arguments as bool;
+        }
         return MaterialPageRoute(
-          builder: (_) => OptionLoginScreen(),
+          builder: (_) => OptionLoginScreen(
+            isBack: isBack,
+          ),
         );
       case RouterName.option_signup:
         return MaterialPageRoute(

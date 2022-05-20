@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/promotion/bloc/detail_promotion_cubit.dart';
 import 'package:diadiemlongkhanh/screens/promotion/code_promotion_dialog.dart';
 import 'package:diadiemlongkhanh/screens/promotion/widgets/list_promotion_view.dart';
@@ -65,7 +66,7 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                         return Column(
                           children: [
                             _buildVoucherView(),
-                            _buildContentView(),
+                            // _buildContentView(),
                           ],
                         );
                       },
@@ -134,7 +135,7 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                   height: 286,
                   width: double.infinity,
                   url: AppUtils.getUrlImage(
-                    _cubit.voucher?.thumbnail?.path ?? '',
+                    voucher.thumbnail?.path ?? '',
                     height: 286,
                     width: MediaQuery.of(context).size.width,
                   ),
@@ -186,7 +187,7 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                               height: 8,
                             ),
                             Text(
-                              voucher!.place?.name ?? '',
+                              voucher?.place?.name ?? '',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.headline4,
@@ -294,7 +295,7 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                             ClipRRectImage(
                               radius: 22,
                               url: AppUtils.getUrlImage(
-                                voucher.place?.avatar?.path ?? '',
+                                voucher?.place?.avatar?.path ?? '',
                                 width: 44,
                                 height: 44,
                               ),
@@ -305,52 +306,59 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                               width: 7,
                             ),
                             Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    voucher.place?.name ?? '',
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                  SizedBox(
-                                    height: 3,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '4.0',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: ColorConstant
-                                              .neutral_gray_lighter,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 7,
-                                      ),
-                                      MyRatingBar(
-                                        rating: 4,
-                                        onRatingUpdate: (rate, isEmpty) {},
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 3,
-                                  ),
-                                  Text(
-                                    'Mở cửa',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500,
-                                      color: Theme.of(context).primaryColor,
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () => Navigator.of(context).pushNamed(
+                                  RouterName.detail_place,
+                                  arguments: voucher?.place?.id,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      voucher?.place?.name ?? '',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style:
+                                          Theme.of(context).textTheme.headline4,
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     Text(
+                                    //       '4.0',
+                                    //       style: TextStyle(
+                                    //         fontSize: 12,
+                                    //         fontWeight: FontWeight.w500,
+                                    //         color: ColorConstant
+                                    //             .neutral_gray_lighter,
+                                    //       ),
+                                    //     ),
+                                    //     SizedBox(
+                                    //       width: 7,
+                                    //     ),
+                                    //     MyRatingBar(
+                                    //       rating: 4,
+                                    //       onRatingUpdate: (rate, isEmpty) {},
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      'Mở cửa',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             // SizedBox(

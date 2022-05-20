@@ -1,4 +1,5 @@
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/bloc/new_feed_cubit.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_newfeed.dart';
@@ -51,9 +52,9 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                 floating: true,
                 forceElevated: innerBoxIsScrolled,
               ),
-              SliverToBoxAdapter(
-                child: _buildListFiltersView(context),
-              ),
+              // SliverToBoxAdapter(
+              //   child: _buildListFiltersView(context),
+              // ),
             ];
           },
           body: BlocBuilder<NewFeedCubit, NewFeedState>(
@@ -71,6 +72,10 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                       ? ShimmerNewFeed(context)
                       : NewFeedItemView(
                           item: _cubit.newfeeds[index],
+                          nextToDetail: () => Navigator.of(context).pushNamed(
+                            RouterName.detail_review,
+                            arguments: _cubit.newfeeds[index],
+                          ),
                         );
                 },
               );
