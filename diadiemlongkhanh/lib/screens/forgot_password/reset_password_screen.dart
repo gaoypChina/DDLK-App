@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  bool isReset;
+  final bool isReset;
   ResetPasswordScreen(this.isReset);
 
   @override
@@ -67,38 +67,5 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   // Alert with single button.
-  _onAlertButtonPressed() {
-    Alert(
-      context: context,
-      image: SvgPicture.asset(ConstantIcons.ic_circle_check),
-      title: "Đặt lại mật khẩu thành công",
-      style: AlertStyle(
-        titleStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-          color: ColorConstant.neutral_black,
-        ),
-        buttonAreaPadding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 24,
-        ),
-      ),
-      buttons: [
-        DialogButton(
-          child: Text(
-            "Đăng nhập lại",
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          height: 48,
-          border: Border.all(color: Theme.of(context).primaryColor),
-          color: Colors.white,
-          onPressed: () => {},
-        )
-      ],
-    ).show();
-  }
+  _onAlertButtonPressed() {}
 }

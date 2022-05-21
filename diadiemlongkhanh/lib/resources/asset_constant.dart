@@ -89,4 +89,6 @@ class ConstantIcons {
   static const ic_report = 'assets/icons/ic_report.svg';
   static const ic_plus2 = 'assets/icons/ic_plus2.svg';
   static const ic_instagram = 'assets/icons/ic_instagram.svg';
+  static const ic_person = 'assets/icons/ic_person.svg';
+  static const ic_email = 'assets/icons/ic_email.svg';
 }

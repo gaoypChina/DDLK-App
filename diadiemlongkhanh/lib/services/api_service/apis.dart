@@ -14,4 +14,5 @@ class Apis {
   static const review = '/review';
   static const auth_register_with_phone = '/auth/register-with-phone';
   static const auth_resend_otp = '/auth/resend-otp';
+  static const auth_register_confirm = '/auth/register-confirm';
 }

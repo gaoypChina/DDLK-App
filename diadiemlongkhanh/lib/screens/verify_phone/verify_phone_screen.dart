@@ -153,8 +153,11 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
               onCompleted: (v) {
                 print("Completed");
                 Navigator.of(context).pushNamed(
-                  RouterName.reset_password,
-                  arguments: false,
+                  RouterName.info_signup,
+                  arguments: {
+                    'phone': widget.phone,
+                    'otp': v,
+                  },
                 );
               },
               // onTap: () {

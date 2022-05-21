@@ -84,4 +84,6 @@ abstract class ApiClient {
 
   @POST(Apis.auth_resend_otp)
   Future<AuthResponse?> resendOtp(@Body() data);
+  @POST(Apis.auth_register_confirm)
+  Future<AuthResponse?> registerConfirm(@Body() data);
 }

@@ -14,6 +14,8 @@ class MainTextFormField extends StatelessWidget {
   final bool hideBorder;
   final Function(String)? onChanged;
   final TextEditingController? controller;
+  final bool obscureText;
+  final String? Function(String?)? validator;
 
   MainTextFormField({
     this.hintText,
@@ -28,6 +30,8 @@ class MainTextFormField extends StatelessWidget {
     this.hideBorder = false,
     this.onChanged,
     this.controller,
+    this.obscureText = false,
+    this.validator,
   });
   @override
   Widget build(BuildContext context) {
@@ -37,6 +41,8 @@ class MainTextFormField extends StatelessWidget {
       maxLines: maxLines,
       onChanged: onChanged,
       controller: controller,
+      obscureText: obscureText,
+      validator: validator,
       decoration: InputDecoration(
         fillColor: fillColor,
         filled: fillColor != null,

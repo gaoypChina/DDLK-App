@@ -23,6 +23,7 @@ import 'package:diadiemlongkhanh/screens/promotion/promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/review/create_review_screen.dart';
 import 'package:diadiemlongkhanh/screens/search/bloc/search_cubit.dart';
 import 'package:diadiemlongkhanh/screens/search/search_screen.dart';
+import 'package:diadiemlongkhanh/screens/signup/info_sign_up_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/option_signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/verify_phone/verify_phone_screen.dart';
@@ -178,6 +179,15 @@ class RouterManager {
             item: item,
           ),
         );
+      case RouterName.info_signup:
+        String otp = '';
+        String phone = '';
+        return MaterialPageRoute(
+          builder: (_) => InfoSignupScreen(
+            otp: otp,
+            phone: phone,
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -211,4 +221,5 @@ class RouterName {
   static const detail_place = '/detail_place';
   static const search = '/search';
   static const detail_review = '/detail_review';
+  static const info_signup = '/info_signup';
 }

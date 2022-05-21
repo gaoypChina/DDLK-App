@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:diadiemlongkhanh/config/env_config.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
+import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppUtils {
@@ -257,5 +260,45 @@ class AppUtils {
       await launchUrl(Uri.parse(url));
       return;
     }
+  }
+
+  static showSuccessAlert(
+    BuildContext context, {
+    String? title,
+    String? okTitle,
+    Function()? okAction,
+  }) {
+    Alert(
+      context: context,
+      image: SvgPicture.asset(ConstantIcons.ic_circle_check),
+      title: title,
+      style: AlertStyle(
+        titleStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: ColorConstant.neutral_black,
+        ),
+        buttonAreaPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 24,
+        ),
+      ),
+      buttons: [
+        DialogButton(
+          child: Text(
+            okTitle ?? '',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          height: 48,
+          border: Border.all(color: Theme.of(context).primaryColor),
+          color: Colors.white,
+          onPressed: okAction,
+        )
+      ],
+    ).show();
   }
 }
