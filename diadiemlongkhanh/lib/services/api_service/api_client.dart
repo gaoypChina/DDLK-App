@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/models/remote/base/auth_response.dart';
 import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/models/remote/comment/comment_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
@@ -77,4 +78,10 @@ abstract class ApiClient {
 
   @GET('${Apis.review}/{id}/comments')
   Future<List<CommentModel>?> getCommentyOfReview(@Path() String id);
+
+  @POST(Apis.auth_register_with_phone)
+  Future<AuthResponse?> registerWithPhone(@Body() data);
+
+  @POST(Apis.auth_resend_otp)
+  Future<AuthResponse?> resendOtp(@Body() data);
 }

@@ -53,6 +53,7 @@ dependencies:
   font_awesome_flutter: ^9.0.0
   syncfusion_flutter_sliders: ^20.1.52
   url_launcher: ^6.0.20
+  flutter_easyloading: ^3.0.3
 
   retrofit: ^3.0.1+1
   logger: ^1.1.0

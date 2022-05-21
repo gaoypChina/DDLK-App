@@ -1,24 +1,92 @@
+import 'dart:async';
+
+import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/my_back_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyPhoneScreen extends StatefulWidget {
-  const VerifyPhoneScreen({Key? key}) : super(key: key);
+  const VerifyPhoneScreen({
+    Key? key,
+    required this.phone,
+  }) : super(key: key);
+  final String phone;
 
   @override
   _VerifyPhoneScreenState createState() => _VerifyPhoneScreenState();
 }
 
 class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
+  int _start = 120;
+  late Timer _timer;
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  _resendOtp() async {
+    bool isDebug = false;
+    if (kDebugMode) {
+      isDebug = true;
+    }
+    final data = {
+      "phone": widget.phone,
+      "test": isDebug,
+    };
+    AppUtils.showLoading();
+    final res = await injector.get<ApiClient>().resendOtp(data);
+    AppUtils.hideLoading();
+    if (res != null) {
+      if (res.success == true) {
+        AppUtils.showOkDialog(context, ConstantTitle.send_otp_success);
+        _start = 120;
+        startTimer();
+        return;
+      }
+    }
+    AppUtils.showOkDialog(context, ConstantTitle.please_try_again);
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: MyBackButton(),
+        leading: MyBackButton(
+          isShowBgBackButton: true,
+        ),
         elevation: 0,
         title: Text(
           'Xác thực OTP',
@@ -38,7 +106,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
               style: Theme.of(context).textTheme.headline5,
             ),
             Text(
-              'Mã của bạn đã được gửi đến +84 328391129',
+              'Mã của bạn đã được gửi đến ${widget.phone}',
               style: TextStyle(
                 fontSize: 12,
                 color: ColorConstant.neutral_gray,
@@ -58,8 +126,8 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
               blinkWhenObscuring: true,
               animationType: AnimationType.fade,
               validator: (v) {
-                if (v!.length < 3) {
-                  return "I'm from validator";
+                if (v!.length < 6) {
+                  return "Phải nhập đủ 6 chữ số";
                 } else {
                   return null;
                 }
@@ -111,15 +179,20 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                   'Bạn chưa nhận được mã xác thực ?',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    ' Gửi lại mã',
-                    style: Theme.of(context).textTheme.headline2?.apply(
-                          color: Theme.of(context).primaryColor,
+                _start == 0
+                    ? GestureDetector(
+                        onTap: _resendOtp,
+                        child: Text(
+                          ' Gửi lại mã',
+                          style: Theme.of(context).textTheme.headline2?.apply(
+                                color: Theme.of(context).primaryColor,
+                              ),
                         ),
-                  ),
-                ),
+                      )
+                    : Text(
+                        ' Gửi lại sau $_start giây',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
               ],
             ),
           ],

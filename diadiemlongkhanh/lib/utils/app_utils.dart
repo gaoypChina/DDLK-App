@@ -5,10 +5,21 @@ import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dar
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppUtils {
+  static void showLoading() {
+    EasyLoading.show(
+      maskType: EasyLoadingMaskType.black,
+    );
+  }
+
+  static void hideLoading() {
+    EasyLoading.dismiss();
+  }
+
   static showBottomDialog(
     BuildContext context,
     Widget screen,

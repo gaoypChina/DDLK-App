@@ -52,8 +52,14 @@ class RouterManager {
           builder: (_) => LoginScreen(),
         );
       case RouterName.verify_phone:
+        String phone = '';
+        if (settings.arguments != null) {
+          phone = settings.arguments as String;
+        }
         return MaterialPageRoute(
-          builder: (_) => VerifyPhoneScreen(),
+          builder: (_) => VerifyPhoneScreen(
+            phone: phone,
+          ),
         );
       case RouterName.forgot_password:
         return MaterialPageRoute(

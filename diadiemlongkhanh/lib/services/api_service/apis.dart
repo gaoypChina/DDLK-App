@@ -12,4 +12,6 @@ class Apis {
   static const place = '/place';
   static const place_search = 'places/search';
   static const review = '/review';
+  static const auth_register_with_phone = '/auth/register-with-phone';
+  static const auth_resend_otp = '/auth/resend-otp';
 }

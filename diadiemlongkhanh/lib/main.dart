@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:diadiemlongkhanh/config/env_config.dart';
+import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/themes/themes.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +28,23 @@ void main() {
       ),
     );
   }, (e, stack) {});
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.ring
+    ..loadingStyle = EasyLoadingStyle.custom
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.white
+    ..indicatorColor = ColorConstant.green_primary
+    ..textColor = Colors.yellow
+    ..userInteractions = false
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..dismissOnTap = false;
 }
 
 class MyApp extends StatefulWidget {
@@ -89,6 +108,7 @@ class _MyAppState extends State<MyApp> {
       theme: AppTheme.of(context, listen: true).currentTheme,
       onGenerateRoute: RouterManager.generateRoute,
       initialRoute: RouterName.base_tabbar,
+      builder: EasyLoading.init(),
     );
   }
 }
