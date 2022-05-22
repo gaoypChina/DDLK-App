@@ -182,6 +182,15 @@ class RouterManager {
       case RouterName.info_signup:
         String otp = '';
         String phone = '';
+        if (settings.arguments != null) {
+          final arg = settings.arguments as Map;
+          if (arg['phone'] != null) {
+            phone = arg['phone'] as String;
+          }
+          if (arg['otp'] != null) {
+            otp = arg['otp'] as String;
+          }
+        }
         return MaterialPageRoute(
           builder: (_) => InfoSignupScreen(
             otp: otp,

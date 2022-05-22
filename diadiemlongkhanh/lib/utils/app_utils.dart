@@ -271,6 +271,8 @@ class AppUtils {
     Alert(
       context: context,
       image: SvgPicture.asset(ConstantIcons.ic_circle_check),
+      closeIcon: SizedBox.shrink(),
+      closeFunction: () {},
       title: title,
       style: AlertStyle(
         titleStyle: TextStyle(
@@ -300,5 +302,11 @@ class AppUtils {
         )
       ],
     ).show();
+  }
+
+  static bool isValidEmail(String email) {
+    return RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(email);
   }
 }

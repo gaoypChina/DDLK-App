@@ -9,6 +9,7 @@ import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:diadiemlongkhanh/widgets/phone_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/segment_login_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -38,11 +39,13 @@ class _SignupScreenState extends State<SignupScreen> {
     if (disable) {
       return;
     }
-    Navigator.of(context).pushNamed(
-      RouterName.verify_phone,
-      arguments: _controller.text,
-    );
-    return;
+    if (kDebugMode) {
+      Navigator.of(context).pushNamed(
+        RouterName.verify_phone,
+        arguments: _controller.text,
+      );
+      return;
+    }
     final data = {
       "phone": _controller.text,
     };
@@ -59,6 +62,7 @@ class _SignupScreenState extends State<SignupScreen> {
         'Hệ thống sẽ gửi mã OTP thông qua cuộc gọi, vui lòng chú ý tới điện thoại của bạn',
         okAction: () => Navigator.of(context).pushNamed(
           RouterName.verify_phone,
+          arguments: _controller.text,
         ),
       );
       return;

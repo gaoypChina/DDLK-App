@@ -1,7 +1,9 @@
 import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
@@ -33,6 +35,7 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+    AppUtils.showLoading();
     final data = {
       "phone": widget.phone,
       "name": _nameCtler.text,
@@ -41,19 +44,30 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
       "otp": widget.otp,
     };
     final res = await injector.get<ApiClient>().registerConfirm(data);
+    AppUtils.hideLoading();
     if (res != null) {
       if (res.error != null) {
         AppUtils.showOkDialog(context, res.error!);
         return;
       }
-      AppUtils.showSuccessAlert(context,
-          title: 'Đăng ký thành công!', okTitle: 'Xác nhận', okAction: () {});
+      AppUtils.showSuccessAlert(
+        context,
+        title: 'Đăng ký thành công!',
+        okTitle: 'Xác nhận',
+        okAction: () => _login(res.token!),
+      );
       return;
     }
     AppUtils.showOkDialog(
       context,
       ConstantTitle.please_try_again,
     );
+  }
+
+  _login(String token) async {
+    await injector.get<StorageService>().saveToken(token);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
   }
 
   @override
@@ -81,8 +95,11 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                     maxLines: 1,
                     controller: _nameCtler,
                     validator: (val) {
-                      if (val == '') {
+                      if (val == null || val == '') {
                         return 'Vui lòng nhập tên của bạn';
+                      }
+                      if (val.length < 3) {
+                        return 'Tên của bạn phải tối thiểu 3 ký tự';
                       }
                       return null;
                     },
@@ -99,6 +116,12 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                     hintText: 'Email',
                     maxLines: 1,
                     controller: _emailCtler,
+                    validator: (val) {
+                      if (val != '' && !AppUtils.isValidEmail(val ?? '')) {
+                        return 'Email của bạn không hợp lệ';
+                      }
+                      return null;
+                    },
                     prefixIcon: SvgPicture.asset(
                       ConstantIcons.ic_email,
                       height: 20,
@@ -112,10 +135,13 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                     hintText: 'Nhập mật khẩu*',
                     maxLines: 1,
                     controller: _passCtler,
-                    obscureText: _isShowPass,
+                    obscureText: !_isShowPass,
                     validator: (val) {
-                      if (val == '') {
+                      if (val == null || val == '') {
                         return 'Vui lòng nhập mật khẩu của bạn';
+                      }
+                      if (val.length < 6) {
+                        return 'Mật khẩu của bạn phải có ít nhất 6 ký tự';
                       }
                       return null;
                     },
@@ -142,10 +168,13 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                     hintText: 'Nhập lại mật khẩu*',
                     maxLines: 1,
                     controller: _verifyPassCtler,
-                    obscureText: _isShowVerifyPass,
+                    obscureText: !_isShowVerifyPass,
                     validator: (val) {
-                      if (val == '') {
+                      if (val == null || val == '') {
                         return 'Vui lòng nhập lại mật khẩu bên trên';
+                      }
+                      if (val != _passCtler.text) {
+                        return 'Mật khẩu xác nhận chưa trùng khớp';
                       }
                       return null;
                     },
