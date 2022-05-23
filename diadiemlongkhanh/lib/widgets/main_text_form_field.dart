@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MainTextFormField extends StatelessWidget {
   final String? hintText;
@@ -16,6 +17,8 @@ class MainTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final bool obscureText;
   final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
 
   MainTextFormField({
     this.hintText,
@@ -32,18 +35,23 @@ class MainTextFormField extends StatelessWidget {
     this.controller,
     this.obscureText = false,
     this.validator,
+    this.inputFormatters,
+    this.maxLength,
   });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       style: Theme.of(context).textTheme.bodyText1,
       keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       maxLines: maxLines,
       onChanged: onChanged,
       controller: controller,
       obscureText: obscureText,
+      maxLength: maxLength,
       validator: validator,
       decoration: InputDecoration(
+        counterText: "",
         fillColor: fillColor,
         filled: fillColor != null,
         hintText: hintText,

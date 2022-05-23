@@ -29,8 +29,8 @@ NewFeedModel _$NewFeedModelFromJson(Map<String, dynamic> json) => NewFeedModel()
   ..title = json['title'] as String?
   ..slug = json['slug'] as String?
   ..exploreAt = json['exploreAt'] as String?
-  ..commentCount = json['commentCount'] as int?
-  ..likeCount = json['likeCount'] as int?
+  ..commentCount = json['commentCount'] as int? ?? 0
+  ..likeCount = json['likeCount'] as int? ?? 0
   ..canEdit = json['canEdit'] as bool? ?? false
   ..isLiked = json['isLiked'] as bool? ?? false
   ..author = json['author'] == null

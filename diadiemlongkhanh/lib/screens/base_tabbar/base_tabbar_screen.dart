@@ -70,28 +70,32 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     print('build');
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        floatingActionButton: Container(
-          width: 70,
-          height: 70,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40),
-              boxShadow: [
-                BoxShadow(
-                  color: ColorConstant.green_shadow.withOpacity(0.49),
-                  blurRadius: 16,
-                )
-              ]),
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: FloatingActionButton(
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(RouterName.create_review),
-              backgroundColor: Theme.of(context).primaryColor,
-              child: SvgPicture.asset(ConstantIcons.ic_plus),
+        floatingActionButton: Visibility(
+          visible: !keyboardIsOpened,
+          child: Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorConstant.green_shadow.withOpacity(0.49),
+                    blurRadius: 16,
+                  )
+                ]),
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: FloatingActionButton(
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(RouterName.create_review),
+                backgroundColor: Theme.of(context).primaryColor,
+                child: SvgPicture.asset(ConstantIcons.ic_plus),
+              ),
             ),
           ),
         ),

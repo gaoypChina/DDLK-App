@@ -68,97 +68,101 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 16,
-          ),
-          child: Column(
-            children: [
-              _buildHeaderView(),
-              _buildSearchView(context),
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: _isScroll
-                      ? ScrollPhysics()
-                      : NeverScrollableScrollPhysics(),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 8,
-                      ),
-                      _buildSliderView(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      _buildMenuView(),
-                      SizedBox(
-                        height: 37,
-                      ),
-                      BlocBuilder<HomeCubit, HomeState>(
-                        buildWhen: (previous, current) =>
-                            current is HomeGetPlaceNearDoneState,
-                        builder: (_, state) {
-                          List<PlaceModel> places = [];
-                          if (state is HomeGetPlaceNearDoneState) {
-                            places = state.places;
-                          }
-                          return _buildListHorizontalSingleView(
-                            title: 'Địa điểm gần bạn',
-                            places: places,
-                          );
-                        },
-                      ),
-                      BlocBuilder<HomeCubit, HomeState>(
-                        buildWhen: (previous, current) =>
-                            current is HomeGetPlaceHotDoneState,
-                        builder: (_, state) {
-                          List<PlaceModel> places = [];
-                          if (state is HomeGetPlaceHotDoneState) {
-                            places = state.places;
-                          }
-                          return _buildListHorizontalSingleView(
-                            title: 'Tìm kiếm nhiều nhất',
-                            places: places,
-                          );
-                        },
-                      ),
-                      _buildPromotionListView(),
-                      _buildGridView(context),
-                      Container(
-                        height: 15,
-                        color: ColorConstant.neutral_gray_lightest,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 32),
-                        child: Column(
-                          children: [
-                            _buildHeaderSection(
-                              'Khám phá',
-                              showIcon: false,
-                            ),
-                            _buildListNewFeedsView(),
-                            MainButton(
-                              title: 'KHÁM PHÁ THÊM',
-                              margin: const EdgeInsets.only(
-                                left: 16,
-                                right: 16,
-                                bottom: 30,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                          ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        // resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 16,
+            ),
+            child: Column(
+              children: [
+                _buildHeaderView(),
+                _buildSearchView(context),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: _isScroll
+                        ? ScrollPhysics()
+                        : NeverScrollableScrollPhysics(),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 8,
                         ),
-                      ),
-                    ],
+                        _buildSliderView(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        _buildMenuView(),
+                        SizedBox(
+                          height: 37,
+                        ),
+                        BlocBuilder<HomeCubit, HomeState>(
+                          buildWhen: (previous, current) =>
+                              current is HomeGetPlaceNearDoneState,
+                          builder: (_, state) {
+                            List<PlaceModel> places = [];
+                            if (state is HomeGetPlaceNearDoneState) {
+                              places = state.places;
+                            }
+                            return _buildListHorizontalSingleView(
+                              title: 'Địa điểm gần bạn',
+                              places: places,
+                            );
+                          },
+                        ),
+                        BlocBuilder<HomeCubit, HomeState>(
+                          buildWhen: (previous, current) =>
+                              current is HomeGetPlaceHotDoneState,
+                          builder: (_, state) {
+                            List<PlaceModel> places = [];
+                            if (state is HomeGetPlaceHotDoneState) {
+                              places = state.places;
+                            }
+                            return _buildListHorizontalSingleView(
+                              title: 'Tìm kiếm nhiều nhất',
+                              places: places,
+                            );
+                          },
+                        ),
+                        _buildPromotionListView(),
+                        _buildGridView(context),
+                        Container(
+                          height: 15,
+                          color: ColorConstant.neutral_gray_lightest,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 32),
+                          child: Column(
+                            children: [
+                              _buildHeaderSection(
+                                'Khám phá',
+                                showIcon: false,
+                              ),
+                              _buildListNewFeedsView(),
+                              MainButton(
+                                title: 'KHÁM PHÁ THÊM',
+                                margin: const EdgeInsets.only(
+                                  left: 16,
+                                  right: 16,
+                                  bottom: 30,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -169,10 +173,8 @@ class _HomeScreenState extends State<HomeScreen>
     return BlocBuilder<HomeCubit, HomeState>(
       buildWhen: (previous, current) => current is HomeGetNewFeedsDoneState,
       builder: (_, state) {
-        List<NewFeedModel> newfeeds = [];
-        if (state is HomeGetNewFeedsDoneState) {
-          newfeeds = state.newfeeds;
-        }
+        List<NewFeedModel> newfeeds = _cubit.reviews;
+
         return ListView.builder(
           itemCount: newfeeds.isEmpty ? 5 : newfeeds.length,
           physics: NeverScrollableScrollPhysics(),
@@ -189,7 +191,11 @@ class _HomeScreenState extends State<HomeScreen>
                       RouterName.detail_review,
                       arguments: newfeeds[index],
                     ),
-                    likePressed: () => _cubit.likePost(context),
+                    likePressed: () => _cubit.likePost(
+                      context,
+                      index,
+                    ),
+                    sendComment: (val) => _cubit.sendComment(val, index),
                   );
           },
         );

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 
+import 'interceptor/auth_interceptor.dart';
+
 class DioClient {
   static late Dio _dio;
   static FutureOr<Dio> setup({
@@ -19,7 +21,7 @@ class DioClient {
     _dio = Dio(options);
 
     /// Unified add authentication request header
-    // _dio.interceptors.add(AuthInterceptor());
+    _dio.interceptors.add(AuthInterceptor());
     // _dio.interceptors.add(
     //   RetryOnConnectionChangeInterceptor(
     //     requestRetrier: DioConnectivityRequestRetrier(

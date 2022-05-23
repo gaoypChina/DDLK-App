@@ -19,6 +19,7 @@ class NewFeedItemView extends StatelessWidget {
   final BoxDecoration? decoration;
   final List<CommentModel>? comments;
   final Function()? likePressed;
+  final Function(String)? sendComment;
   NewFeedItemView({
     this.isShowComment = false,
     this.nextToDetail,
@@ -27,8 +28,9 @@ class NewFeedItemView extends StatelessWidget {
     this.decoration,
     this.comments,
     this.likePressed,
+    this.sendComment,
   });
-
+  String comment = '';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -233,11 +235,21 @@ class NewFeedItemView extends StatelessWidget {
               hintText: 'Viết bình luận',
               colorBorder: ColorConstant.neutral_gray_lightest,
               radius: 18,
+              onChanged: (val) {
+                comment = val;
+              },
             ),
           ),
         ),
-        SvgPicture.asset(
-          ConstantIcons.ic_send,
+        GestureDetector(
+          onTap: () {
+            if (sendComment != null) {
+              sendComment!(comment);
+            }
+          },
+          child: SvgPicture.asset(
+            ConstantIcons.ic_send,
+          ),
         )
       ],
     );
@@ -268,7 +280,7 @@ class NewFeedItemView extends StatelessWidget {
                   width: 5,
                 ),
                 Text(
-                  '${item!.likeCount ?? 0} Thích',
+                  '${item!.likeCount} Thích',
                   style: TextStyle(
                     fontSize: 10,
                     color: ColorConstant.neutral_gray,
@@ -289,7 +301,7 @@ class NewFeedItemView extends StatelessWidget {
                   width: 6,
                 ),
                 Text(
-                  '${item!.commentCount ?? 0} Bình luận',
+                  '${item!.commentCount} Bình luận',
                   style: TextStyle(
                     fontSize: 10,
                     color: ColorConstant.neutral_gray,

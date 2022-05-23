@@ -30,8 +30,10 @@ class NewFeedModel {
   String? title;
   String? slug;
   String? exploreAt;
-  int? commentCount;
-  int? likeCount;
+  @JsonKey(defaultValue: 0)
+  late int commentCount;
+  @JsonKey(defaultValue: 0)
+  late int likeCount;
   @JsonKey(defaultValue: false)
   late bool canEdit;
   @JsonKey(defaultValue: false)

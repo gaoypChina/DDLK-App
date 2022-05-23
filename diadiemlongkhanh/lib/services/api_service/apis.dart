@@ -16,4 +16,6 @@ class Apis {
   static const auth_resend_otp = '/auth/resend-otp';
   static const auth_register_confirm = '/auth/register-confirm';
   static const auth_login = '/auth/login';
+  static const comment = '/comment';
+  static const login_with_otp = '/auth/login-with-otp';
 }

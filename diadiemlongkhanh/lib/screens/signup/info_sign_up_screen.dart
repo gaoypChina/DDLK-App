@@ -155,7 +155,7 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                         });
                       },
                       child: SvgPicture.asset(
-                        _isShowPass
+                        !_isShowPass
                             ? ConstantIcons.ic_eye_off
                             : ConstantIcons.ic_eye,
                       ),
@@ -188,7 +188,7 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                         });
                       },
                       child: SvgPicture.asset(
-                        _isShowVerifyPass
+                        !_isShowVerifyPass
                             ? ConstantIcons.ic_eye_off
                             : ConstantIcons.ic_eye,
                       ),

@@ -41,6 +41,5 @@ class HomeGetPlaceNewDoneState extends HomeState {
 }
 
 class HomeGetNewFeedsDoneState extends HomeState {
-  final List<NewFeedModel> newfeeds;
-  HomeGetNewFeedsDoneState(this.newfeeds);
+  HomeGetNewFeedsDoneState();
 }

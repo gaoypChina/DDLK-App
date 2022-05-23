@@ -20,6 +20,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   int subCategoryIndex = 0;
   List<CategoryModel> subCategories = [];
+  List<NewFeedModel> reviews = [];
 
   getSlides() async {
     final res = await injector.get<ApiClient>().getSlides();
@@ -46,7 +47,10 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  likePost(BuildContext context) async {
+  likePost(
+    BuildContext context,
+    int index,
+  ) async {
     final token = await injector.get<StorageService>().getToken();
     if (token == null) {
       Navigator.of(context).pushNamed(
@@ -54,6 +58,38 @@ class HomeCubit extends Cubit<HomeState> {
         arguments: true,
       );
       return;
+    }
+    if (!reviews[index].isLiked) {
+      final res =
+          await injector.get<ApiClient>().likeReview(reviews[index].id ?? '');
+      if (res != null && res.success == true) {
+        reviews[index].isLiked = true;
+        reviews[index].likeCount += 1;
+        emit(HomeGetNewFeedsDoneState());
+      }
+    } else {
+      final res =
+          await injector.get<ApiClient>().unLikeReview(reviews[index].id ?? '');
+      if (res != null && res.success == true) {
+        reviews[index].isLiked = false;
+        reviews[index].likeCount -= 1;
+        emit(HomeGetNewFeedsDoneState());
+      }
+    }
+  }
+
+  sendComment(
+    String val,
+    int index,
+  ) async {
+    final data = {
+      'review': reviews[index].id,
+      'content': val,
+    };
+    final res = await injector.get<ApiClient>().commentReview(data);
+    if (res != null) {
+      reviews[index].commentCount += 1;
+      emit(HomeGetNewFeedsDoneState());
     }
   }
 
@@ -100,7 +136,8 @@ class HomeCubit extends Cubit<HomeState> {
   getNewFeeds() async {
     final res = await injector.get<ApiClient>().getExploresNew();
     if (res != null) {
-      emit(HomeGetNewFeedsDoneState(res));
+      reviews = res;
+      emit(HomeGetNewFeedsDoneState());
     }
   }
 }

@@ -134,7 +134,7 @@ class ListReviewView extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                '${item.likeCount ?? 0} Thích',
+                '${item.likeCount} Thích',
                 style: TextStyle(
                   fontSize: 10,
                   color: ColorConstant.neutral_gray,
@@ -152,7 +152,7 @@ class ListReviewView extends StatelessWidget {
                 width: 6,
               ),
               Text(
-                '${item.commentCount ?? 0} Bình luận',
+                '${item.commentCount} Bình luận',
                 style: TextStyle(
                   fontSize: 10,
                   color: ColorConstant.neutral_gray,

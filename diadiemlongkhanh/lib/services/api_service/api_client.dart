@@ -88,4 +88,12 @@ abstract class ApiClient {
   Future<AuthResponse?> registerConfirm(@Body() data);
   @POST(Apis.auth_login)
   Future<AuthResponse?> loginBasic(@Body() data);
+  @POST('${Apis.review}/{id}/like')
+  Future<AuthResponse?> likeReview(@Path() String id);
+  @DELETE('${Apis.review}/{id}/like')
+  Future<AuthResponse?> unLikeReview(@Path() String id);
+  @POST('${Apis.comment}')
+  Future<CommentModel?> commentReview(@Body() data);
+  @POST(Apis.login_with_otp)
+  Future<AuthResponse?> loginWithOtp(@Body() data);
 }

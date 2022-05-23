@@ -1,12 +1,15 @@
+import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
-import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
-import 'package:diadiemlongkhanh/widgets/phone_form_field.dart';
-import 'package:diadiemlongkhanh/widgets/segment_login_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,22 +18,64 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _phoneCtler = TextEditingController();
+  final _passCtler = TextEditingController();
+  bool _isShowPass = false;
+  final _formKey = GlobalKey<FormState>();
+
+  _login() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    FocusScope.of(context).unfocus();
+    AppUtils.showLoading();
+    final data = {
+      'phone': _phoneCtler.text,
+      'password': _passCtler.text,
+    };
+    final res = await injector.get<ApiClient>().loginBasic(data);
+    AppUtils.hideLoading();
+    if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!);
+        return;
+      }
+      if (res.token != null) {
+        await injector.get<StorageService>().saveToken(res.token!);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
+        return;
+      }
+    }
+    AppUtils.showOkDialog(
+      context,
+      ConstantTitle.please_try_again,
+    );
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: MyAppBar(
-          title: 'Đăng nhập',
-          isShowBgBackButton: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              _buildLoginWithEmailView(),
-            ],
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: MyAppBar(
+            title: 'Đăng nhập',
+            isShowBgBackButton: true,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  _buildLoginWithEmailView(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -44,8 +89,21 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           MainTextFormField(
             hintText: 'Nhập số điện thoại',
+            controller: _phoneCtler,
+            maxLines: 1,
+            keyboardType: TextInputType.phone,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            ],
+            maxLength: 11,
+            validator: (val) {
+              if (val == null || val == '') {
+                return 'Vui lòng nhập số điện thoại của bạn';
+              }
+              return null;
+            },
             prefixIcon: SvgPicture.asset(
-              ConstantIcons.ic_mail,
+              ConstantIcons.ic_user,
             ),
           ),
           SizedBox(
@@ -53,11 +111,30 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           MainTextFormField(
             hintText: 'Nhập mật khẩu ',
+            controller: _passCtler,
+            maxLines: 1,
+            obscureText: !_isShowPass,
+            validator: (val) {
+              if (val == null || val == '') {
+                return 'Vui lòng nhập mật khẩu của bạn';
+              }
+              if (val.length < 6) {
+                return 'Mật khẩu của bạn phải có ít nhất 6 ký tự';
+              }
+              return null;
+            },
             prefixIcon: SvgPicture.asset(
               ConstantIcons.ic_lock,
             ),
-            suffixIcon: SvgPicture.asset(
-              ConstantIcons.ic_eye_off,
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _isShowPass = !_isShowPass;
+                });
+              },
+              child: SvgPicture.asset(
+                !_isShowPass ? ConstantIcons.ic_eye_off : ConstantIcons.ic_eye,
+              ),
             ),
           ),
           SizedBox(
@@ -83,8 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 32,
           ),
           MainButton(
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                RouterName.base_tabbar, (route) => false),
+            onPressed: _login,
             title: 'Đăng nhập',
             color: Theme.of(context).primaryColor,
             textColor: Colors.white,
