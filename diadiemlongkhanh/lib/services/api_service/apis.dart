@@ -18,4 +18,7 @@ class Apis {
   static const auth_login = '/auth/login';
   static const comment = '/comment';
   static const login_with_otp = '/auth/login-with-otp';
+  static const login_with_otp_confirm = '/auth/login-with-otp-confirm';
+  static const recover = '/auth/recover';
+  static const recover_confirm = '/auth/recover-confirm';
 }

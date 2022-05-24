@@ -45,7 +45,7 @@ class _OptionLoginScreenState extends State<OptionLoginScreen> {
                 height: 8,
               ),
               Text(
-                'Đăng nhập để theo dõi bài viết và thông báo,\nlorem isum lorem isum lorem isum',
+                'Đăng nhập để theo dõi bài viết và thông báo',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.subtitle1,
               ),

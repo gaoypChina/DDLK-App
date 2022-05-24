@@ -5,6 +5,7 @@ import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/my_back_button.dart';
 import 'package:flutter/foundation.dart';
@@ -15,8 +16,10 @@ class VerifyPhoneScreen extends StatefulWidget {
   const VerifyPhoneScreen({
     Key? key,
     required this.phone,
+    this.verifyType = VerifyPhoneType.signup,
   }) : super(key: key);
   final String phone;
+  final VerifyPhoneType verifyType;
 
   @override
   _VerifyPhoneScreenState createState() => _VerifyPhoneScreenState();
@@ -70,6 +73,32 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
       }
     }
     AppUtils.showOkDialog(context, ConstantTitle.please_try_again);
+  }
+
+  _login(String val) async {
+    AppUtils.showLoading();
+    final data = {
+      "phone": widget.phone,
+      "otp": val,
+    };
+    final res = await injector.get<ApiClient>().loginWithOtpConfirm(data);
+    AppUtils.hideLoading();
+    if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!);
+        return;
+      }
+      if (res.token != null) {
+        await injector.get<StorageService>().saveToken(res.token!);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
+        return;
+      }
+    }
+    AppUtils.showOkDialog(
+      context,
+      ConstantTitle.please_try_again,
+    );
   }
 
   @override
@@ -152,13 +181,25 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
 
               onCompleted: (v) {
                 print("Completed");
-                Navigator.of(context).pushNamed(
-                  RouterName.info_signup,
-                  arguments: {
-                    'phone': widget.phone,
-                    'otp': v,
-                  },
-                );
+                if (widget.verifyType == VerifyPhoneType.signup) {
+                  Navigator.of(context).pushNamed(
+                    RouterName.info_signup,
+                    arguments: {
+                      'phone': widget.phone,
+                      'otp': v,
+                    },
+                  );
+                } else if (widget.verifyType == VerifyPhoneType.login) {
+                  _login(v);
+                } else {
+                  Navigator.of(context).pushNamed(
+                    RouterName.reset_password,
+                    arguments: {
+                      'phone': widget.phone,
+                      'otp': v,
+                    },
+                  );
+                }
               },
               // onTap: () {
               //   print("Pressed");
@@ -203,4 +244,10 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
       ),
     );
   }
+}
+
+enum VerifyPhoneType {
+  signup,
+  login,
+  resetPass,
 }

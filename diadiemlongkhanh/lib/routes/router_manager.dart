@@ -54,12 +54,21 @@ class RouterManager {
         );
       case RouterName.verify_phone:
         String phone = '';
+        VerifyPhoneType type = VerifyPhoneType.signup;
+
         if (settings.arguments != null) {
-          phone = settings.arguments as String;
+          final arg = settings.arguments as Map;
+          if (arg['phone'] != null) {
+            phone = arg['phone'] as String;
+          }
+          if (arg['type'] != null) {
+            type = arg['type'] as VerifyPhoneType;
+          }
         }
         return MaterialPageRoute(
           builder: (_) => VerifyPhoneScreen(
             phone: phone,
+            verifyType: type,
           ),
         );
       case RouterName.forgot_password:
@@ -67,12 +76,22 @@ class RouterManager {
           builder: (_) => ForgotPasswordScreen(),
         );
       case RouterName.reset_password:
-        bool isReset = true;
+        String otp = '';
+        String phone = '';
         if (settings.arguments != null) {
-          isReset = settings.arguments as bool;
+          final arg = settings.arguments as Map;
+          if (arg['phone'] != null) {
+            phone = arg['phone'] as String;
+          }
+          if (arg['otp'] != null) {
+            otp = arg['otp'] as String;
+          }
         }
         return MaterialPageRoute(
-          builder: (_) => ResetPasswordScreen(isReset),
+          builder: (_) => ResetPasswordScreen(
+            otp: otp,
+            phone: phone,
+          ),
         );
       case RouterName.signup:
         return MaterialPageRoute(

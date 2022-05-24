@@ -96,4 +96,10 @@ abstract class ApiClient {
   Future<CommentModel?> commentReview(@Body() data);
   @POST(Apis.login_with_otp)
   Future<AuthResponse?> loginWithOtp(@Body() data);
+  @POST(Apis.login_with_otp_confirm)
+  Future<AuthResponse?> loginWithOtpConfirm(@Body() data);
+  @POST(Apis.recover)
+  Future<AuthResponse?> forgotPassword(@Body() data);
+  @POST(Apis.recover_confirm)
+  Future<AuthResponse?> resetPassword(@Body() data);
 }

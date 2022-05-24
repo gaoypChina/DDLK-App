@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/screens/verify_phone/verify_phone_screen.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
@@ -42,7 +43,10 @@ class _SignupScreenState extends State<SignupScreen> {
     if (kDebugMode) {
       Navigator.of(context).pushNamed(
         RouterName.verify_phone,
-        arguments: _controller.text,
+        arguments: {
+          'phone': _controller.text,
+          'type': VerifyPhoneType.signup,
+        },
       );
       return;
     }

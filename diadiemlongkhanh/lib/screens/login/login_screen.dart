@@ -51,7 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
       context,
       ConstantTitle.please_try_again,
     );
-    return;
   }
 
   @override
