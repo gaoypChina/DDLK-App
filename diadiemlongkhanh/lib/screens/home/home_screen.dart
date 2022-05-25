@@ -187,6 +187,8 @@ class _HomeScreenState extends State<HomeScreen>
                   )
                 : NewFeedItemView(
                     item: newfeeds[index],
+                    isShowComment:
+                        injector.get<StorageService>().getToken() != null,
                     nextToDetail: () => Navigator.of(context).pushNamed(
                       RouterName.detail_review,
                       arguments: newfeeds[index],
@@ -195,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen>
                       context,
                       index,
                     ),
-                    sendComment: (val) => _cubit.sendComment(val, index),
+                    sendComment: () => _cubit.sendComment(index),
                   );
           },
         );

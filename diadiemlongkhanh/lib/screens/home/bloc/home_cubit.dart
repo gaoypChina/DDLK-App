@@ -79,16 +79,16 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   sendComment(
-    String val,
     int index,
   ) async {
     final data = {
       'review': reviews[index].id,
-      'content': val,
+      'content': reviews[index].controller?.text ?? '',
     };
     final res = await injector.get<ApiClient>().commentReview(data);
     if (res != null) {
       reviews[index].commentCount += 1;
+      reviews[index].controller?.text = '';
       emit(HomeGetNewFeedsDoneState());
     }
   }
@@ -137,6 +137,9 @@ class HomeCubit extends Cubit<HomeState> {
     final res = await injector.get<ApiClient>().getExploresNew();
     if (res != null) {
       reviews = res;
+      reviews.forEach((e) {
+        e.controller = TextEditingController();
+      });
       emit(HomeGetNewFeedsDoneState());
     }
   }

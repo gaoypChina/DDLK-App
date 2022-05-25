@@ -3,6 +3,7 @@ import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/thumnail/thumbnail_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/full_image_view.dart';
@@ -19,7 +20,8 @@ class NewFeedItemView extends StatelessWidget {
   final BoxDecoration? decoration;
   final List<CommentModel>? comments;
   final Function()? likePressed;
-  final Function(String)? sendComment;
+  final Function()? sendComment;
+
   NewFeedItemView({
     this.isShowComment = false,
     this.nextToDetail,
@@ -74,10 +76,8 @@ class NewFeedItemView extends StatelessWidget {
           _buildPhotosView(context),
           _buildInfoView(context),
           _buildBehaviorView(),
-          SizedBox(
-            height: 16,
-          ),
-          _buildInputCommentField(),
+
+          isShowComment ? _buildInputCommentField(context) : SizedBox.shrink(),
           comments != null ? _buildListCommentView(context) : SizedBox.shrink(),
           // SizedBox(
           //   height: (item!.commentCount ?? 0) > 0 ? 24 : 0,
@@ -215,43 +215,48 @@ class NewFeedItemView extends StatelessWidget {
     );
   }
 
-  Row _buildInputCommentField() {
-    return Row(
-      children: [
-        ClipRRectImage(
-          radius: 18,
-          url:
-              'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
-          width: 36,
-          height: 36,
-        ),
-        SizedBox(
-          width: 8,
-        ),
-        Expanded(
-          child: SizedBox(
+  Widget _buildInputCommentField(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Row(
+        children: [
+          ClipRRectImage(
+            radius: 18,
+            url:
+                'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
+            width: 36,
             height: 36,
-            child: MainTextFormField(
-              hintText: 'Viết bình luận',
-              colorBorder: ColorConstant.neutral_gray_lightest,
-              radius: 18,
-              onChanged: (val) {
-                comment = val;
-              },
+          ),
+          SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 36,
+              child: MainTextFormField(
+                hintText: 'Viết bình luận',
+                controller: item!.controller,
+                colorBorder: ColorConstant.neutral_gray_lightest,
+                radius: 18,
+                onChanged: (val) {
+                  comment = val;
+                },
+              ),
             ),
           ),
-        ),
-        GestureDetector(
-          onTap: () {
-            if (sendComment != null) {
-              sendComment!(comment);
-            }
-          },
-          child: SvgPicture.asset(
-            ConstantIcons.ic_send,
-          ),
-        )
-      ],
+          GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+              if (sendComment != null) {
+                sendComment!();
+              }
+            },
+            child: SvgPicture.asset(
+              ConstantIcons.ic_send,
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -315,116 +320,120 @@ class NewFeedItemView extends StatelessWidget {
     );
   }
 
-  Container _buildInfoView(BuildContext context) {
-    return Container(
-      height: 82,
-      margin: const EdgeInsets.only(top: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: ColorConstant.neutral_gray_lightest,
+  Widget _buildInfoView(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.of(context)
+          .pushNamed(RouterName.detail_place, arguments: item?.place?.id),
+      child: Container(
+        height: 82,
+        margin: const EdgeInsets.only(top: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: ColorConstant.neutral_gray_lightest,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.16),
+            ),
+            BoxShadow(
+              color: Colors.white,
+              blurRadius: 16.0,
+            ),
+          ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.16),
-          ),
-          BoxShadow(
-            color: Colors.white,
-            blurRadius: 16.0,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          ClipRRectImage(
-            radius: 4,
-            url: AppUtils.getUrlImage(
-              item!.place?.avatar?.path ?? '',
+        child: Row(
+          children: [
+            ClipRRectImage(
+              radius: 4,
+              url: AppUtils.getUrlImage(
+                item!.place?.avatar?.path ?? '',
+                width: 64,
+                height: 64,
+              ),
               width: 64,
               height: 64,
             ),
-            width: 64,
-            height: 64,
-          ),
-          SizedBox(
-            width: 8,
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        item!.place?.name ?? '',
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      AppUtils.getDistance(item!.place?.distance ?? 0) > 0
-                          ? 'Cách ${AppUtils.getDistance(item!.place?.distance ?? 0)}km '
-                          : '',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: ColorConstant.neutral_gray,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      ConstantIcons.ic_marker_grey,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      item!.place?.address?.specific ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 10,
-                          color: ColorConstant.neutral_gray_lighter),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      AppUtils.roundedRating(item!.place?.avgRate ?? 0)
-                          .toString(),
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: ColorConstant.neutral_gray_lighter,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    MyRatingBar(
-                      rating: item!.place?.avgRate ?? 0,
-                      onRatingUpdate: (rate, isEmpty) {},
-                    ),
-                  ],
-                ),
-              ],
+            SizedBox(
+              width: 8,
             ),
-          ),
-        ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          item!.place?.name ?? '',
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        AppUtils.getDistance(item!.place?.distance ?? 0) > 0
+                            ? 'Cách ${AppUtils.getDistance(item!.place?.distance ?? 0)}km '
+                            : '',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: ColorConstant.neutral_gray,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        ConstantIcons.ic_marker_grey,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        item!.place?.address?.specific ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: ColorConstant.neutral_gray_lighter),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        AppUtils.roundedRating(item!.place?.avgRate ?? 0)
+                            .toString(),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: ColorConstant.neutral_gray_lighter,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 7,
+                      ),
+                      MyRatingBar(
+                        rating: item!.place?.avgRate ?? 0,
+                        onRatingUpdate: (rate, isEmpty) {},
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

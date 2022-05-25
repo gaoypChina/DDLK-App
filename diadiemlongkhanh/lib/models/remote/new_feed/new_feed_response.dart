@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/thumnail/thumbnail_model.dart';
 import 'package:diadiemlongkhanh/models/remote/user/user_response.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'new_feed_response.g.dart';
@@ -39,6 +40,8 @@ class NewFeedModel {
   @JsonKey(defaultValue: false)
   late bool isLiked;
   UserModel? author;
+  @JsonKey(ignore: true)
+  TextEditingController? controller;
 
   NewFeedModel();
   factory NewFeedModel.fromJson(Map<String, dynamic> json) =>
