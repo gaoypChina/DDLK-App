@@ -19,7 +19,8 @@ class CommentModel {
   String? createdAt;
   @JsonKey(defaultValue: false)
   late bool canEdit;
-  int? likeCount;
+  @JsonKey(defaultValue: 0)
+  late int likeCount;
   @JsonKey(defaultValue: false)
   late bool isLiked;
 

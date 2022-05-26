@@ -895,7 +895,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                       place.rate?.view ?? 0,
                     ),
                     _buildReviewItem(
-                      'Đồ uống',
+                      'Ăn uống',
                       place.rate?.drink ?? 0,
                     ),
                     _buildReviewItem(

@@ -3,6 +3,8 @@ import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/bloc/new_feed_cubit.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_newfeed.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,6 +78,8 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                             RouterName.detail_review,
                             arguments: _cubit.newfeeds[index],
                           ),
+                          isShowComment:
+                              injector.get<StorageService>().getToken() != null,
                         );
                 },
               );

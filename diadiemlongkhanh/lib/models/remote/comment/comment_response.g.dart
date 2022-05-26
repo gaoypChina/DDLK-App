@@ -17,7 +17,7 @@ CommentModel _$CommentModelFromJson(Map<String, dynamic> json) => CommentModel()
       : UserModel.fromJson(json['author'] as Map<String, dynamic>)
   ..createdAt = json['createdAt'] as String?
   ..canEdit = json['canEdit'] as bool? ?? false
-  ..likeCount = json['likeCount'] as int?
+  ..likeCount = json['likeCount'] as int? ?? 0
   ..isLiked = json['isLiked'] as bool? ?? false;
 
 Map<String, dynamic> _$CommentModelToJson(CommentModel instance) =>

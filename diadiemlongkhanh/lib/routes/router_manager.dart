@@ -7,6 +7,7 @@ import 'package:diadiemlongkhanh/screens/forgot_password/reset_password_screen.d
 import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
+import 'package:diadiemlongkhanh/screens/map_places/map_places_screen.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/detail_review_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/detail_notification_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/notification_screen.dart';
@@ -174,6 +175,10 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => DetailNotificationScreen(),
         );
+      case RouterName.map_places:
+        return MaterialPageRoute(
+          builder: (_) => MapPlacesSreen(),
+        );
       case RouterName.detail_place:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -250,4 +255,5 @@ class RouterName {
   static const search = '/search';
   static const detail_review = '/detail_review';
   static const info_signup = '/info_signup';
+  static const map_places = '/map_places';
 }

@@ -17,6 +17,11 @@ class CreateReviewScreen extends StatefulWidget {
 }
 
 class _CreateReviewScreenState extends State<CreateReviewScreen> {
+  double _position = 5;
+  double _view = 5;
+  double _foodDrink = 5;
+  double _service = 5;
+  double _price = 5;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,24 +170,69 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
           children: [
             _buildListRatingView(
               '1. Vị trí',
-              rating: 1,
+              rating: _position,
+              onRatingUpdate: (rate, isEmpty) {
+                setState(() {
+                  if (!isEmpty && rate > 1) {
+                    _position = rate - 1;
+                  } else {
+                    _position = rate.toDouble();
+                  }
+                });
+              },
             ),
             _buildListRatingView(
               '2. Không gian',
-              rating: 2,
+              rating: _view,
+              onRatingUpdate: (rate, isEmpty) {
+                setState(() {
+                  if (!isEmpty && rate > 1) {
+                    _view = rate - 1;
+                  } else {
+                    _view = rate.toDouble();
+                  }
+                });
+              },
             ),
             _buildListRatingView(
               '3. Ăn uống',
-              rating: 3,
+              rating: _foodDrink,
+              onRatingUpdate: (rate, isEmpty) {
+                setState(() {
+                  if (!isEmpty && rate > 1) {
+                    _foodDrink = rate - 1;
+                  } else {
+                    _foodDrink = rate.toDouble();
+                  }
+                });
+              },
             ),
             _buildListRatingView(
               '4. Dịch vụ',
-              rating: 4,
+              rating: _service,
+              onRatingUpdate: (rate, isEmpty) {
+                setState(() {
+                  if (!isEmpty && rate > 1) {
+                    _service = rate - 1;
+                  } else {
+                    _service = rate.toDouble();
+                  }
+                });
+              },
             ),
             _buildListRatingView(
               '5. Giá cả',
-              rating: 5,
+              rating: _price,
               isBottomLine: false,
+              onRatingUpdate: (rate, isEmpty) {
+                setState(() {
+                  if (!isEmpty && rate > 1) {
+                    _price = rate - 1;
+                  } else {
+                    _price = rate.toDouble();
+                  }
+                });
+              },
             ),
           ],
         ),
@@ -194,6 +244,7 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
     String title, {
     double rating = 1,
     bool isBottomLine = true,
+    required Function(int, bool) onRatingUpdate,
   }) {
     return Container(
       height: 112,
@@ -233,7 +284,7 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
           ),
           MyRatingBar(
             rating: rating,
-            onRatingUpdate: (rate, isEmpty) {},
+            onRatingUpdate: onRatingUpdate,
             emptyStar: SvgPicture.asset(ConstantIcons.ic_big_empty_star),
             fillStar: SvgPicture.asset(ConstantIcons.ic_big_fill_star),
           )

@@ -31,6 +31,7 @@ abstract class BaseConfig {
   String get apiHost;
   String get nameEnv;
   String get domain;
+  String get mapAccessToken;
 }
 
 class DevConfig implements BaseConfig {
@@ -38,6 +39,9 @@ class DevConfig implements BaseConfig {
   String get nameEnv => 'DEV';
 
   String get domain => 'http://45.32.58.54:8500/';
+
+  String get mapAccessToken =>
+      'sk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsM2EyZmFxdzAxZ3Izam5yNnFtNGtpczUifQ.ryFpOtTHwwRp7L25_o4j6A';
 }
 
 class ProdConfig implements BaseConfig {
@@ -45,4 +49,6 @@ class ProdConfig implements BaseConfig {
   String get nameEnv => 'PROD';
 
   String get domain => 'http://45.32.58.54:8500/';
+  String get mapAccessToken =>
+      'sk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsM2EyZmFxdzAxZ3Izam5yNnFtNGtpczUifQ.ryFpOtTHwwRp7L25_o4j6A';
 }

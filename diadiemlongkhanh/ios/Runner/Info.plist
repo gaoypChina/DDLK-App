@@ -24,14 +24,18 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<key>MBXAccessToken</key>
+	<string>sk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsM2EyZmFxdzAxZ3Izam5yNnFtNGtpczUifQ.ryFpOtTHwwRp7L25_o4j6A</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Để gợi ý địa điểm ở gần vị trí của bạn</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Để gợi ý địa điểm ở gần vị trí của bạn</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIStatusBarHidden</key>
+	<false/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -46,8 +50,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-	<key>UIStatusBarHidden</key>
 	<false/>
 </dict>
 </plist>

@@ -21,6 +21,7 @@ class NewFeedItemView extends StatelessWidget {
   final List<CommentModel>? comments;
   final Function()? likePressed;
   final Function()? sendComment;
+  final Function(int)? likeComment;
 
   NewFeedItemView({
     this.isShowComment = false,
@@ -31,6 +32,7 @@ class NewFeedItemView extends StatelessWidget {
     this.comments,
     this.likePressed,
     this.sendComment,
+    this.likeComment,
   });
   String comment = '';
   @override
@@ -176,22 +178,31 @@ class NewFeedItemView extends StatelessWidget {
                         SizedBox(
                           width: 17,
                         ),
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              ConstantIcons.ic_heart_outline,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              '6 Thích',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: ColorConstant.neutral_gray,
+                        GestureDetector(
+                          onTap: () {
+                            if (likeComment != null) {
+                              likeComment!(index);
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                item.isLiked
+                                    ? ConstantIcons.ic_heart
+                                    : ConstantIcons.ic_heart_outline,
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                '${item.likeCount} Thích',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: ColorConstant.neutral_gray,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           width: 16,

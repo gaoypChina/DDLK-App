@@ -102,4 +102,8 @@ abstract class ApiClient {
   Future<AuthResponse?> forgotPassword(@Body() data);
   @POST(Apis.recover_confirm)
   Future<AuthResponse?> resetPassword(@Body() data);
+  @POST('${Apis.comment}/{id}/like')
+  Future<AuthResponse?> likeCommentReview(@Path() String id);
+  @DELETE('${Apis.comment}/{id}/like')
+  Future<AuthResponse?> unlikeCommentReview(@Path() String id);
 }
