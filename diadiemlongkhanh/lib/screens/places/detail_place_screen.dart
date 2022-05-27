@@ -177,6 +177,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             }
             return Column(
               children: [
+                _buildContactView(),
                 _buildConveniencesView(place),
                 _buildRatingView(place),
                 _buildRangePriceView(place),
@@ -910,6 +911,75 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 )
         ],
       ),
+    );
+  }
+
+  Widget _buildContactView() {
+    return BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
+      buildWhen: (previous, current) => current is DetailPlaceGetDoneState,
+      builder: (_, state) {
+        return Container(
+          height: 50,
+          margin: const EdgeInsets.only(
+            top: 16,
+            left: 16,
+            right: 16,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(0, 12),
+                blurRadius: 24,
+                color: ColorConstant.grey_shadow.withOpacity(0.08),
+              )
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Liên hệ',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              _cubit.place != null && _cubit.place!.phone != null
+                  ? InkWell(
+                      onTap: () => _cubit.makePhoneCall(),
+                      child: Container(
+                        height: 32,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              ConstantIcons.ic_book_contact,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Gọi điện',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
+            ],
+          ),
+        );
+      },
     );
   }
 

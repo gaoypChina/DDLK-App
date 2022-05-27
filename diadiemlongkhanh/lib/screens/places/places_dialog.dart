@@ -17,9 +17,9 @@ class _PlacesDialogState extends State<PlacesDialog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.black.withOpacity(0.6),
       body: Container(
-        margin: const EdgeInsets.only(top: 30),
+        margin: const EdgeInsets.only(top: 50),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -59,12 +59,12 @@ class _PlacesDialogState extends State<PlacesDialog> {
                             height: 20,
                           ),
                         ),
-                        Text(
-                          'Thêm mới',
-                          style: Theme.of(context).textTheme.headline4?.apply(
-                                color: Theme.of(context).primaryColor,
-                              ),
-                        ),
+                        // Text(
+                        //   'Thêm mới',
+                        //   style: Theme.of(context).textTheme.headline4?.apply(
+                        //         color: Theme.of(context).primaryColor,
+                        //       ),
+                        // ),
                       ],
                     ),
                   ],

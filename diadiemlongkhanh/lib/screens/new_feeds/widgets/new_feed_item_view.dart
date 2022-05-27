@@ -207,13 +207,13 @@ class NewFeedItemView extends StatelessWidget {
                         SizedBox(
                           width: 16,
                         ),
-                        Text(
-                          'Trả lời',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: ColorConstant.neutral_gray,
-                          ),
-                        ),
+                        // Text(
+                        //   'Trả lời',
+                        //   style: TextStyle(
+                        //     fontSize: 10,
+                        //     color: ColorConstant.neutral_gray,
+                        //   ),
+                        // ),
                       ],
                     )
                   ],

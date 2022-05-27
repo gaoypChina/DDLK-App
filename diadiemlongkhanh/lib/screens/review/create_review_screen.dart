@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/places/places_dialog.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
@@ -312,9 +313,9 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
   Widget _buildPlaceSelectionView() {
     return InkWell(
       onTap: () {
-        showDialog(
-          context: context,
-          builder: (_) => PlacesDialog(),
+        AppUtils.showBottomDialog(
+          context,
+          PlacesDialog(),
         );
       },
       child: DottedBorder(

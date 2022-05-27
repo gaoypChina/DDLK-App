@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:diadiemlongkhanh/config/env_config.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
@@ -16,7 +17,7 @@ import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Environment().initConfig(Environment.DEV);
-  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+  HttpOverrides.global = MyHttpOverrides();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Colors.white, // Color for Android
       statusBarBrightness:
@@ -116,5 +117,15 @@ class _MyAppState extends State<MyApp> {
       initialRoute: RouterName.base_tabbar,
       builder: EasyLoading.init(),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..maxConnectionsPerHost = 5
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

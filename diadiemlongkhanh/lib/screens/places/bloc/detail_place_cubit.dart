@@ -4,6 +4,7 @@ import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 part 'detail_place_state.dart';
@@ -23,6 +24,14 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
     } catch (error) {
       print(error);
     }
+  }
+
+  Future<void> makePhoneCall() async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: place?.phone ?? '',
+    );
+    await launchUrl(launchUri);
   }
 
   getReviews() async {
