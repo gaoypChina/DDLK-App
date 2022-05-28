@@ -14,6 +14,8 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
   String id;
   List<NewFeedModel> reviews = [];
   PlaceModel? place;
+  bool isVisible = false;
+  bool isVisibleAppBar = true;
   getDetail() async {
     try {
       final res = await injector.get<ApiClient>().getDetailPlace(id);
@@ -24,6 +26,16 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
     } catch (error) {
       print(error);
     }
+  }
+
+  showAppBar(bool visible) {
+    isVisibleAppBar = visible;
+    emit(DetailPlaceShowAppBarState());
+  }
+
+  showMenu(bool visible) {
+    isVisible = visible;
+    emit(DetailPlaceShowMenuState());
   }
 
   Future<void> makePhoneCall() async {

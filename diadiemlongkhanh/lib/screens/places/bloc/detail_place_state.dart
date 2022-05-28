@@ -18,3 +18,11 @@ class DetailPlaceChangePagePhotoState extends DetailPlaceState {
   final int index;
   DetailPlaceChangePagePhotoState(this.index);
 }
+
+class DetailPlaceShowAppBarState extends DetailPlaceState {
+  DetailPlaceShowAppBarState();
+}
+
+class DetailPlaceShowMenuState extends DetailPlaceState {
+  DetailPlaceShowMenuState();
+}

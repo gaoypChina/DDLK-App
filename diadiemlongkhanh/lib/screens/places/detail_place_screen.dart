@@ -29,8 +29,7 @@ class DetailPlaceScreen extends StatefulWidget {
 
 class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
   ScrollController scrollController = new ScrollController();
-  bool isVisible = false;
-  bool isVisibleContact = true;
+
   int _currentIndex = 0;
   DetailPlaceCubit get _cubit => BlocProvider.of(context);
   List<String> tabMenu = [
@@ -43,7 +42,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
   @override
   void initState() {
     super.initState();
-    // _handleListenerScroll();
+    _handleListenerScroll();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _cubit.getDetail();
       _cubit.getReviews();
@@ -53,43 +52,47 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
   _handleListenerScroll() {
     scrollController.addListener(() {
       if (scrollController.offset <= 598) {
-        if (!isVisibleContact) {
+        if (!_cubit.isVisibleAppBar) {
           print(scrollController.offset);
-          setState(() {
-            isVisibleContact = true;
-          });
+          _cubit.showAppBar(true);
+          // setState(() {
+          //   isVisibleAppBar = true;
+          // });
         }
-        if (isVisible) {
+        if (_cubit.isVisible) {
           print(scrollController.offset);
-          setState(() {
-            isVisible = false;
-          });
+          _cubit.showMenu(false);
+          // setState(() {
+          //   isVisible = false;
+          // });
         }
       } else {
-        if (isVisibleContact) {
+        if (_cubit.isVisibleAppBar) {
           print(scrollController.offset);
-          setState(() {
-            isVisibleContact = false;
-          });
+          _cubit.showAppBar(false);
+          // setState(() {
+          //   isVisibleAppBar = false;
+          // });
         }
-        if (!isVisible) {
+        if (!_cubit.isVisible) {
           print(scrollController.offset);
-          setState(() {
-            isVisible = true;
-          });
+          _cubit.showMenu(true);
+          // setState(() {
+          //   isVisible = true;
+          // });
         }
-        if (isVisible) {
-          if (scrollController.offset > 614 && scrollController.offset <= 813) {
-            setState(() {
-              _currentIndex = 0;
-            });
-          } else if (scrollController.offset > 1027 &&
-              scrollController.offset <= 1171) {
-            setState(() {
-              _currentIndex = 1;
-            });
-          }
-        }
+        // if (_cubit.isVisible) {
+        //   if (scrollController.offset > 614 && scrollController.offset <= 813) {
+        //     setState(() {
+        //       _currentIndex = 0;
+        //     });
+        //   } else if (scrollController.offset > 1027 &&
+        //       scrollController.offset <= 1171) {
+        //     setState(() {
+        //       _currentIndex = 1;
+        //     });
+        //   }
+        // }
       }
     });
   }
@@ -276,50 +279,68 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Positioned _buildAppBarView(BuildContext context) {
-    return Positioned(
-      top: 12,
-      left: 16,
-      right: 16,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        height: isVisibleContact ? 36.0 : 0.0,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MyBackButton(
-                color: Colors.white,
-                isShowBgBackButton: true,
+  Widget _buildAppBarView(BuildContext context) {
+    return BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
+      buildWhen: (previous, current) => current is DetailPlaceShowAppBarState,
+      builder: (context, state) {
+        return Positioned(
+          top: 12,
+          left: 16,
+          right: 16,
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            height: _cubit.isVisibleAppBar ? 36.0 : 0.0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
               ),
-              InkWell(
-                onTap: () => AppUtils.showBottomDialog(
-                  context,
-                  PlaceActionDiaglo(),
-                ),
-                child: Container(
-                  height: 36,
-                  width: 36,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    color: Colors.white,
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.more_horiz,
-                      color: ColorConstant.neutral_black,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      height: 36,
+                      width: 36,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        color: Colors.black.withOpacity(0.6),
+                      ),
+                      child: Center(
+                        child: SvgPicture.asset(
+                          ConstantIcons.ic_chevron_left,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
+                  InkWell(
+                    onTap: () => AppUtils.showBottomDialog(
+                      context,
+                      PlaceActionDiaglo(),
+                    ),
+                    child: Container(
+                      height: 36,
+                      width: 36,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        color: Colors.black.withOpacity(0.6),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.more_horiz,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -339,14 +360,17 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     }
   }
 
-  AnimatedContainer _buildMenuTabView(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
-      height: isVisible ? 56.0 : 0.0,
-      child: new Container(
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          child: ListView.builder(
+  Widget _buildMenuTabView(BuildContext context) {
+    return BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
+      buildWhen: (previous, current) => current is DetailPlaceShowMenuState,
+      builder: (_, state) {
+        return AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          height: _cubit.isVisible ? 56.0 : 0.0,
+          child: new Container(
+            width: MediaQuery.of(context).size.width,
+            color: Colors.white,
+            child: ListView.builder(
               itemCount: tabMenu.length,
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -389,7 +413,11 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     ),
                   ),
                 );
-              })),
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
