@@ -2,6 +2,8 @@ import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dar
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +13,26 @@ class PlaceGridItemView extends StatelessWidget {
   const PlaceGridItemView({
     Key? key,
     this.item,
+    this.onSelect,
   }) : super(key: key);
 
   final PlaceModel? item;
+  final Function()? onSelect;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(
-        RouterName.detail_place,
-        arguments: item?.id,
-      ),
+      onTap: () {
+        if (onSelect != null) {
+          onSelect!();
+          return;
+        }
+        injector.get<StorageService>().savePlaceIds(item?.id ?? '');
+        Navigator.of(context).pushNamed(
+          RouterName.detail_place,
+          arguments: item?.id,
+        );
+      },
       child: Container(
         height: 238,
         decoration: BoxDecoration(

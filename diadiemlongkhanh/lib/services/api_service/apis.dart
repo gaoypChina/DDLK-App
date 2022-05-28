@@ -7,9 +7,11 @@ class Apis {
   static const sub_categories = '/sub-categories';
   static const places_new = '/places/new';
   static const explores_new = '/explores/new';
+  static const suggest_search = '/places/suggest-search';
   static const explores = '/explores';
   static const categories = '/categories';
   static const place = '/place';
+  static const places = '/places';
   static const place_search = 'places/search';
   static const review = '/review';
   static const auth_register_with_phone = '/auth/register-with-phone';

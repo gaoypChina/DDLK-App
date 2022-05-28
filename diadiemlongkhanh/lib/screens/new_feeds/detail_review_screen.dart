@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/models/remote/comment/comment_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
@@ -43,6 +44,14 @@ class _DetailReviewScreenState extends State<DetailReviewScreen> {
   }
 
   likeComment(int index) async {
+    if (injector.get<StorageService>().getToken() == null) {
+      Navigator.of(context).pushNamed(
+        RouterName.option_login,
+        arguments: true,
+      );
+      return;
+      return;
+    }
     if (comments[index].isLiked) {
       unlikeComment(index);
       return;

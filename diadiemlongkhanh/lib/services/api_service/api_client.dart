@@ -106,4 +106,11 @@ abstract class ApiClient {
   Future<AuthResponse?> likeCommentReview(@Path() String id);
   @DELETE('${Apis.comment}/{id}/like')
   Future<AuthResponse?> unlikeCommentReview(@Path() String id);
+  @GET('${Apis.places}/{ids}')
+  Future<List<PlaceModel>?> getPlacesSeen(@Path() String ids);
+  @GET(Apis.suggest_search)
+  Future<List<PlaceModel>?> getPlacesSuggest(
+    @Query('key') String key, {
+    @Query('limit') int limit = 5,
+  });
 }

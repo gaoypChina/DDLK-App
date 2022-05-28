@@ -7,8 +7,10 @@ import 'main_text_form_field.dart';
 
 class SearchFormField extends StatelessWidget {
   final Color? fillColor;
+  final Function(String)? onChanged;
   SearchFormField({
     this.fillColor,
+    this.onChanged,
   });
 
   @override
@@ -28,6 +30,7 @@ class SearchFormField extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         child: MainTextFormField(
           fillColor: fillColor ?? ColorConstant.neutral_gray_lightest,
+          onChanged: onChanged,
           hideBorder: true,
           hintText: 'Nhập địa điểm cần tìm',
           prefixIcon: SvgPicture.asset(

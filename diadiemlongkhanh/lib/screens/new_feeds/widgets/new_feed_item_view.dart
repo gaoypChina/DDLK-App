@@ -4,6 +4,8 @@ import 'package:diadiemlongkhanh/models/remote/thumnail/thumbnail_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/full_image_view.dart';
@@ -333,8 +335,11 @@ class NewFeedItemView extends StatelessWidget {
 
   Widget _buildInfoView(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context)
-          .pushNamed(RouterName.detail_place, arguments: item?.place?.id),
+      onTap: () {
+        injector.get<StorageService>().savePlaceIds(item?.place?.id ?? '');
+        Navigator.of(context)
+            .pushNamed(RouterName.detail_place, arguments: item?.place?.id);
+      },
       child: Container(
         height: 82,
         margin: const EdgeInsets.only(top: 12),

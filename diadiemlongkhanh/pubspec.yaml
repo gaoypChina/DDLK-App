@@ -55,13 +55,14 @@ dependencies:
   url_launcher: ^6.0.20
   flutter_easyloading: ^3.0.3
   flutter_statusbarcolor_ns: ^0.4.0
+  google_sign_in: ^5.3.2
 
   retrofit: ^3.0.1+1
   logger: ^1.1.0
   dio: ^4.0.6
   json_annotation: ^4.4.0
   flutter_bloc: ^8.0.1
-  mapbox_gl: ^0.15.0
+  # mapbox_gl: ^0.15.0
   
 
 dev_dependencies:

@@ -944,7 +944,9 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 'Liên hệ',
                 style: Theme.of(context).textTheme.headline4,
               ),
-              _cubit.place != null && _cubit.place!.phone != null
+              _cubit.place != null &&
+                      _cubit.place!.phone != null &&
+                      _cubit.place!.phone != ''
                   ? InkWell(
                       onTap: () => _cubit.makePhoneCall(),
                       child: Container(
@@ -975,7 +977,13 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         ),
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : Text(
+                      'Chưa cập nhật số điện thoại',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: ColorConstant.neutral_black,
+                      ),
+                    ),
             ],
           ),
         );

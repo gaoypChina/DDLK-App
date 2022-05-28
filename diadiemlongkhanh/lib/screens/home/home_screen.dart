@@ -426,10 +426,15 @@ class _HomeScreenState extends State<HomeScreen>
                   : PlaceHorizItemView(
                       context: context,
                       item: places[index],
-                      onPressed: () => Navigator.of(context).pushNamed(
-                        RouterName.detail_place,
-                        arguments: places[index].id ?? '',
-                      ),
+                      onPressed: () {
+                        injector
+                            .get<StorageService>()
+                            .savePlaceIds(places[index].id ?? '');
+                        Navigator.of(context).pushNamed(
+                          RouterName.detail_place,
+                          arguments: places[index].id ?? '',
+                        );
+                      },
                     );
             },
           ),

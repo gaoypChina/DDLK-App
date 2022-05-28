@@ -37,7 +37,23 @@ class StorageService {
     return shared.remove('key_words');
   }
 
+  Future<bool> savePlaceIds(String id) async {
+    List<String> currentList = await getPlaceIds() ?? [];
+    if (!currentList.contains(id)) {
+      if (currentList.length > 10) {
+        currentList.removeLast();
+      }
+      currentList.insert(0, id);
+    }
+
+    return shared.setStringList('place_ids', currentList);
+  }
+
   Future<List<String>?> getKeyWords() async {
     return shared.getStringList('key_words');
+  }
+
+  Future<List<String>?> getPlaceIds() async {
+    return shared.getStringList('place_ids');
   }
 }

@@ -1,7 +1,9 @@
+import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/places/places_dialog.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
@@ -23,6 +25,7 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
   double _foodDrink = 5;
   double _service = 5;
   double _price = 5;
+  PlaceModel? _place;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +56,35 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Chọn địa điểm đánh giá',
-                        style: Theme.of(context).textTheme.headline4,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Chọn địa điểm đánh giá',
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          _place != null
+                              ? GestureDetector(
+                                  onTap: () => AppUtils.showBottomDialog(
+                                    context,
+                                    PlacesDialog(
+                                      onSelect: (item) {
+                                        setState(() {
+                                          _place = item;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Thay đổi',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox.shrink()
+                        ],
                       ),
                       SizedBox(
                         height: 8,
@@ -93,9 +122,10 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
                         child: MainTextFormField(
                           keyboardType: TextInputType.multiline,
                           maxLines: 5,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
+                          contentPadding: const EdgeInsets.only(
+                            top: 10,
+                            bottom: 10,
+                            left: 16,
                           ),
                         ),
                       ),
@@ -315,33 +345,146 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
       onTap: () {
         AppUtils.showBottomDialog(
           context,
-          PlacesDialog(),
+          PlacesDialog(
+            onSelect: (item) {
+              setState(() {
+                _place = item;
+              });
+            },
+          ),
         );
       },
-      child: DottedBorder(
-        radius: Radius.circular(4),
-        borderType: BorderType.RRect,
-        color: ColorConstant.border_gray,
-        dashPattern: [6, 3],
-        padding: const EdgeInsets.all(0),
-        child: Container(
-          height: 76,
-          color: ColorConstant.neutral_gray_lightest,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                ConstantIcons.ic_map_pin,
+      child: _place != null
+          ? _buildInfoView(context)
+          : DottedBorder(
+              radius: Radius.circular(4),
+              borderType: BorderType.RRect,
+              color: ColorConstant.border_gray,
+              dashPattern: [6, 3],
+              padding: const EdgeInsets.all(0),
+              child: Container(
+                height: 76,
+                color: ColorConstant.neutral_gray_lightest,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      ConstantIcons.ic_map_pin,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      'Bấm để chọn địa điểm',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ],
+                ),
               ),
-              SizedBox(
-                width: 8,
-              ),
-              Text(
-                'Bấm để chọn địa điểm',
-                style: Theme.of(context).textTheme.bodyText1,
-              )
-            ],
+            ),
+    );
+  }
+
+  Widget _buildInfoView(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // injector.get<StorageService>().savePlaceIds(item?.place?.id ?? '');
+        // Navigator.of(context)
+        //     .pushNamed(RouterName.detail_place, arguments: item?.place?.id);
+      },
+      child: Container(
+        height: 82,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: ColorConstant.neutral_gray_lightest,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.16),
+            ),
+            BoxShadow(
+              color: Colors.white,
+              blurRadius: 16.0,
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            ClipRRectImage(
+              radius: 4,
+              url: AppUtils.getUrlImage(
+                _place?.avatar?.path ?? '',
+                width: 64,
+                height: 64,
+              ),
+              width: 64,
+              height: 64,
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _place?.name ?? '',
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        ConstantIcons.ic_marker_grey,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Expanded(
+                        child: Text(
+                          _place!.address?.specific ?? '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: ColorConstant.neutral_gray_lighter),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  // Row(
+                  //   children: [
+                  //     Text(
+                  //       AppUtils.roundedRating(item!.place?.avgRate ?? 0)
+                  //           .toString(),
+                  //       style: TextStyle(
+                  //         fontSize: 10,
+                  //         fontWeight: FontWeight.w500,
+                  //         color: ColorConstant.neutral_gray_lighter,
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       width: 7,
+                  //     ),
+                  //     MyRatingBar(
+                  //       rating: item!.place?.avgRate ?? 0,
+                  //       onRatingUpdate: (rate, isEmpty) {},
+                  //     ),
+                  //   ],
+                  // ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

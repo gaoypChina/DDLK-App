@@ -11,11 +11,13 @@ class PlacesGridView extends StatelessWidget {
   final double? topPadding;
   final double? bottomPadding;
   final List<PlaceModel> places;
+  final Function(PlaceModel)? onSelect;
   PlacesGridView({
     this.physics,
     this.topPadding,
     this.bottomPadding,
     this.places = const [],
+    this.onSelect,
   });
 
   @override
@@ -52,6 +54,11 @@ class PlacesGridView extends StatelessWidget {
               )
             : PlaceGridItemView(
                 item: places[index],
+                onSelect: () {
+                  if (onSelect != null) {
+                    onSelect!(places[index]);
+                  }
+                },
               );
       },
     );
