@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>209860038987-li1kjgh8puk0hif2nkjapd2a3lj8m16r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.209860038987-li1kjgh8puk0hif2nkjapd2a3lj8m16r</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCH2D7EJ1mpNfdYtdvF0YfSO-5f2wOOjJc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>209860038987</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.diadiemlongkhanh.app</string>
+	<key>PROJECT_ID</key>
+	<string>vital-amphora-291903</string>
+	<key>STORAGE_BUCKET</key>
+	<string>vital-amphora-291903.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:209860038987:ios:d3e23368000f6d737718ce</string>
+	<key>DATABASE_URL</key>
+	<string>https://vital-amphora-291903.firebaseio.com</string>
+</dict>
+</plist>

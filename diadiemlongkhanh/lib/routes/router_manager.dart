@@ -8,7 +8,9 @@ import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/map_places/map_places_screen.dart';
+import 'package:diadiemlongkhanh/screens/new_feeds/bloc/new_feed_cubit.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/detail_review_screen.dart';
+import 'package:diadiemlongkhanh/screens/new_feeds/new_feed_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/detail_notification_screen.dart';
 import 'package:diadiemlongkhanh/screens/notifications/notification_screen.dart';
 import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
@@ -179,6 +181,19 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => MapPlacesSreen(),
         );
+      case RouterName.new_feeds:
+        bool isBack = false;
+        if (settings.arguments != null) {
+          isBack = settings.arguments as bool;
+        }
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => NewFeedCubit(),
+            child: NewFeedScreen(
+              isBack: isBack,
+            ),
+          ),
+        );
       case RouterName.detail_place:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -256,4 +271,5 @@ class RouterName {
   static const detail_review = '/detail_review';
   static const info_signup = '/info_signup';
   static const map_places = '/map_places';
+  static const new_feeds = 'new_feeds';
 }

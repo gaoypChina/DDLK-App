@@ -4,6 +4,7 @@ import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
+import 'package:diadiemlongkhanh/widgets/full_image_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,12 @@ class ListReviewView extends StatelessWidget {
                 maxLines: 1,
                 style: Theme.of(context).textTheme.bodyText1,
               ),
-              _buildListPictureView(item.images),
+              item.images.isEmpty
+                  ? SizedBox.shrink()
+                  : _buildListPictureView(
+                      context,
+                      item.images,
+                    ),
               _buildBehaviorView(item),
               SizedBox(
                 height: 16,
@@ -183,7 +189,10 @@ class ListReviewView extends StatelessWidget {
     );
   }
 
-  Container _buildListPictureView(List<ThumbnailModel> photos) {
+  Container _buildListPictureView(
+    BuildContext context,
+    List<ThumbnailModel> photos,
+  ) {
     return Container(
       height: 72,
       margin: const EdgeInsets.only(top: 12),
@@ -202,6 +211,14 @@ class ListReviewView extends StatelessWidget {
                 ClipRRectImage(
                   height: 72,
                   width: 72,
+                  onPressed: () => AppUtils.showBottomDialog(
+                    context,
+                    FullImageView(
+                      AppUtils.getUrlImage(
+                        item.path ?? '',
+                      ),
+                    ),
+                  ),
                   url: AppUtils.getUrlImage(
                     item.path ?? '',
                     width: 72,

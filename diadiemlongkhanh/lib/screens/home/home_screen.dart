@@ -145,6 +145,11 @@ class _HomeScreenState extends State<HomeScreen>
                               _buildListNewFeedsView(),
                               MainButton(
                                 title: 'KHÁM PHÁ THÊM',
+                                onPressed: () =>
+                                    Navigator.of(context).pushNamed(
+                                  RouterName.new_feeds,
+                                  arguments: true,
+                                ),
                                 margin: const EdgeInsets.only(
                                   left: 16,
                                   right: 16,
@@ -484,6 +489,10 @@ class _HomeScreenState extends State<HomeScreen>
               ),
               _buildMenuItem(
                 title: 'Khám phá',
+                onPressed: () => Navigator.of(context).pushNamed(
+                  RouterName.new_feeds,
+                  arguments: true,
+                ),
                 icon: Image.asset(
                   ConstantIcons.ic_binoculars,
                   width: 41,

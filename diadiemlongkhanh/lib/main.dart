@@ -1,22 +1,25 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:diadiemlongkhanh/config/env_config.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/notification/notification_manager.dart';
 import 'package:diadiemlongkhanh/themes/themes.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Environment().initConfig(Environment.DEV);
+
   HttpOverrides.global = MyHttpOverrides();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Colors.white, // Color for Android
@@ -26,6 +29,8 @@ void main() {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runZonedGuarded(() async {
+    await Firebase.initializeApp();
+    await NotificationsManager().init();
     await DependencyInjection.inject();
 
     runApp(
@@ -64,6 +69,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   AppTheme? _theme;
   LocationData? _locationData;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   @override
   void didChangeDependencies() {
     if (_theme == null) {
@@ -76,7 +82,40 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    handleFirebaseMessage();
     _requestLocation();
+  }
+
+  handleFirebaseMessage() {
+    if (Platform.isAndroid) {
+      var initializationSettingsAndroid =
+          new AndroidInitializationSettings('@mipmap/ic_launcher');
+
+      var initializationSettings =
+          new InitializationSettings(android: initializationSettingsAndroid);
+      flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+      flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
+      );
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        if (notification != null && android != null) {
+          flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+              ),
+            ),
+          );
+        }
+      });
+    }
   }
 
   _requestLocation() async {

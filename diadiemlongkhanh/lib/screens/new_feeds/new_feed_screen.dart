@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/bloc/new_feed_cubit.dart';
@@ -8,10 +9,14 @@ import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class NewFeedScreen extends StatefulWidget {
-  const NewFeedScreen({Key? key}) : super(key: key);
-
+  const NewFeedScreen({
+    Key? key,
+    this.isBack = false,
+  }) : super(key: key);
+  final bool isBack;
   @override
   _NewFeedScreenState createState() => _NewFeedScreenState();
 }
@@ -34,6 +39,10 @@ class _NewFeedScreenState extends State<NewFeedScreen>
   @override
   bool get wantKeepAlive => true;
 
+  Future<void> _onRefresh() async {
+    _cubit.getNewFeeds();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -49,7 +58,15 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                   'Khám phá',
                   style: Theme.of(context).textTheme.headline3,
                 ),
-                automaticallyImplyLeading: false,
+                automaticallyImplyLeading: widget.isBack,
+                leading: widget.isBack
+                    ? IconButton(
+                        icon: SvgPicture.asset(
+                          ConstantIcons.ic_chevron_left,
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                      )
+                    : SizedBox.shrink(),
                 pinned: false,
                 floating: true,
                 forceElevated: innerBoxIsScrolled,
@@ -62,26 +79,32 @@ class _NewFeedScreenState extends State<NewFeedScreen>
           body: BlocBuilder<NewFeedCubit, NewFeedState>(
             buildWhen: (previous, current) => current is NewFeedGetDoneState,
             builder: (context, state) {
-              return ListView.builder(
-                itemCount: _cubit.newfeeds.isEmpty ? 5 : _cubit.newfeeds.length,
-                shrinkWrap: true,
-                padding: const EdgeInsets.only(
-                  top: 24,
-                  bottom: 30,
+              return RefreshIndicator(
+                color: Theme.of(context).primaryColor,
+                onRefresh: _onRefresh,
+                child: ListView.builder(
+                  itemCount:
+                      _cubit.newfeeds.isEmpty ? 5 : _cubit.newfeeds.length,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(
+                    top: 24,
+                    bottom: 30,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return _cubit.newfeeds.isEmpty
+                        ? ShimmerNewFeed(context)
+                        : NewFeedItemView(
+                            item: _cubit.newfeeds[index],
+                            nextToDetail: () => Navigator.of(context).pushNamed(
+                              RouterName.detail_review,
+                              arguments: _cubit.newfeeds[index],
+                            ),
+                            isShowComment:
+                                injector.get<StorageService>().getToken() !=
+                                    null,
+                          );
+                  },
                 ),
-                itemBuilder: (BuildContext context, int index) {
-                  return _cubit.newfeeds.isEmpty
-                      ? ShimmerNewFeed(context)
-                      : NewFeedItemView(
-                          item: _cubit.newfeeds[index],
-                          nextToDetail: () => Navigator.of(context).pushNamed(
-                            RouterName.detail_review,
-                            arguments: _cubit.newfeeds[index],
-                          ),
-                          isShowComment:
-                              injector.get<StorageService>().getToken() != null,
-                        );
-                },
               );
             },
           ),
