@@ -22,7 +22,7 @@ class ListPlaceScreen extends StatefulWidget {
 
 class _ListPlaceScreenState extends State<ListPlaceScreen> {
   ListPlacesCubit get _cubit => BlocProvider.of(context);
-  final _debouncer = Debouncer(milliseconds: 1000);
+  final _debouncer = Debouncer(milliseconds: 500);
   @override
   void initState() {
     super.initState();

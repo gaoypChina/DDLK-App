@@ -26,10 +26,23 @@
 	<true/>
 	<key>MBXAccessToken</key>
 	<string>sk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsM2EyZmFxdzAxZ3Izam5yNnFtNGtpczUifQ.ryFpOtTHwwRp7L25_o4j6A</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.209860038987-li1kjgh8puk0hif2nkjapd2a3lj8m16r</string>
+            </array>
+        </dict>
+    </array>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Để gợi ý địa điểm ở gần vị trí của bạn</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Để gợi ý địa điểm ở gần vị trí của bạn</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Để thực hiện chức năng này ứng dụng cần truy cập thư viện ảnh của bạn</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

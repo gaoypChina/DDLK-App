@@ -253,25 +253,28 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             SizedBox(
               width: 52,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  ConstantIcons.ic_book_mark,
-                  color: ColorConstant.neutral_black,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  'Lưu',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
+            GestureDetector(
+              onTap: () => _cubit.savePlace(context),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    ConstantIcons.ic_book_mark,
                     color: ColorConstant.neutral_black,
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    'Lưu',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: ColorConstant.neutral_black,
+                    ),
+                  )
+                ],
+              ),
             )
           ],
         ),
@@ -1272,21 +1275,21 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 36,
-                      width: 36,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          ConstantIcons.ic_book_mark,
-                        ),
-                      ),
-                    )
+                    // Container(
+                    //   height: 36,
+                    //   width: 36,
+                    //   decoration: BoxDecoration(
+                    //     shape: BoxShape.circle,
+                    //     border: Border.all(
+                    //       color: Theme.of(context).primaryColor,
+                    //     ),
+                    //   ),
+                    //   child: Center(
+                    //     child: SvgPicture.asset(
+                    //       ConstantIcons.ic_book_mark,
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
                 SizedBox(

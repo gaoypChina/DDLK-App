@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
@@ -11,6 +13,7 @@ import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateReviewScreen extends StatefulWidget {
   const CreateReviewScreen({Key? key}) : super(key: key);
@@ -26,6 +29,21 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
   double _service = 5;
   double _price = 5;
   PlaceModel? _place;
+
+  List<XFile> _imageFileList = [];
+
+  _pickImages() async {
+    final ImagePicker _picker = ImagePicker();
+
+    final List<XFile>? images = await _picker.pickMultiImage();
+    print(images);
+    if (images != null) {
+      setState(() {
+        _imageFileList = images;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,31 +173,81 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
     );
   }
 
-  Container _buildUploadImageView() {
+  Widget _buildUploadImageView() {
     return Container(
       margin: const EdgeInsets.only(top: 8),
       height: 76,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: 1,
+        itemCount: _imageFileList.length + 1,
         itemBuilder: (_, index) {
-          return DottedBorder(
-            radius: Radius.circular(4),
-            borderType: BorderType.RRect,
-            color: ColorConstant.border_gray,
-            dashPattern: [6, 3],
-            padding: const EdgeInsets.all(0),
-            child: Container(
-              height: 76,
-              width: 76,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: ColorConstant.neutral_gray_lightest,
+          if (index > 0) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Image.file(
+                      File(_imageFileList[index - 1].path),
+                      width: 76,
+                      height: 76,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _imageFileList.removeAt(index - 1);
+                        });
+                      },
+                      child: Container(
+                        height: 15,
+                        width: 15,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.close,
+                            size: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
-              child: Center(
-                child: SvgPicture.asset(
-                  ConstantIcons.ic_upload_img,
+            );
+          }
+          return Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: GestureDetector(
+              onTap: _pickImages,
+              child: DottedBorder(
+                radius: Radius.circular(4),
+                borderType: BorderType.RRect,
+                color: ColorConstant.border_gray,
+                dashPattern: [6, 3],
+                padding: const EdgeInsets.all(0),
+                child: Container(
+                  height: 76,
+                  width: 76,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: ColorConstant.neutral_gray_lightest,
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      ConstantIcons.ic_upload_img,
+                    ),
+                  ),
                 ),
               ),
             ),

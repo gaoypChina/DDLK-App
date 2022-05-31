@@ -3,10 +3,27 @@ import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class ListOptionLoginView extends StatelessWidget {
   final bool isLogin;
   ListOptionLoginView({this.isLogin = true});
+
+  Future<void> _handleSignIn() async {
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+    try {
+      final res = await _googleSignIn.signIn();
+      print(res);
+    } catch (error) {
+      print(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,6 +52,7 @@ class ListOptionLoginView extends StatelessWidget {
         ),
         _buildOptionButton(
           context,
+          onPressed: _handleSignIn,
           icon: SvgPicture.asset(
             ConstantIcons.ic_gg,
           ),

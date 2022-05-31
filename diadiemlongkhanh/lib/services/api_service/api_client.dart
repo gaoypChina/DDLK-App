@@ -113,4 +113,8 @@ abstract class ApiClient {
     @Query('key') String key, {
     @Query('limit') int limit = 5,
   });
+  @POST('${Apis.place}/{id}/save')
+  Future<AuthResponse?> savePlace(
+    @Path() String id,
+  );
 }
