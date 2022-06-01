@@ -1,19 +1,28 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:path/path.dart' as path;
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/places/places_dialog.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:diadiemlongkhanh/widgets/app_checkbox.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
+import 'package:http/http.dart' as http;
 
 class CreateReviewScreen extends StatefulWidget {
   const CreateReviewScreen({Key? key}) : super(key: key);
@@ -28,7 +37,12 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
   double _foodDrink = 5;
   double _service = 5;
   double _price = 5;
+  bool _isAnonymous = false;
   PlaceModel? _place;
+  final _contentTextController = TextEditingController();
+  final _titleTextController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   List<XFile> _imageFileList = [];
 
@@ -41,6 +55,73 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
       setState(() {
         _imageFileList = images;
       });
+    }
+  }
+
+  _createReview() async {
+    if (_place == null) {
+      AppUtils.showOkDialog(context, 'Vui lòng chọn địa điểm');
+      return;
+    }
+    if (_titleTextController.text == '') {
+      AppUtils.showOkDialog(context, 'Vui lòng nhập tiêu đề');
+      return;
+    }
+    if (_contentTextController.text == '') {
+      AppUtils.showOkDialog(context, 'Vui lòng nhập nội dung');
+      return;
+    }
+    if (_contentTextController.text.length < 10) {
+      AppUtils.showOkDialog(
+          context, 'Vui lòng nhập nội dung tối thiểu 10 ký tự');
+      return;
+    }
+    AppUtils.showLoading();
+    final data = {
+      'ratePosition': _position,
+      'rateView': _view,
+      'rateDrink': _foodDrink,
+      'rateService': _service,
+      'ratePrice': _price,
+      'anonymous': _isAnonymous,
+      'title': _titleTextController.text,
+      'content': _contentTextController.text,
+      'place': _place!.id,
+    };
+    var form = FormData.fromMap(
+      {
+        'data': json.encode(data),
+      },
+    );
+
+    for (int i = 0; i < _imageFileList.length; i++) {
+      form.files.addAll([
+        MapEntry(
+          'files',
+          MultipartFile.fromFileSync(
+            _imageFileList[0].path,
+            contentType:
+                MediaType.parse(lookupMimeType(_imageFileList[0].path) ?? ''),
+          ),
+        )
+      ]);
+    }
+    try {
+      final res = await injector.get<ApiClient>().createReview(form);
+      AppUtils.hideLoading();
+      if (res != null) {
+        AppUtils.showSuccessAlert(
+          context,
+          title: 'Tạo đánh giá địa điểm thành công',
+          okTitle: 'Xác nhận',
+          okAction: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+        );
+      }
+    } catch (error) {
+      print(error);
     }
   }
 
@@ -131,6 +212,25 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
                         height: 24,
                       ),
                       Text(
+                        'Tiêu đề đánh giá',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      MainTextFormField(
+                        maxLines: 1,
+                        controller: _titleTextController,
+                        contentPadding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 10,
+                          left: 16,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Text(
                         'Nội dung đánh giá',
                         style: Theme.of(context).textTheme.headline4,
                       ),
@@ -140,6 +240,8 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
                         child: MainTextFormField(
                           keyboardType: TextInputType.multiline,
                           maxLines: 5,
+                          controller: _contentTextController,
+                          hintText: 'Tối thiểu 10 ký tự',
                           contentPadding: const EdgeInsets.only(
                             top: 10,
                             bottom: 10,
@@ -147,9 +249,32 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Row(
+                        children: [
+                          AppCheckbox(
+                            value: _isAnonymous,
+                            onChanged: (val) {
+                              setState(() {
+                                _isAnonymous = !_isAnonymous;
+                              });
+                            },
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Đánh giá ẩn danh',
+                            style: Theme.of(context).textTheme.headline4,
+                          )
+                        ],
+                      ),
                       MainButton(
                         margin: const EdgeInsets.only(top: 48),
                         title: 'Gửi đánh giá',
+                        onPressed: _createReview,
                       )
                     ],
                   ),

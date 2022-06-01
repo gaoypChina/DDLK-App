@@ -117,4 +117,8 @@ abstract class ApiClient {
   Future<AuthResponse?> savePlace(
     @Path() String id,
   );
+
+  @POST(Apis.review)
+  @MultiPart()
+  Future<NewFeedModel?> createReview(@Body() FormData data);
 }

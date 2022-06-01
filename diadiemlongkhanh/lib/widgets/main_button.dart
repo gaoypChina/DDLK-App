@@ -16,22 +16,24 @@ class MainButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        height: 48,
-        margin: margin,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: color ?? Theme.of(context).primaryColor,
-        ),
-        child: Center(
-          child: Text(
-            title ?? '',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: textColor ?? Colors.white,
+    return Padding(
+      padding: margin ?? EdgeInsets.all(0),
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+          height: 48,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: color ?? Theme.of(context).primaryColor,
+          ),
+          child: Center(
+            child: Text(
+              title ?? '',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: textColor ?? Colors.white,
+              ),
             ),
           ),
         ),

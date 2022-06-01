@@ -91,8 +91,15 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: FloatingActionButton(
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(RouterName.create_review),
+                onPressed: () {
+                  final token = injector.get<StorageService>().getToken();
+                  if (token == null) {
+                    Navigator.of(context)
+                        .pushNamed(RouterName.option_login, arguments: true);
+                    return;
+                  }
+                  Navigator.of(context).pushNamed(RouterName.create_review);
+                },
                 backgroundColor: Theme.of(context).primaryColor,
                 child: SvgPicture.asset(ConstantIcons.ic_plus),
               ),

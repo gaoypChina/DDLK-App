@@ -60,13 +60,15 @@ dependencies:
   flutter_local_notifications: ^9.5.3+1
   firebase_core: ^1.17.1
   image_picker: ^0.8.5+3
+  mime: ^1.0.1
+  http_parser: ^4.0.0
 
   retrofit: ^3.0.1+1
   logger: ^1.1.0
   dio: ^4.0.6
   json_annotation: ^4.4.0
   flutter_bloc: ^8.0.1
-  mapbox_gl: ^0.15.0
+  # mapbox_gl: ^0.15.0
   
 
 dev_dependencies:

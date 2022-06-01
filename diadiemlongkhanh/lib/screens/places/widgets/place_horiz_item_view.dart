@@ -82,6 +82,7 @@ class PlaceHorizItemView extends StatelessWidget {
             Text(
               item!.name ?? '',
               maxLines: 2,
+              textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodyText1,
             ),

@@ -177,10 +177,10 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => DetailNotificationScreen(),
         );
-      case RouterName.map_places:
-        return MaterialPageRoute(
-          builder: (_) => MapPlacesSreen(),
-        );
+      // case RouterName.map_places:
+      //   return MaterialPageRoute(
+      //     builder: (_) => MapPlacesSreen(),
+      //   );
       case RouterName.new_feeds:
         bool isBack = false;
         if (settings.arguments != null) {
