@@ -26,3 +26,7 @@ class DetailPlaceShowAppBarState extends DetailPlaceState {
 class DetailPlaceShowMenuState extends DetailPlaceState {
   DetailPlaceShowMenuState();
 }
+
+class DetailPlaceSelectMenuState extends DetailPlaceState {
+  DetailPlaceSelectMenuState();
+}

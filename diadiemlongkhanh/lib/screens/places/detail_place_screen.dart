@@ -4,6 +4,7 @@ import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/all_opening_time_view.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/full_name_content_place_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/review/widgets/list_review_view.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
@@ -30,7 +31,6 @@ class DetailPlaceScreen extends StatefulWidget {
 class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
   ScrollController scrollController = new ScrollController();
 
-  int _currentIndex = 0;
   DetailPlaceCubit get _cubit => BlocProvider.of(context);
   List<String> tabMenu = [
     'Đánh giá địa điểm',
@@ -38,6 +38,15 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     'Bản đồ',
     'Thông tin liên hệ'
   ];
+  double _heightInfoView = 620;
+  double _heightPhoneView = 50;
+  double _heightBenefitView = 100;
+  double _heightRateView = 183;
+  double _heightPriceView = 50;
+  double _heightOpenTimeView = 116;
+  double _heightMenuView = 144;
+  double _heightMapView = 265;
+  double _heightSliderView = 268;
 
   @override
   void initState() {
@@ -51,7 +60,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
 
   _handleListenerScroll() {
     scrollController.addListener(() {
-      if (scrollController.offset <= 598) {
+      if (scrollController.offset <= (_heightSliderView)) {
         if (!_cubit.isVisibleAppBar) {
           print(scrollController.offset);
           _cubit.showAppBar(true);
@@ -61,7 +70,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
         }
         if (_cubit.isVisible) {
           print(scrollController.offset);
-          _cubit.showMenu(false);
+          // _cubit.showMenu(false);
           // setState(() {
           //   isVisible = false;
           // });
@@ -76,23 +85,97 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
         }
         if (!_cubit.isVisible) {
           print(scrollController.offset);
-          _cubit.showMenu(true);
+          // _cubit.showMenu(true);
           // setState(() {
           //   isVisible = true;
           // });
         }
-        // if (_cubit.isVisible) {
-        //   if (scrollController.offset > 614 && scrollController.offset <= 813) {
-        //     setState(() {
-        //       _currentIndex = 0;
-        //     });
-        //   } else if (scrollController.offset > 1027 &&
-        //       scrollController.offset <= 1171) {
-        //     setState(() {
-        //       _currentIndex = 1;
-        //     });
-        //   }
-        // }
+        if (_cubit.isVisible) {
+          if (scrollController.offset > _heightSliderView &&
+              scrollController.offset <=
+                  _heightInfoView +
+                      16 +
+                      _heightPhoneView +
+                      16 +
+                      _heightBenefitView) {
+            _cubit.selectMenu(0);
+          } else if (scrollController.offset >
+                  _heightInfoView +
+                      16 +
+                      _heightPhoneView +
+                      16 +
+                      _heightBenefitView +
+                      16 +
+                      _heightRateView +
+                      16 +
+                      _heightPriceView +
+                      16 +
+                      _heightOpenTimeView &&
+              scrollController.offset <=
+                  _heightInfoView +
+                      16 +
+                      _heightPhoneView +
+                      16 +
+                      _heightBenefitView +
+                      16 +
+                      _heightRateView +
+                      16 +
+                      _heightPriceView +
+                      16 +
+                      _heightOpenTimeView +
+                      16 +
+                      _heightMenuView) {
+            _cubit.selectMenu(1);
+          } else if (scrollController.offset >
+                  _heightInfoView +
+                      16 +
+                      _heightPhoneView +
+                      16 +
+                      _heightBenefitView +
+                      16 +
+                      _heightRateView +
+                      16 +
+                      _heightPriceView +
+                      16 +
+                      _heightOpenTimeView +
+                      16 +
+                      _heightMenuView &&
+              scrollController.offset <=
+                  _heightInfoView +
+                      16 +
+                      _heightPhoneView +
+                      16 +
+                      _heightBenefitView +
+                      16 +
+                      _heightRateView +
+                      16 +
+                      _heightPriceView +
+                      16 +
+                      _heightOpenTimeView +
+                      16 +
+                      _heightMenuView +
+                      16 +
+                      _heightMapView) {
+            _cubit.selectMenu(2);
+          } else if (scrollController.offset >
+              _heightInfoView +
+                  16 +
+                  _heightPhoneView +
+                  16 +
+                  _heightBenefitView +
+                  16 +
+                  _heightRateView +
+                  16 +
+                  _heightPriceView +
+                  16 +
+                  _heightOpenTimeView +
+                  16 +
+                  _heightMenuView +
+                  16 +
+                  _heightMapView) {
+            _cubit.selectMenu(3);
+          }
+        }
       }
     });
   }
@@ -155,40 +238,38 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               currentIndex = state.index;
             }
             return Container(
-              height: 598,
-              child: Stack(children: [
-                _buildSlider(
-                  _cubit.place,
-                  currentIndex,
-                ),
-                Positioned(
-                  top: 248,
-                  left: 0,
-                  right: 0,
-                  child: _buildInfoView(_cubit.place),
-                ),
-              ]),
+              height: 620,
+              child: Stack(
+                children: [
+                  _buildSlider(
+                    _cubit.place,
+                    currentIndex,
+                  ),
+                  Positioned(
+                    top: 248,
+                    left: 0,
+                    right: 0,
+                    child: _buildInfoView(_cubit.place),
+                  ),
+                ],
+              ),
             );
           },
         ),
         BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
           buildWhen: (previous, current) => current is DetailPlaceGetDoneState,
           builder: (context, state) {
-            PlaceModel? place;
-            if (state is DetailPlaceGetDoneState) {
-              place = state.place;
-            }
             return Column(
               children: [
                 _buildContactView(),
-                _buildConveniencesView(place),
-                _buildRatingView(place),
-                _buildRangePriceView(place),
-                _buildWorkHourView(place),
-                _buildMenuView(place),
-                _buildMapView(place),
-                _buildInfoContactView(place),
-                _buildSumarryReview(place),
+                _buildConveniencesView(_cubit.place),
+                _buildRatingView(_cubit.place),
+                _buildRangePriceView(_cubit.place),
+                _buildWorkHourView(_cubit.place),
+                _buildMenuView(_cubit.place),
+                _buildMapView(_cubit.place),
+                _buildInfoContactView(_cubit.place),
+                _buildSumarryReview(_cubit.place),
               ],
             );
           },
@@ -348,24 +429,64 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
   }
 
   _selectTab(index) {
+    double position = 0;
     if (index == 0) {
-      scrollController.animateTo(
-        614,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.linear,
-      );
+      position = _heightInfoView + 16 + _heightPhoneView + 16;
     } else if (index == 1) {
-      scrollController.animateTo(
-        1028,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.linear,
-      );
+      position = _heightInfoView +
+          16 +
+          _heightPhoneView +
+          16 +
+          _heightBenefitView +
+          16 +
+          _heightRateView +
+          16 +
+          _heightPriceView +
+          16 +
+          _heightOpenTimeView;
+    } else if (index == 2) {
+      position = _heightInfoView +
+          16 +
+          _heightPhoneView +
+          16 +
+          _heightBenefitView +
+          16 +
+          _heightRateView +
+          16 +
+          _heightPriceView +
+          16 +
+          _heightOpenTimeView +
+          16 +
+          _heightMenuView;
+    } else if (index == 3) {
+      position = _heightInfoView +
+          16 +
+          _heightPhoneView +
+          16 +
+          _heightBenefitView +
+          16 +
+          _heightRateView +
+          16 +
+          _heightPriceView +
+          16 +
+          _heightOpenTimeView +
+          16 +
+          _heightMenuView +
+          16 +
+          _heightMapView;
     }
+    scrollController.animateTo(
+      position,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.linear,
+    );
   }
 
   Widget _buildMenuTabView(BuildContext context) {
     return BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
-      buildWhen: (previous, current) => current is DetailPlaceShowMenuState,
+      buildWhen: (previous, current) =>
+          current is DetailPlaceShowMenuState ||
+          current is DetailPlaceSelectMenuState,
       builder: (_, state) {
         return AnimatedContainer(
           duration: Duration(milliseconds: 300),
@@ -390,7 +511,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               tabMenu[index],
-                              style: _currentIndex == index
+                              style: _cubit.currentIndex == index
                                   ? TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
@@ -404,7 +525,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                           left: 0,
                           right: 0,
                           child: Container(
-                            height: _currentIndex == index ? 4 : 0,
+                            height: _cubit.currentIndex == index ? 4 : 0,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(2),
@@ -1171,7 +1292,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
 
   Container _buildInfoView(PlaceModel? place) {
     return Container(
-      height: 350,
+      height: 370,
       margin: const EdgeInsets.only(
         left: 16,
         right: 16,
@@ -1238,10 +1359,17 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          // Text(
+                          //   place.name ?? '',
+                          //   maxLines: 1,
+                          //   overflow: TextOverflow.ellipsis,
+                          //   style: Theme.of(context).textTheme.headline3,
+                          // ),
+                          overFlowText(
                             place.name ?? '',
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.headline3,
+                            Theme.of(context).textTheme.headline3!,
+                            1,
+                            readMore: _onReadMore,
                           ),
                           SizedBox(
                             height: 4,
@@ -1320,15 +1448,24 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 SizedBox(
                   height: 8,
                 ),
-                Text(
+                overFlowText(
                   place.intro ?? '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(height: 1.5),
+                  Theme.of(context).textTheme.bodyText1!.copyWith(
+                        height: 1.5,
+                      ),
+                  2,
+                  isRow: false,
+                  readMore: _onReadMore,
                 ),
+                // Text(
+                //   place.intro ?? '',
+                //   maxLines: 2,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .bodyText1
+                //       ?.copyWith(height: 1.5),
+                // ),
                 Container(
                   height: 72,
                   margin: const EdgeInsets.only(top: 24),
@@ -1400,6 +1537,98 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 )
               ],
             ),
+    );
+  }
+
+  _onReadMore() {
+    AppUtils.showBottomDialog(
+      context,
+      FullNameContentPlaceView(
+        place: _cubit.place!,
+      ),
+    );
+  }
+
+  Widget overFlowText(
+    String text,
+    TextStyle style,
+    int maxLines, {
+    bool isRow = true,
+    Function()? readMore,
+  }) {
+    return LayoutBuilder(
+      builder: (context, size) {
+        // Build the textspan
+        var span = TextSpan(
+          text: text,
+          style: style,
+        );
+
+        // Use a textpainter to determine if it will exceed max lines
+        var tp = TextPainter(
+          maxLines: maxLines,
+          textAlign: TextAlign.left,
+          textDirection: TextDirection.ltr,
+          text: span,
+        );
+
+        // trigger it to layout
+        tp.layout(maxWidth: size.maxWidth);
+
+        // whether the text overflowed or not
+        var exceeded = tp.didExceedMaxLines;
+
+        return isRow
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Expanded(
+                    child: Text.rich(
+                      span,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: maxLines,
+                    ),
+                  ),
+                  exceeded
+                      ? GestureDetector(
+                          onTap: readMore,
+                          child: Text(
+                            "Xem thêm",
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: ColorConstant.neutral_gray,
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink()
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text.rich(
+                    span,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: maxLines,
+                  ),
+                  SizedBox(
+                    height: exceeded ? 4 : 0,
+                  ),
+                  exceeded
+                      ? GestureDetector(
+                          onTap: readMore,
+                          child: Text(
+                            "Xem thêm",
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: ColorConstant.neutral_gray,
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink()
+                ],
+              );
+      },
     );
   }
 

@@ -21,6 +21,7 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
   PlaceModel? place;
   bool isVisible = false;
   bool isVisibleAppBar = true;
+  int currentIndex = 0;
   getDetail() async {
     try {
       final res = await injector.get<ApiClient>().getDetailPlace(id);
@@ -64,6 +65,11 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
   showMenu(bool visible) {
     isVisible = visible;
     emit(DetailPlaceShowMenuState());
+  }
+
+  selectMenu(int index) {
+    currentIndex = index;
+    emit(DetailPlaceSelectMenuState());
   }
 
   Future<void> makePhoneCall() async {

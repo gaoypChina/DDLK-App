@@ -653,7 +653,16 @@ class NewFeedItemView extends StatelessWidget {
                     url: AppUtils.getUrlImage(
                       images[3].path ?? '',
                     ),
+                    width: double.infinity,
                     height: double.infinity,
+                    onPressed: () => AppUtils.showBottomDialog(
+                      context,
+                      FullImageView(
+                        AppUtils.getUrlImage(
+                          images[3].path ?? '',
+                        ),
+                      ),
+                    ),
                   ),
                   isMulti
                       ? Container(
