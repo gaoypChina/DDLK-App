@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   Environment().initConfig(Environment.DEV);
 
   HttpOverrides.global = MyHttpOverrides();
