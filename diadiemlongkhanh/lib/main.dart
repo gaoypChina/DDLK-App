@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:diadiemlongkhanh/config/env_config.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/notification/notification_manager.dart';
 import 'package:diadiemlongkhanh/themes/themes.dart';
@@ -85,6 +86,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     handleFirebaseMessage();
     _requestLocation();
+    _getInfoUser();
   }
 
   handleFirebaseMessage() {
@@ -146,6 +148,13 @@ class _MyAppState extends State<MyApp> {
     print(_locationData?.longitude);
     GlobalValue.lat = _locationData?.latitude;
     GlobalValue.long = _locationData?.longitude;
+  }
+
+  _getInfoUser() async {
+    final res = await injector.get<ApiClient>().getProfile();
+    if (res != null && res.info != null) {
+      GlobalValue.name = res.info!.name;
+    }
   }
 
   @override

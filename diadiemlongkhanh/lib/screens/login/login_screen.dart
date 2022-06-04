@@ -5,6 +5,7 @@ import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
@@ -42,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       if (res.token != null) {
         await injector.get<StorageService>().saveToken(res.token!);
+        await _getInfoUser();
         Navigator.of(context)
             .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
         return;
@@ -51,6 +53,13 @@ class _LoginScreenState extends State<LoginScreen> {
       context,
       ConstantTitle.please_try_again,
     );
+  }
+
+  _getInfoUser() async {
+    final res = await injector.get<ApiClient>().getProfile();
+    if (res != null && res.info != null) {
+      GlobalValue.name = res.info!.name;
+    }
   }
 
   @override

@@ -23,4 +23,5 @@ class Apis {
   static const login_with_otp_confirm = '/auth/login-with-otp-confirm';
   static const recover = '/auth/recover';
   static const recover_confirm = '/auth/recover-confirm';
+  static const profile = '/profile';
 }

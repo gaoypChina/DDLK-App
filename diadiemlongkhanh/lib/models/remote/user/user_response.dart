@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_response.g.dart';
@@ -11,6 +12,11 @@ class UserModel {
   String? name;
   String? username;
   int? savedCount;
+  bool? gender;
+  String? email;
+  SocialModel? social;
+  String? phone;
+  String? birth;
 
   UserModel();
   factory UserModel.fromJson(Map<String, dynamic> json) =>

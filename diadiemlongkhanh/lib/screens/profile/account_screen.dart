@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:diadiemlongkhanh/widgets/verified_view.dart';
@@ -195,7 +196,7 @@ class _AccountScreenState extends State<AccountScreen>
         children: [
           _buildAvtView(context),
           Text(
-            'Cris Evan',
+            GlobalValue.name ?? '',
             style: Theme.of(context).textTheme.headline3,
           ),
           Container(

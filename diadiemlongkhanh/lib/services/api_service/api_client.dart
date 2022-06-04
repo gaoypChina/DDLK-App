@@ -6,6 +6,8 @@ import 'package:diadiemlongkhanh/models/remote/new_feed/result_new_feed_response
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/result_place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
+import 'package:diadiemlongkhanh/models/remote/user/info_user_response.dart';
+import 'package:diadiemlongkhanh/models/remote/user/user_response.dart';
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -121,4 +123,14 @@ abstract class ApiClient {
   @POST(Apis.review)
   @MultiPart()
   Future<NewFeedModel?> createReview(@Body() FormData data);
+
+  @GET(Apis.profile)
+  Future<InfoUserResponse?> getProfile();
+
+  @GET('${Apis.profile}{id}/reviews')
+  Future<ResultNewFeedModel?> getReviewsOfUser(
+    @Path() String id, {
+    @Query('page') int page = 1,
+    @Query('pageSize') int pageSize = 10,
+  });
 }

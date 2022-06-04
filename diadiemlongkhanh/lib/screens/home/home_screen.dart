@@ -17,6 +17,7 @@ import 'package:diadiemlongkhanh/screens/skeleton_view/skeleton_voucher.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
@@ -670,7 +671,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 Expanded(
                   child: Text(
-                    'User Name Here',
+                    GlobalValue.name ?? '',
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 ),

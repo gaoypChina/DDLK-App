@@ -12,7 +12,14 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel()
   ..avatar = json['avatar'] as String?
   ..name = json['name'] as String?
   ..username = json['username'] as String?
-  ..savedCount = json['savedCount'] as int?;
+  ..savedCount = json['savedCount'] as int?
+  ..gender = json['gender'] as bool?
+  ..email = json['email'] as String?
+  ..social = json['social'] == null
+      ? null
+      : SocialModel.fromJson(json['social'] as Map<String, dynamic>)
+  ..phone = json['phone'] as String?
+  ..birth = json['birth'] as String?;
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       '_id': instance.id,
@@ -21,4 +28,9 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'name': instance.name,
       'username': instance.username,
       'savedCount': instance.savedCount,
+      'gender': instance.gender,
+      'email': instance.email,
+      'social': instance.social,
+      'phone': instance.phone,
+      'birth': instance.birth,
     };
