@@ -8,6 +8,7 @@ import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/bloc/new_feed_cubit.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/new_feed_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/account_screen.dart';
+import 'package:diadiemlongkhanh/screens/profile/bloc/account_cubit.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,12 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
         child: NewFeedScreen(),
       ),
       CategoryScreen(),
-      _token != null ? AccountScreen() : OptionLoginScreen(),
+      _token != null
+          ? BlocProvider(
+              create: (_) => AccountCubit(),
+              child: AccountScreen(),
+            )
+          : OptionLoginScreen(),
     ];
     _controller = new TabController(length: 4, vsync: this);
   }

@@ -59,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final res = await injector.get<ApiClient>().getProfile();
     if (res != null && res.info != null) {
       GlobalValue.name = res.info!.name;
+      GlobalValue.id = res.info!.id;
     }
   }
 

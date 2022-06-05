@@ -602,12 +602,46 @@ class _ApiClient implements ApiClient {
     final _result = await _dio.fetch<Map<String, dynamic>?>(
         _setStreamType<ResultNewFeedModel>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/profile${id}/reviews',
+                .compose(_dio.options, '/profile/${id}/reviews',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data == null
         ? null
         : ResultNewFeedModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<StatsModel?> getUserStats(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<StatsModel>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/profile/${id}/stats',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : StatsModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AuthResponse?> changePassword(data) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = data;
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<AuthResponse>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/profile/password',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : AuthResponse.fromJson(_result.data!);
     return value;
   }
 

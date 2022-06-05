@@ -43,12 +43,21 @@ class _SettingScreenState extends State<SettingScreen> {
     SettingMenuModel(
       SvgPicture.asset(ConstantIcons.ic_contact),
       'Liên hệ góp ý',
+      type: SettingMenuType.contact,
     ),
     SettingMenuModel(
       SvgPicture.asset(ConstantIcons.ic_logout),
       'Đăng xuất',
     ),
   ];
+  _selectMenu(SettingMenuType type) {
+    if (type == SettingMenuType.settingProfile) {
+      Navigator.of(context).pushNamed(RouterName.setting_profile);
+    } else if (type == SettingMenuType.contact) {
+      Navigator.of(context).pushNamed(RouterName.contact);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,8 +72,7 @@ class _SettingScreenState extends State<SettingScreen> {
           final item = settingItems[index];
           return SettingItemView(
             item,
-            onPressed: () =>
-                Navigator.of(context).pushNamed(RouterName.setting_profile),
+            onPressed: () => _selectMenu(item.type),
           );
         },
       ),

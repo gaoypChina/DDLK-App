@@ -6,6 +6,7 @@ import 'package:diadiemlongkhanh/models/remote/new_feed/result_new_feed_response
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/result_place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
+import 'package:diadiemlongkhanh/models/remote/stats/stats_response.dart';
 import 'package:diadiemlongkhanh/models/remote/user/info_user_response.dart';
 import 'package:diadiemlongkhanh/models/remote/user/user_response.dart';
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
@@ -127,10 +128,18 @@ abstract class ApiClient {
   @GET(Apis.profile)
   Future<InfoUserResponse?> getProfile();
 
-  @GET('${Apis.profile}{id}/reviews')
+  @GET('${Apis.profile}/{id}/reviews')
   Future<ResultNewFeedModel?> getReviewsOfUser(
     @Path() String id, {
     @Query('page') int page = 1,
     @Query('pageSize') int pageSize = 10,
   });
+
+  @GET('${Apis.profile}/{id}/stats')
+  Future<StatsModel?> getUserStats(
+    @Path() String id,
+  );
+
+  @PUT('${Apis.profile}/password')
+  Future<AuthResponse?> changePassword(@Body() data);
 }

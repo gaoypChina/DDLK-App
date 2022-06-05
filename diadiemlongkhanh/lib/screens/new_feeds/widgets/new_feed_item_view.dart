@@ -412,13 +412,15 @@ class NewFeedItemView extends StatelessWidget {
                       SizedBox(
                         width: 4,
                       ),
-                      Text(
-                        item!.place?.address?.specific ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 10,
-                            color: ColorConstant.neutral_gray_lighter),
+                      Expanded(
+                        child: Text(
+                          item!.place?.address?.specific ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: ColorConstant.neutral_gray_lighter),
+                        ),
                       ),
                     ],
                   ),
@@ -694,6 +696,9 @@ class NewFeedItemView extends StatelessWidget {
     final images = item!.images;
     Widget photoView = SizedBox.shrink();
     switch (images.length) {
+      case 0:
+        photoView = SizedBox.shrink();
+        break;
       case 1:
         photoView = ClipRRectImage(
           radius: 8,
@@ -729,7 +734,7 @@ class NewFeedItemView extends StatelessWidget {
         );
     }
     return Container(
-      height: 218,
+      height: images.isEmpty ? 0 : 218,
       width: double.infinity,
       margin: const EdgeInsets.only(top: 12),
       child: photoView,

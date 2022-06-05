@@ -28,11 +28,17 @@ class ResetPasswordScreen extends StatefulWidget {
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   bool _isShowPass = false;
   bool _isShowVerifyPass = false;
+  bool _isShowOldPass = false;
   final _passCtler = TextEditingController();
+  final _oldPassCtler = TextEditingController();
   final _verifyPassCtler = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   _updatePassword() async {
     if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    if (widget.phone == '') {
+      _changePassword();
       return;
     }
     FocusScope.of(context).unfocus();
@@ -68,6 +74,36 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
+  _changePassword() async {
+    AppUtils.showLoading();
+    final data = {
+      "oldPassword": _oldPassCtler.text,
+      "newPassword": _passCtler.text,
+    };
+    final res = await injector.get<ApiClient>().changePassword(data);
+    AppUtils.hideLoading();
+    if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!);
+        return;
+      }
+      AppUtils.showSuccessAlert(
+        context,
+        title: 'Đổi mật khẩu thành công!',
+        okTitle: 'Xác nhận',
+        okAction: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        },
+      );
+      return;
+    }
+    AppUtils.showOkDialog(
+      context,
+      ConstantTitle.please_try_again,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -75,7 +111,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: MyAppBar(
-          title: 'Đặt lại mật khẩu',
+          title: widget.phone == '' ? 'Đổi mật khẩu' : 'Đặt lại mật khẩu',
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -85,6 +121,41 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               children: [
                 SizedBox(
                   height: 60,
+                ),
+                widget.phone != ''
+                    ? SizedBox.shrink()
+                    : MainTextFormField(
+                        hintText: 'Mật khẩu cũ',
+                        maxLines: 1,
+                        obscureText: !_isShowOldPass,
+                        controller: _oldPassCtler,
+                        prefixIcon: SvgPicture.asset(
+                          ConstantIcons.ic_lock,
+                        ),
+                        validator: (val) {
+                          if (val == null || val == '') {
+                            return 'Vui lòng nhập mật khẩu cũ của bạn';
+                          }
+                          if (val.length < 6) {
+                            return 'Mật khẩu cũ của bạn phải có ít nhất 6 ký tự';
+                          }
+                          return null;
+                        },
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isShowOldPass = !_isShowOldPass;
+                            });
+                          },
+                          child: SvgPicture.asset(
+                            !_isShowPass
+                                ? ConstantIcons.ic_eye_off
+                                : ConstantIcons.ic_eye,
+                          ),
+                        ),
+                      ),
+                SizedBox(
+                  height: widget.phone != '' ? 0 : 16,
                 ),
                 MainTextFormField(
                   hintText: 'Tạo mật khẩu mới',

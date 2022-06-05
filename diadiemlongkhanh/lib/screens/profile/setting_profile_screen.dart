@@ -22,13 +22,28 @@ class _SettingProfileScreenState extends State<SettingProfileScreen> {
         width: 24,
         height: 24,
       ),
-      'Tài khoản và bảo mật',
+      'Cập nhật thông tin',
+      type: SettingMenuType.editProfile,
     ),
     SettingMenuModel(
       SvgPicture.asset(ConstantIcons.ic_lock_fill),
-      'Quyền riêng tư',
+      'Đổi mật khẩu',
+      type: SettingMenuType.changePassword,
     ),
   ];
+
+  _selectMenu(SettingMenuType type) {
+    if (type == SettingMenuType.editProfile) {
+      Navigator.of(context).pushNamed(
+        RouterName.edit_profile,
+      );
+    } else if (type == SettingMenuType.changePassword) {
+      Navigator.of(context).pushNamed(
+        RouterName.reset_password,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,9 +58,7 @@ class _SettingProfileScreenState extends State<SettingProfileScreen> {
           final item = settingItems[index];
           return SettingItemView(
             item,
-            onPressed: () => Navigator.of(context).pushNamed(
-              RouterName.edit_profile,
-            ),
+            onPressed: () => _selectMenu(item.type),
           );
         },
       ),
