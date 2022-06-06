@@ -23,19 +23,20 @@ class _SettingScreenState extends State<SettingScreen> {
         height: 24,
       ),
       'Tài khoản và bảo mật',
+      type: SettingMenuType.settingProfile,
     ),
-    SettingMenuModel(
-      SvgPicture.asset(ConstantIcons.ic_setting),
-      'Quyền riêng tư',
-    ),
-    SettingMenuModel(
-      Image.asset(
-        ConstantIcons.ic_bell_fill,
-        width: 24,
-        height: 24,
-      ),
-      'Cài đặt thông báo',
-    ),
+    // SettingMenuModel(
+    //   SvgPicture.asset(ConstantIcons.ic_setting),
+    //   'Quyền riêng tư',
+    // ),
+    // SettingMenuModel(
+    //   Image.asset(
+    //     ConstantIcons.ic_bell_fill,
+    //     width: 24,
+    //     height: 24,
+    //   ),
+    //   'Cài đặt thông báo',
+    // ),
     SettingMenuModel(
       SvgPicture.asset(ConstantIcons.ic_qr_black),
       'Quét mã QR',

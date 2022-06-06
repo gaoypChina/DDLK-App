@@ -142,4 +142,10 @@ abstract class ApiClient {
 
   @PUT('${Apis.profile}/password')
   Future<AuthResponse?> changePassword(@Body() data);
+
+  @POST(Apis.contact)
+  Future<AuthResponse?> sendContact(@Body() data);
+
+  @PUT('${Apis.profile}/info')
+  Future<AuthResponse?> updateProfile(@Body() data);
 }

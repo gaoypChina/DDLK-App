@@ -6,13 +6,17 @@ class PhoneFormField extends StatelessWidget {
   const PhoneFormField({
     Key? key,
     this.controller,
+    this.isBorder = false,
+    this.height = 48,
   }) : super(key: key);
   final TextEditingController? controller;
+  final bool isBorder;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48,
+      height: height,
       margin: const EdgeInsets.only(top: 56),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -53,9 +57,30 @@ class PhoneFormField extends StatelessWidget {
                 counterText: "",
                 hintStyle: Theme.of(context).textTheme.subtitle1,
                 hintText: 'Số điện thoại',
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
+                border: isBorder
+                    ? OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        borderSide: BorderSide(
+                          color: ColorConstant.border_gray,
+                        ),
+                      )
+                    : InputBorder.none,
+                focusedBorder: isBorder
+                    ? OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    : InputBorder.none,
+                enabledBorder: isBorder
+                    ? OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        borderSide: BorderSide(
+                          color: ColorConstant.border_gray,
+                        ),
+                      )
+                    : InputBorder.none,
               ),
             ),
           )

@@ -19,6 +19,7 @@ class MainTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
+  final bool readOnly;
 
   MainTextFormField({
     this.hintText,
@@ -37,6 +38,7 @@ class MainTextFormField extends StatelessWidget {
     this.validator,
     this.inputFormatters,
     this.maxLength,
+    this.readOnly = false,
   });
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class MainTextFormField extends StatelessWidget {
       obscureText: obscureText,
       maxLength: maxLength,
       validator: validator,
+      readOnly: readOnly,
       decoration: InputDecoration(
         counterText: "",
         fillColor: fillColor,

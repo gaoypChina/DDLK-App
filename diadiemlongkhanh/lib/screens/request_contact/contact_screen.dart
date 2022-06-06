@@ -1,5 +1,8 @@
+import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
@@ -17,13 +20,41 @@ class ContactScreen extends StatefulWidget {
 class _ContactScreenState extends State<ContactScreen> {
   final _nameCtler = TextEditingController();
   final _emailCtler = TextEditingController();
-  final _contentTextController = TextEditingController();
+  final _contentCtler = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   _confirm() async {
-    if (_formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate()) {
       return;
     }
+    AppUtils.showLoading();
+    final data = {
+      "name": _nameCtler.text,
+      "email": _emailCtler.text,
+      "content": _contentCtler.text,
+    };
+    final res = await injector.get<ApiClient>().sendContact(data);
+    AppUtils.hideLoading();
+    if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!);
+        return;
+      }
+      AppUtils.showSuccessAlert(
+        context,
+        title: 'Gửi góp ý thành công!',
+        okTitle: 'Xác nhận',
+        okAction: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        },
+      );
+      return;
+    }
+    AppUtils.showOkDialog(
+      context,
+      ConstantTitle.please_try_again,
+    );
   }
 
   @override
@@ -63,6 +94,9 @@ class _ContactScreenState extends State<ContactScreen> {
                   maxLines: 1,
                   controller: _emailCtler,
                   validator: (val) {
+                    if (val == '') {
+                      return 'Vui lòng nhập email của bạn';
+                    }
                     if (val != '' && !AppUtils.isValidEmail(val ?? '')) {
                       return 'Email của bạn không hợp lệ';
                     }
@@ -78,7 +112,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   child: MainTextFormField(
                     keyboardType: TextInputType.multiline,
                     maxLines: 5,
-                    controller: _contentTextController,
+                    controller: _contentCtler,
                     hintText: 'Nội dung (tối thiểu 10 ký tự)',
                     contentPadding: const EdgeInsets.only(
                       top: 10,
@@ -97,6 +131,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   ),
                 ),
                 MainButton(
+                  onPressed: _confirm,
                   title: 'Gửi',
                   margin: const EdgeInsets.only(top: 30),
                 )
