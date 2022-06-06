@@ -156,6 +156,7 @@ class _MyAppState extends State<MyApp> {
     if (res != null && res.info != null) {
       GlobalValue.name = res.info!.name;
       GlobalValue.id = res.info!.id;
+      GlobalValue.avatar = res.info!.avatar;
     }
   }
 

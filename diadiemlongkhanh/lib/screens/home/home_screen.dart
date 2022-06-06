@@ -657,11 +657,12 @@ class _HomeScreenState extends State<HomeScreen>
             )
           : Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(22),
-                  child: Image.network(
-                    'https://photo-cms-nghenhinvietnam.zadn.vn/w700/Uploaded/2022/cadwpqrnd/2022_03_06/anya_taylor_joy_900x506_pvfv.jpg',
-                    fit: BoxFit.cover,
+                ClipRRectImage(
+                  height: 44,
+                  width: 44,
+                  radius: 22,
+                  url: AppUtils.getUrlImage(
+                    GlobalValue.avatar ?? '',
                     width: 44,
                     height: 44,
                   ),

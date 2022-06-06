@@ -3,6 +3,7 @@ import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
 import 'package:diadiemlongkhanh/screens/profile/bloc/account_cubit.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
@@ -381,8 +382,11 @@ class _AccountScreenState extends State<AccountScreen>
         children: [
           ClipRRectImage(
             radius: 39,
-            url:
-                'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
+            url: AppUtils.getUrlImage(
+              GlobalValue.avatar ?? '',
+              height: 78,
+              width: 78,
+            ),
             width: 78,
             height: 78,
           ),

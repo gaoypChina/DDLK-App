@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diadiemlongkhanh/models/remote/user/user_response.dart';
 import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
@@ -5,15 +7,19 @@ import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -91,6 +97,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       "facebook": _fbCtler.text,
       "instagram": _insCtler.text,
     };
+    if (_imageFile != null) {
+      await _uploadAvatar();
+    }
     final res = await injector.get<ApiClient>().updateProfile(data);
     AppUtils.hideLoading();
     if (res != null) {
@@ -98,6 +107,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         AppUtils.showOkDialog(context, res.error!);
         return;
       }
+      GlobalValue.name = _fullNameCtler.text;
       AppUtils.showSuccessAlert(
         context,
         title: 'Cập nhật thông tin cá nhân thành công!',
@@ -150,6 +160,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         _imageFile = image;
       });
+    }
+  }
+
+  _uploadAvatar() async {
+    final data = FormData.fromMap({
+      'files': MultipartFile.fromFileSync(
+        _imageFile!.path,
+        contentType: MediaType.parse(lookupMimeType(_imageFile!.path) ?? ''),
+      )
+    });
+    final res = await injector.get<ApiClient>().updateAvatar(data);
+    if (res != null && res.avatar != null) {
+      GlobalValue.avatar = res.avatar;
     }
   }
 
@@ -518,12 +541,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: Container(
             child: Stack(
               children: [
-                ClipRRectImage(
-                  height: 78,
-                  width: 78,
-                  radius: 39,
-                  url: _user?.avatar ?? '',
-                ),
+                _imageFile != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(39),
+                        child: Image.file(
+                          File(_imageFile!.path),
+                          width: 78,
+                          height: 78,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : ClipRRectImage(
+                        height: 78,
+                        width: 78,
+                        radius: 39,
+                        url: AppUtils.getUrlImage(
+                          _user?.avatar ?? '',
+                          width: 78,
+                          height: 78,
+                        ),
+                      ),
                 Positioned(
                   right: 0,
                   bottom: 0,

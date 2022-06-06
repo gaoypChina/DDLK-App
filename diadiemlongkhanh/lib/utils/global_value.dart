@@ -3,4 +3,5 @@ class GlobalValue {
   static double? long;
   static String? name;
   static String? id;
+  static String? avatar;
 }

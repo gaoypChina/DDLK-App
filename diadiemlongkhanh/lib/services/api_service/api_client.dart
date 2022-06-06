@@ -148,4 +148,8 @@ abstract class ApiClient {
 
   @PUT('${Apis.profile}/info')
   Future<AuthResponse?> updateProfile(@Body() data);
+
+  @PUT('${Apis.profile}/avatar')
+  @MultiPart()
+  Future<AuthResponse?> updateAvatar(@Body() FormData data);
 }

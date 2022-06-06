@@ -7,6 +7,7 @@ class AuthResponse {
   String? error;
   bool? success;
   String? token;
+  String? avatar;
   AuthResponse();
   factory AuthResponse.fromJson(Map<String, dynamic> json) =>
       _$AuthResponseFromJson(json);
