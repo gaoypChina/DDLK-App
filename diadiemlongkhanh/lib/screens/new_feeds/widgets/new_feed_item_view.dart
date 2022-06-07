@@ -7,6 +7,7 @@ import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/full_image_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
@@ -235,8 +236,11 @@ class NewFeedItemView extends StatelessWidget {
         children: [
           ClipRRectImage(
             radius: 18,
-            url:
-                'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
+            url: AppUtils.getUrlImage(
+              GlobalValue.avatar ?? '',
+              width: 36,
+              height: 36,
+            ),
             width: 36,
             height: 36,
           ),
@@ -753,6 +757,10 @@ class NewFeedItemView extends StatelessWidget {
           ),
           width: 44,
           height: 44,
+          onPressed: () => Navigator.of(context).pushNamed(
+            RouterName.account,
+            arguments: item!.author?.id,
+          ),
         ),
         SizedBox(
           width: 4,

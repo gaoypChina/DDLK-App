@@ -25,4 +25,5 @@ class Apis {
   static const recover_confirm = '/auth/recover-confirm';
   static const profile = '/profile';
   static const contact = '/contact';
+  static const app_token = '/app-token';
 }

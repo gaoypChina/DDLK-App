@@ -62,14 +62,13 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     scrollController.addListener(() {
       if (scrollController.offset <= (_heightSliderView)) {
         if (!_cubit.isVisibleAppBar) {
-          print(scrollController.offset);
+          // print(scrollController.offset);
           _cubit.showAppBar(true);
           // setState(() {
           //   isVisibleAppBar = true;
           // });
         }
         if (_cubit.isVisible) {
-          print(scrollController.offset);
           // _cubit.showMenu(false);
           // setState(() {
           //   isVisible = false;
@@ -77,106 +76,104 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
         }
       } else {
         if (_cubit.isVisibleAppBar) {
-          print(scrollController.offset);
           _cubit.showAppBar(false);
           // setState(() {
           //   isVisibleAppBar = false;
           // });
         }
         if (!_cubit.isVisible) {
-          print(scrollController.offset);
           // _cubit.showMenu(true);
           // setState(() {
           //   isVisible = true;
           // });
         }
-        if (_cubit.isVisible) {
-          if (scrollController.offset > _heightSliderView &&
-              scrollController.offset <=
-                  _heightInfoView +
-                      16 +
-                      _heightPhoneView +
-                      16 +
-                      _heightBenefitView) {
-            _cubit.selectMenu(0);
-          } else if (scrollController.offset >
-                  _heightInfoView +
-                      16 +
-                      _heightPhoneView +
-                      16 +
-                      _heightBenefitView +
-                      16 +
-                      _heightRateView +
-                      16 +
-                      _heightPriceView +
-                      16 +
-                      _heightOpenTimeView &&
-              scrollController.offset <=
-                  _heightInfoView +
-                      16 +
-                      _heightPhoneView +
-                      16 +
-                      _heightBenefitView +
-                      16 +
-                      _heightRateView +
-                      16 +
-                      _heightPriceView +
-                      16 +
-                      _heightOpenTimeView +
-                      16 +
-                      _heightMenuView) {
-            _cubit.selectMenu(1);
-          } else if (scrollController.offset >
-                  _heightInfoView +
-                      16 +
-                      _heightPhoneView +
-                      16 +
-                      _heightBenefitView +
-                      16 +
-                      _heightRateView +
-                      16 +
-                      _heightPriceView +
-                      16 +
-                      _heightOpenTimeView +
-                      16 +
-                      _heightMenuView &&
-              scrollController.offset <=
-                  _heightInfoView +
-                      16 +
-                      _heightPhoneView +
-                      16 +
-                      _heightBenefitView +
-                      16 +
-                      _heightRateView +
-                      16 +
-                      _heightPriceView +
-                      16 +
-                      _heightOpenTimeView +
-                      16 +
-                      _heightMenuView +
-                      16 +
-                      _heightMapView) {
-            _cubit.selectMenu(2);
-          } else if (scrollController.offset >
-              _heightInfoView +
-                  16 +
-                  _heightPhoneView +
-                  16 +
-                  _heightBenefitView +
-                  16 +
-                  _heightRateView +
-                  16 +
-                  _heightPriceView +
-                  16 +
-                  _heightOpenTimeView +
-                  16 +
-                  _heightMenuView +
-                  16 +
-                  _heightMapView) {
-            _cubit.selectMenu(3);
-          }
-        }
+        // if (_cubit.isVisible) {
+        //   if (scrollController.offset > _heightSliderView &&
+        //       scrollController.offset <=
+        //           _heightInfoView +
+        //               16 +
+        //               _heightPhoneView +
+        //               16 +
+        //               _heightBenefitView) {
+        //     _cubit.selectMenu(0);
+        //   } else if (scrollController.offset >
+        //           _heightInfoView +
+        //               16 +
+        //               _heightPhoneView +
+        //               16 +
+        //               _heightBenefitView +
+        //               16 +
+        //               _heightRateView +
+        //               16 +
+        //               _heightPriceView +
+        //               16 +
+        //               _heightOpenTimeView &&
+        //       scrollController.offset <=
+        //           _heightInfoView +
+        //               16 +
+        //               _heightPhoneView +
+        //               16 +
+        //               _heightBenefitView +
+        //               16 +
+        //               _heightRateView +
+        //               16 +
+        //               _heightPriceView +
+        //               16 +
+        //               _heightOpenTimeView +
+        //               16 +
+        //               _heightMenuView) {
+        //     _cubit.selectMenu(1);
+        //   } else if (scrollController.offset >
+        //           _heightInfoView +
+        //               16 +
+        //               _heightPhoneView +
+        //               16 +
+        //               _heightBenefitView +
+        //               16 +
+        //               _heightRateView +
+        //               16 +
+        //               _heightPriceView +
+        //               16 +
+        //               _heightOpenTimeView +
+        //               16 +
+        //               _heightMenuView &&
+        //       scrollController.offset <=
+        //           _heightInfoView +
+        //               16 +
+        //               _heightPhoneView +
+        //               16 +
+        //               _heightBenefitView +
+        //               16 +
+        //               _heightRateView +
+        //               16 +
+        //               _heightPriceView +
+        //               16 +
+        //               _heightOpenTimeView +
+        //               16 +
+        //               _heightMenuView +
+        //               16 +
+        //               _heightMapView) {
+        //     _cubit.selectMenu(2);
+        //   } else if (scrollController.offset >
+        //       _heightInfoView +
+        //           16 +
+        //           _heightPhoneView +
+        //           16 +
+        //           _heightBenefitView +
+        //           16 +
+        //           _heightRateView +
+        //           16 +
+        //           _heightPriceView +
+        //           16 +
+        //           _heightOpenTimeView +
+        //           16 +
+        //           _heightMenuView +
+        //           16 +
+        //           _heightMapView) {
+        //     _cubit.selectMenu(3);
+        //   }
       }
+      // }
     });
   }
 
@@ -1470,11 +1467,11 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   height: 72,
                   margin: const EdgeInsets.only(top: 24),
                   child: ListView.builder(
-                    itemCount: place.photos.length,
+                    itemCount: place.images.length,
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (_, index) {
-                      final item = place.photos[index];
+                      final item = place.images[index];
                       return Container(
                         height: 72,
                         width: 72,
@@ -1641,14 +1638,14 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
           place == null
               ? ShimmerImage()
               : PageView.builder(
-                  itemCount: place.photos.length,
+                  itemCount: place.images.length,
                   scrollDirection: Axis.horizontal,
                   onPageChanged: (index) {
                     print(index);
                     _cubit.changePage(index);
                   },
                   itemBuilder: (_, index) {
-                    final item = place.photos[index];
+                    final item = place.images[index];
                     return ClipRRectImage(
                       height: double.infinity,
                       width: double.infinity,
@@ -1674,7 +1671,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        '${currentIndex + 1}/${place.photos.length}',
+                        '${currentIndex + 1}/${place.images.length}',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.white,

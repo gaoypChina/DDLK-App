@@ -17,7 +17,10 @@ import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
 import 'package:diadiemlongkhanh/screens/places/bloc/list_places_cubit.dart';
 import 'package:diadiemlongkhanh/screens/places/detail_place_screen.dart';
 import 'package:diadiemlongkhanh/screens/places/list_place_screen.dart';
+import 'package:diadiemlongkhanh/screens/profile/account_screen.dart';
+import 'package:diadiemlongkhanh/screens/profile/bloc/account_cubit.dart';
 import 'package:diadiemlongkhanh/screens/profile/edit_profile_screen.dart';
+import 'package:diadiemlongkhanh/screens/profile/places_saved_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/setting_profile_screen.dart';
 import 'package:diadiemlongkhanh/screens/profile/setting_screen.dart';
 import 'package:diadiemlongkhanh/screens/promotion/bloc/detail_promotion_cubit.dart';
@@ -170,6 +173,10 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => EditProfileScreen(),
         );
+      case RouterName.places_saved:
+        return MaterialPageRoute(
+          builder: (_) => PlacesSavedScreen(),
+        );
       case RouterName.contact:
         return MaterialPageRoute(
           builder: (_) => ContactScreen(),
@@ -211,6 +218,17 @@ class RouterManager {
           builder: (_) => BlocProvider(
             create: (_) => SearchCubit(),
             child: SearchScreen(),
+          ),
+        );
+      case RouterName.account:
+        String? userId;
+        if (settings.arguments != null) {
+          userId = settings.arguments as String;
+        }
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => AccountCubit(userId: userId),
+            child: AccountScreen(),
           ),
         );
       case RouterName.detail_review:
@@ -278,4 +296,6 @@ class RouterName {
   static const map_places = '/map_places';
   static const new_feeds = 'new_feeds';
   static const contact = '/contact';
+  static const account = '/account';
+  static const places_saved = '/places_saved';
 }

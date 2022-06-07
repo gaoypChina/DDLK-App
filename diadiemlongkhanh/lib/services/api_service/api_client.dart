@@ -128,6 +128,9 @@ abstract class ApiClient {
   @GET(Apis.profile)
   Future<InfoUserResponse?> getProfile();
 
+  @GET('${Apis.profile}/{id}')
+  Future<UserModel?> getProfileWithId({@Path() String id = ''});
+
   @GET('${Apis.profile}/{id}/reviews')
   Future<ResultNewFeedModel?> getReviewsOfUser(
     @Path() String id, {
@@ -152,4 +155,10 @@ abstract class ApiClient {
   @PUT('${Apis.profile}/avatar')
   @MultiPart()
   Future<AuthResponse?> updateAvatar(@Body() FormData data);
+
+  @GET('${Apis.profile}/{id}/saved')
+  Future<List<PlaceModel>?> getPlacesSaved(@Path() String id);
+
+  @POST(Apis.app_token)
+  Future<AuthResponse?> saveToken(@Body() data);
 }

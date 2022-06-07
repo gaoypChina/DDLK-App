@@ -31,7 +31,7 @@ class PlaceModel {
   @JsonKey(defaultValue: [])
   late List<BenefitModel> benefits;
   @JsonKey(defaultValue: [])
-  late List<ThumbnailModel> photos;
+  late List<ThumbnailModel> images;
   @JsonKey(defaultValue: [])
   late List<ThumbnailModel> menu;
   @JsonKey(defaultValue: 0)

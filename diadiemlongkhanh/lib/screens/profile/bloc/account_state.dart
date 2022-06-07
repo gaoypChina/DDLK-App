@@ -12,3 +12,5 @@ class AccountGetReviewsDoneState extends AccountState {}
 class AccountLoadingState extends AccountState {}
 
 class AccountGetStatsDoneState extends AccountState {}
+
+class AccountGetProfileDoneState extends AccountState {}

@@ -58,6 +58,17 @@ class AppUtils {
     if (path.contains('uploads')) {
       _path = path.replaceAll('uploads', 'static');
     }
+    if (width != null) {
+      _path += '?w=$width';
+    }
+    if (height != null) {
+      if (_path.contains('?')) {
+        _path += '&h=$width';
+      } else {
+        _path += '?h=$width';
+      }
+    }
+
     return Environment().config.domain + _path;
   }
 

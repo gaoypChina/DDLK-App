@@ -33,6 +33,7 @@ class _AccountScreenState extends State<AccountScreen>
       }
     });
     WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _cubit.getInfoUser();
       _cubit.getUserStats();
       _cubit.getReviewsOfUser();
     });
@@ -45,15 +46,23 @@ class _AccountScreenState extends State<AccountScreen>
       backgroundColor: ColorConstant.grey_F2F4F8,
       appBar: MyAppBar(
         title: 'Thông tin cá nhân',
-        isShowBackButton: false,
+        isShowBackButton: _cubit.userId != null,
         actions: [
-          IconButton(
-            onPressed: () =>
-                Navigator.of(context).pushNamed(RouterName.setting),
-            icon: SvgPicture.asset(
-              ConstantIcons.ic_setting,
-            ),
-          )
+          _cubit.userId != null
+              ? IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.more_horiz,
+                    color: Colors.black,
+                  ),
+                )
+              : IconButton(
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(RouterName.setting),
+                  icon: SvgPicture.asset(
+                    ConstantIcons.ic_setting,
+                  ),
+                )
         ],
       ),
       body: SingleChildScrollView(
@@ -71,6 +80,8 @@ class _AccountScreenState extends State<AccountScreen>
                     SvgPicture.asset(
                       ConstantIcons.ic_bookmark_outline,
                     ),
+                    onPressed: () => Navigator.of(context)
+                        .pushNamed(RouterName.places_saved),
                   ),
                   _buildOptionItemView(
                     'Khuyến mãi đã lưu',
@@ -241,33 +252,44 @@ class _AccountScreenState extends State<AccountScreen>
     );
   }
 
-  Container _buildInfoUserView(BuildContext context) {
+  Widget _buildInfoUserView(BuildContext context) {
     return Container(
       height: 265,
       color: Colors.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildAvtView(context),
-          Text(
-            GlobalValue.name ?? '',
-            style: Theme.of(context).textTheme.headline3,
-          ),
-          Container(
-            // height: 24,
-            margin: const EdgeInsets.only(top: 4),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: ColorConstant.neutral_gray_lightest,
-            ),
-            child: Text(
-              'Ngày tham gia: 04/04/2022',
-              style: TextStyle(
-                fontSize: 12,
-                color: ColorConstant.neutral_black,
-              ),
-            ),
+          BlocBuilder<AccountCubit, AccountState>(
+            buildWhen: (previous, current) =>
+                current is AccountGetProfileDoneState,
+            builder: (_, state) {
+              return Column(
+                children: [
+                  _buildAvtView(context),
+                  Text(
+                    _cubit.user?.name ?? '',
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                  Container(
+                    // height: 24,
+                    margin: const EdgeInsets.only(top: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: ColorConstant.neutral_gray_lightest,
+                    ),
+                    child: Text(
+                      'Ngày tham gia: 04/04/2022',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: ColorConstant.neutral_black,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
           _buildStatsView()
         ],
@@ -310,38 +332,42 @@ class _AccountScreenState extends State<AccountScreen>
     );
   }
 
-  Container _buildOptionItemView(
+  Widget _buildOptionItemView(
     String title,
-    Widget icon,
-  ) {
-    return Container(
-      height: 56,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: ColorConstant.neutral_gray_lightest,
-          ),
-        ),
-      ),
-      child: Row(
-        children: [
-          icon,
-          SizedBox(
-            width: 8,
-          ),
-          Expanded(
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.bodyText1,
+    Widget icon, {
+    Function()? onPressed,
+  }) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        height: 56,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(
+              color: ColorConstant.neutral_gray_lightest,
             ),
           ),
-          SvgPicture.asset(
-            ConstantIcons.ic_chevron_right,
-            color: ColorConstant.neutral_black,
-          ),
-        ],
+        ),
+        child: Row(
+          children: [
+            icon,
+            SizedBox(
+              width: 8,
+            ),
+            Expanded(
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+            SvgPicture.asset(
+              ConstantIcons.ic_chevron_right,
+              color: ColorConstant.neutral_black,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -383,7 +409,7 @@ class _AccountScreenState extends State<AccountScreen>
           ClipRRectImage(
             radius: 39,
             url: AppUtils.getUrlImage(
-              GlobalValue.avatar ?? '',
+              _cubit.user?.avatar ?? '',
               height: 78,
               width: 78,
             ),

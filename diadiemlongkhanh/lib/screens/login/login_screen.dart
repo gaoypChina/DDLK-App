@@ -9,6 +9,7 @@ import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -44,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (res.token != null) {
         await injector.get<StorageService>().saveToken(res.token!);
         await _getInfoUser();
+        await _saveTokenFCM();
         Navigator.of(context)
             .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
         return;
@@ -55,11 +57,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  _saveTokenFCM() async {
+    final token = await FirebaseMessaging.instance.getToken() ?? '';
+    final data = {'token': token};
+    await injector.get<ApiClient>().saveToken(data);
+  }
+
   _getInfoUser() async {
     final res = await injector.get<ApiClient>().getProfile();
     if (res != null && res.info != null) {
       GlobalValue.name = res.info!.name;
       GlobalValue.id = res.info!.id;
+      GlobalValue.avatar = res.info!.avatar;
     }
   }
 

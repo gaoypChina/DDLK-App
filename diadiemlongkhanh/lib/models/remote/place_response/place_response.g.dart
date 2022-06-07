@@ -33,7 +33,7 @@ PlaceModel _$PlaceModelFromJson(Map<String, dynamic> json) => PlaceModel()
           ?.map((e) => BenefitModel.fromJson(e as Map<String, dynamic>))
           .toList() ??
       []
-  ..photos = (json['photos'] as List<dynamic>?)
+  ..images = (json['images'] as List<dynamic>?)
           ?.map((e) => ThumbnailModel.fromJson(e as Map<String, dynamic>))
           .toList() ??
       []
@@ -86,7 +86,7 @@ Map<String, dynamic> _$PlaceModelToJson(PlaceModel instance) =>
       'isHot': instance.isHot,
       'subCategories': instance.subCategories,
       'benefits': instance.benefits,
-      'photos': instance.photos,
+      'images': instance.images,
       'menu': instance.menu,
       'view': instance.view,
       'deleted': instance.deleted,
