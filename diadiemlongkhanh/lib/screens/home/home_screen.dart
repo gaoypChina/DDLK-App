@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen>
         setState(() {
           _isScroll = true;
         });
+        _cubit.getInfoUser();
         _cubit.getPlacesNear();
         _cubit.getPlacesHot();
         _cubit.getVouchers();
@@ -226,6 +227,10 @@ class _HomeScreenState extends State<HomeScreen>
             return PlacesGridView(
               places: places,
               physics: NeverScrollableScrollPhysics(),
+              onSelect: (item) => Navigator.of(context).pushNamed(
+                RouterName.detail_place,
+                arguments: item.id,
+              ),
             );
           },
         )
@@ -655,63 +660,69 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
             )
-          : Row(
-              children: [
-                ClipRRectImage(
-                  height: 44,
-                  width: 44,
-                  radius: 22,
-                  url: AppUtils.getUrlImage(
-                    GlobalValue.avatar ?? '',
-                    width: 44,
-                    height: 44,
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: Text(
-                    GlobalValue.name ?? '',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(RouterName.notification),
-                  child: Container(
-                    height: 36,
-                    width: 36,
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 36,
-                          width: 36,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            color: ColorConstant.neutral_gray_lightest,
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset(ConstantIcons.ic_bell),
-                          ),
-                        ),
-                        Positioned(
-                          top: 2,
-                          right: 0,
-                          child: Container(
-                            height: 8,
-                            width: 8,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: ColorConstant.sematic_red,
-                            ),
-                          ),
-                        ),
-                      ],
+          : BlocBuilder<HomeCubit, HomeState>(
+              buildWhen: (previous, current) =>
+                  current is HomeGetProfileDoneState,
+              builder: (_, state) {
+                return Row(
+                  children: [
+                    ClipRRectImage(
+                      height: 44,
+                      width: 44,
+                      radius: 22,
+                      url: AppUtils.getUrlImage(
+                        GlobalValue.avatar ?? '',
+                        width: 44,
+                        height: 44,
+                      ),
                     ),
-                  ),
-                )
-              ],
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(
+                      child: Text(
+                        GlobalValue.name ?? '',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(RouterName.notification),
+                      child: Container(
+                        height: 36,
+                        width: 36,
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 36,
+                              width: 36,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18),
+                                color: ColorConstant.neutral_gray_lightest,
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset(ConstantIcons.ic_bell),
+                              ),
+                            ),
+                            Positioned(
+                              top: 2,
+                              right: 0,
+                              child: Container(
+                                height: 8,
+                                width: 8,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: ColorConstant.sematic_red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
             ),
     );
   }

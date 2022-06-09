@@ -143,4 +143,14 @@ class HomeCubit extends Cubit<HomeState> {
       emit(HomeGetNewFeedsDoneState());
     }
   }
+
+  getInfoUser() async {
+    final res = await injector.get<ApiClient>().getProfile();
+    if (res != null && res.info != null) {
+      GlobalValue.name = res.info!.name;
+      GlobalValue.id = res.info!.id;
+      GlobalValue.avatar = res.info!.avatar;
+      emit(HomeGetProfileDoneState());
+    }
+  }
 }

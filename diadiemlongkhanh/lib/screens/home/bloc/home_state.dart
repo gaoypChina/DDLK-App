@@ -43,3 +43,7 @@ class HomeGetPlaceNewDoneState extends HomeState {
 class HomeGetNewFeedsDoneState extends HomeState {
   HomeGetNewFeedsDoneState();
 }
+
+class HomeGetProfileDoneState extends HomeState {
+  HomeGetProfileDoneState();
+}

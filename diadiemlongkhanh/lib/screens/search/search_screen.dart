@@ -113,38 +113,38 @@ class _SearchScreenState extends State<SearchScreen> {
                           style: Theme.of(context).textTheme.headline6,
                         ),
                       ),
+                      Container(
+                        height: 314,
+                        child: BlocBuilder<SearchCubit, SearchState>(
+                          buildWhen: (previous, current) =>
+                              current is SearchPlacesGetHotDoneState,
+                          builder: (_, state) {
+                            if (state is SearchPlacesGetHotDoneState) {
+                              return ListView.builder(
+                                itemCount: state.places.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.only(
+                                  top: 16,
+                                  left: 16,
+                                  bottom: 40,
+                                ),
+                                itemBuilder: (_, index) {
+                                  return PlaceHorizItemView(
+                                    context: context,
+                                    item: state.places[index],
+                                  );
+                                },
+                              );
+                            }
+                            return SizedBox.shrink();
+                          },
+                        ),
+                      )
                     ],
                   );
                 },
               ),
-              Container(
-                height: 314,
-                child: BlocBuilder<SearchCubit, SearchState>(
-                  buildWhen: (previous, current) =>
-                      current is SearchPlacesGetHotDoneState,
-                  builder: (_, state) {
-                    if (state is SearchPlacesGetHotDoneState) {
-                      return ListView.builder(
-                        itemCount: state.places.length,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.only(
-                          top: 16,
-                          left: 16,
-                          bottom: 40,
-                        ),
-                        itemBuilder: (_, index) {
-                          return PlaceHorizItemView(
-                            context: context,
-                            item: state.places[index],
-                          );
-                        },
-                      );
-                    }
-                    return SizedBox.shrink();
-                  },
-                ),
-              )
             ],
           ),
         ),

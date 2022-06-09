@@ -399,7 +399,9 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   InkWell(
                     onTap: () => AppUtils.showBottomDialog(
                       context,
-                      PlaceActionDiaglo(),
+                      PlaceActionDiaglog(
+                        docId: _cubit.id,
+                      ),
                     ),
                     child: Container(
                       height: 36,

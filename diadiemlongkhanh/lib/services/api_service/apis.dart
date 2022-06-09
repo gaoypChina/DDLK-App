@@ -26,4 +26,6 @@ class Apis {
   static const profile = '/profile';
   static const contact = '/contact';
   static const app_token = '/app-token';
+  static const report_problems = 'report-problems';
+  static const report = 'report';
 }

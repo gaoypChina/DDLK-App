@@ -161,4 +161,10 @@ abstract class ApiClient {
 
   @POST(Apis.app_token)
   Future<AuthResponse?> saveToken(@Body() data);
+
+  @GET(Apis.report_problems)
+  Future<List<String>?> getReportReasons(@Query('type') String type);
+
+  @POST(Apis.report)
+  Future<AuthResponse?> report(@Body() data);
 }

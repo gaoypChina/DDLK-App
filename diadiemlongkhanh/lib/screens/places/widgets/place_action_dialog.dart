@@ -1,10 +1,16 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/screens/report/report_reasons_dialog.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class PlaceActionDiaglo extends StatelessWidget {
-  const PlaceActionDiaglo({Key? key}) : super(key: key);
+class PlaceActionDiaglog extends StatelessWidget {
+  const PlaceActionDiaglog({
+    Key? key,
+    this.docId,
+  }) : super(key: key);
+  final String? docId;
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +58,28 @@ class PlaceActionDiaglo extends StatelessWidget {
                   SizedBox(
                     height: 8,
                   ),
-                  Container(
-                    height: 50,
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(ConstantIcons.ic_report),
-                        Text(
-                          'Báo cáo',
-                          style: Theme.of(context).textTheme.bodyText2,
-                        )
-                      ],
+                  InkWell(
+                    onTap: () => AppUtils.showBottomDialog(
+                      context,
+                      ReportReasonsDialog(
+                        docId: docId,
+                      ),
+                    ),
+                    child: Container(
+                      height: 50,
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(ConstantIcons.ic_report),
+                          SizedBox(
+                            width: 13,
+                          ),
+                          Text(
+                            'Báo cáo',
+                            style: Theme.of(context).textTheme.bodyText2,
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],

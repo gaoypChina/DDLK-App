@@ -87,7 +87,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     handleFirebaseMessage();
     _requestLocation();
-    _getInfoUser();
   }
 
   handleFirebaseMessage() {
@@ -149,15 +148,6 @@ class _MyAppState extends State<MyApp> {
     print(_locationData?.longitude);
     GlobalValue.lat = _locationData?.latitude;
     GlobalValue.long = _locationData?.longitude;
-  }
-
-  _getInfoUser() async {
-    final res = await injector.get<ApiClient>().getProfile();
-    if (res != null && res.info != null) {
-      GlobalValue.name = res.info!.name;
-      GlobalValue.id = res.info!.id;
-      GlobalValue.avatar = res.info!.avatar;
-    }
   }
 
   @override

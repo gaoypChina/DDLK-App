@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/profile/bloc/account_cubit.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
@@ -49,13 +50,17 @@ class _AccountScreenState extends State<AccountScreen>
         isShowBackButton: _cubit.userId != null,
         actions: [
           _cubit.userId != null
-              ? IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.more_horiz,
-                    color: Colors.black,
-                  ),
-                )
+              ? SizedBox()
+              // ? IconButton(
+              //     onPressed: () => AppUtils.showBottomDialog(
+              //       context,
+              //       PlaceActionDiaglog(),
+              //     ),
+              //     icon: Icon(
+              //       Icons.more_horiz,
+              //       color: Colors.black,
+              //     ),
+              //   )
               : IconButton(
                   onPressed: () =>
                       Navigator.of(context).pushNamed(RouterName.setting),
@@ -70,30 +75,9 @@ class _AccountScreenState extends State<AccountScreen>
         child: Column(
           children: [
             _buildInfoUserView(context),
-            // _buildFollowView(context),
-            Container(
-              height: 112,
-              child: Column(
-                children: [
-                  _buildOptionItemView(
-                    'Địa điểm đã lưu',
-                    SvgPicture.asset(
-                      ConstantIcons.ic_bookmark_outline,
-                    ),
-                    onPressed: () => Navigator.of(context)
-                        .pushNamed(RouterName.places_saved),
-                  ),
-                  _buildOptionItemView(
-                    'Khuyến mãi đã lưu',
-                    Image.asset(
-                      ConstantIcons.ic_discount,
-                      height: 24,
-                      width: 24,
-                    ),
-                  )
-                ],
-              ),
-            ),
+            _cubit.userId == GlobalValue.id || _cubit.userId == null
+                ? _buildShowSavedBtn(context)
+                : _buildFollowView(context),
             BlocBuilder<AccountCubit, AccountState>(
               buildWhen: (previous, current) =>
                   current is AccountGetStatsDoneState,
@@ -173,6 +157,32 @@ class _AccountScreenState extends State<AccountScreen>
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Container _buildShowSavedBtn(BuildContext context) {
+    return Container(
+      height: 112,
+      child: Column(
+        children: [
+          _buildOptionItemView(
+            'Địa điểm đã lưu',
+            SvgPicture.asset(
+              ConstantIcons.ic_bookmark_outline,
+            ),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(RouterName.places_saved),
+          ),
+          _buildOptionItemView(
+            'Khuyến mãi đã lưu',
+            Image.asset(
+              ConstantIcons.ic_discount,
+              height: 24,
+              width: 24,
+            ),
+          )
+        ],
       ),
     );
   }
