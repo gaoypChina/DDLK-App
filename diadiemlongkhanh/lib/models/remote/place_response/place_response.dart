@@ -38,6 +38,8 @@ class PlaceModel {
   late int view;
   @JsonKey(defaultValue: false)
   late bool deleted;
+  @JsonKey(defaultValue: false)
+  late bool isSaved;
   CategoryModel? category;
   String? intro;
   String? metaKeywords;

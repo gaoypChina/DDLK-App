@@ -149,6 +149,10 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                       topPadding: 12,
                       bottomPadding: 78,
                       places: _cubit.places,
+                      onSelect: (item) => Navigator.of(context).pushNamed(
+                        RouterName.detail_place,
+                        arguments: item.id,
+                      ),
                     );
                   },
                 ),
@@ -187,47 +191,58 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
   }
 
   Widget _buildSeeMapButton(BuildContext context) {
-    return Positioned.fill(
-      bottom: 30,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: GestureDetector(
-          onTap: () => Navigator.of(context).pushNamed(RouterName.map_places),
-          child: Container(
-            width: 152,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: ColorConstant.green_shadow.withOpacity(0.12),
-                  offset: Offset(0, 15),
-                  blurRadius: 30,
-                )
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  ConstantIcons.ic_map_outline,
+    return BlocBuilder<ListPlacesCubit, ListPlacesState>(
+      buildWhen: (previous, current) => current is ListPlacesGetDoneState,
+      builder: (_, state) {
+        if (_cubit.places.isEmpty) {
+          return SizedBox.shrink();
+        }
+        return Positioned.fill(
+          bottom: 30,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pushNamed(
+                RouterName.map_places,
+                arguments: _cubit.places,
+              ),
+              child: Container(
+                width: 152,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorConstant.green_shadow.withOpacity(0.12),
+                      offset: Offset(0, 15),
+                      blurRadius: 30,
+                    )
+                  ],
                 ),
-                SizedBox(
-                  width: 8,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      ConstantIcons.ic_map_outline,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      'Xem Bản đồ',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          ?.apply(color: Theme.of(context).primaryColor),
+                    )
+                  ],
                 ),
-                Text(
-                  'Xem Bản đồ',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.apply(color: Theme.of(context).primaryColor),
-                )
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

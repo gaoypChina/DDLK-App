@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path/path.dart' as path;
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
@@ -25,8 +24,11 @@ import 'package:mime/mime.dart';
 import 'package:http/http.dart' as http;
 
 class CreateReviewScreen extends StatefulWidget {
-  const CreateReviewScreen({Key? key}) : super(key: key);
-
+  const CreateReviewScreen({
+    Key? key,
+    this.place,
+  }) : super(key: key);
+  final PlaceModel? place;
   @override
   _CreateReviewScreenState createState() => _CreateReviewScreenState();
 }
@@ -45,6 +47,12 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
   final _formKey = GlobalKey<FormState>();
 
   List<XFile> _imageFileList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _place = widget.place;
+  }
 
   _pickImages() async {
     final ImagePicker _picker = ImagePicker();
@@ -127,172 +135,175 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorConstant.grey_F2F4F8,
-      appBar: MyAppBar(
-        title: 'Viết đánh giá',
-      ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned(
-              top: 67,
-              left: 16,
-              right: 16,
-              bottom: 10,
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  top: 66,
-                  bottom: 42,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Chọn địa điểm đánh giá',
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          _place != null
-                              ? GestureDetector(
-                                  onTap: () => AppUtils.showBottomDialog(
-                                    context,
-                                    PlacesDialog(
-                                      onSelect: (item) {
-                                        setState(() {
-                                          _place = item;
-                                        });
-                                      },
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: ColorConstant.grey_F2F4F8,
+        appBar: MyAppBar(
+          title: 'Viết đánh giá',
+        ),
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Positioned(
+                top: 67,
+                left: 16,
+                right: 16,
+                bottom: 10,
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 66,
+                    bottom: 42,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Chọn địa điểm đánh giá',
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                            _place != null
+                                ? GestureDetector(
+                                    onTap: () => AppUtils.showBottomDialog(
+                                      context,
+                                      PlacesDialog(
+                                        onSelect: (item) {
+                                          setState(() {
+                                            _place = item;
+                                          });
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    'Thay đổi',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color: Theme.of(context).primaryColor,
+                                    child: Text(
+                                      'Thay đổi',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : SizedBox.shrink()
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      _buildPlaceSelectionView(),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        'Xếp hạng của bạn về địa điểm',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      SizedBox(
-                        height: 14,
-                      ),
-                      _buildRatingView(),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        'Thêm hình ảnh',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      _buildUploadImageView(),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        'Tiêu đề đánh giá',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      MainTextFormField(
-                        maxLines: 1,
-                        controller: _titleTextController,
-                        contentPadding: const EdgeInsets.only(
-                          top: 10,
-                          bottom: 10,
-                          left: 16,
+                                  )
+                                : SizedBox.shrink()
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        'Nội dung đánh giá',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      Container(
-                        height: 94,
-                        margin: const EdgeInsets.only(top: 8),
-                        child: MainTextFormField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 5,
-                          controller: _contentTextController,
-                          hintText: 'Tối thiểu 10 ký tự',
+                        SizedBox(
+                          height: 8,
+                        ),
+                        _buildPlaceSelectionView(),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Text(
+                          'Xếp hạng của bạn về địa điểm',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        SizedBox(
+                          height: 14,
+                        ),
+                        _buildRatingView(),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Text(
+                          'Thêm hình ảnh',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        _buildUploadImageView(),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Text(
+                          'Tiêu đề đánh giá',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        MainTextFormField(
+                          maxLines: 1,
+                          controller: _titleTextController,
                           contentPadding: const EdgeInsets.only(
                             top: 10,
                             bottom: 10,
                             left: 16,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Row(
-                        children: [
-                          AppCheckbox(
-                            value: _isAnonymous,
-                            onChanged: (val) {
-                              setState(() {
-                                _isAnonymous = !_isAnonymous;
-                              });
-                            },
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Text(
+                          'Nội dung đánh giá',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        Container(
+                          height: 94,
+                          margin: const EdgeInsets.only(top: 8),
+                          child: MainTextFormField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 5,
+                            controller: _contentTextController,
+                            hintText: 'Tối thiểu 10 ký tự',
+                            contentPadding: const EdgeInsets.only(
+                              top: 10,
+                              bottom: 10,
+                              left: 16,
+                            ),
                           ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Đánh giá ẩn danh',
-                            style: Theme.of(context).textTheme.headline4,
-                          )
-                        ],
-                      ),
-                      MainButton(
-                        margin: const EdgeInsets.only(top: 48),
-                        title: 'Gửi đánh giá',
-                        onPressed: _createReview,
-                      )
-                    ],
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Row(
+                          children: [
+                            AppCheckbox(
+                              value: _isAnonymous,
+                              onChanged: (val) {
+                                setState(() {
+                                  _isAnonymous = !_isAnonymous;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Đánh giá ẩn danh',
+                              style: Theme.of(context).textTheme.headline4,
+                            )
+                          ],
+                        ),
+                        MainButton(
+                          margin: const EdgeInsets.only(top: 48),
+                          title: 'Gửi đánh giá',
+                          onPressed: _createReview,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 17),
-                child: Image.asset(
-                  ConstantImages.star_header,
-                  width: 100,
-                  height: 100,
+              Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 17),
+                  child: Image.asset(
+                    ConstantImages.star_header,
+                    width: 100,
+                    height: 100,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "209860038987",
+    "firebase_url": "https://vital-amphora-291903.firebaseio.com",
+    "project_id": "vital-amphora-291903",
+    "storage_bucket": "vital-amphora-291903.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209860038987:android:2022d85122a3175e7718ce",
+        "android_client_info": {
+          "package_name": "com.diadiemlongkhanh.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209860038987-7gbjqhgt8b5tvq8r212n25jhbahp7ufn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSkFw1K_7Y0w3j1SjZvU65NLaHSZB-3Ls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209860038987-7gbjqhgt8b5tvq8r212n25jhbahp7ufn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "209860038987-li1kjgh8puk0hif2nkjapd2a3lj8m16r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.diadiemlongkhanh.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

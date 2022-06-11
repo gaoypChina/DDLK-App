@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/models/local/report_type_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/screens/report/report_reasons_dialog.dart';
@@ -9,8 +10,10 @@ class PlaceActionDiaglog extends StatelessWidget {
   const PlaceActionDiaglog({
     Key? key,
     this.docId,
+    this.type = ReportType.place,
   }) : super(key: key);
   final String? docId;
+  final String type;
 
   @override
   Widget build(BuildContext context) {

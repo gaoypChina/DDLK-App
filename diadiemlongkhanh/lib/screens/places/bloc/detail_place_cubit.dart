@@ -9,7 +9,9 @@ import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:uuid/uuid.dart';
 
 part 'detail_place_state.dart';
@@ -34,6 +36,43 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
     }
   }
 
+  openMap() async {
+    final lat = place?.address?.geo?.lat;
+    final long = place?.address?.geo?.long;
+    String googleUrl =
+        'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+    if (await canLaunchUrlString(googleUrl)) {
+      await launchUrlString(googleUrl);
+    } else {
+      throw 'Could not open the map.';
+    }
+  }
+
+  sharePlace() async {
+    if (place == null) {
+      return;
+    }
+    final url = AppUtils.getPlaceUrl(place!.slug ?? '');
+    Share.share(url);
+  }
+
+  _unsavePlace(BuildContext context) async {
+    AppUtils.showLoading();
+    final res = await injector.get<ApiClient>().unsavePlace(id);
+    AppUtils.hideLoading();
+    if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!);
+        return;
+      }
+      place?.isSaved = false;
+      emit(DetailPlaceSaveState());
+      AppUtils.showOkDialog(context, 'Bỏ lưu địa điểm thành công!');
+      return;
+    }
+    AppUtils.showOkDialog(context, ConstantTitle.please_try_again);
+  }
+
   savePlace(BuildContext context) async {
     final token = await injector.get<StorageService>().getToken();
     if (token == null) {
@@ -41,6 +80,10 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
         RouterName.option_login,
         arguments: true,
       );
+      return;
+    }
+    if (place?.isSaved == true) {
+      _unsavePlace(context);
       return;
     }
     AppUtils.showLoading();
@@ -51,6 +94,8 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
         AppUtils.showOkDialog(context, res.error!);
         return;
       }
+      place?.isSaved = true;
+      emit(DetailPlaceSaveState());
       AppUtils.showOkDialog(context, 'Lưu địa điểm thành công!');
       return;
     }
@@ -85,6 +130,9 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
       final res = await injector.get<ApiClient>().getReviewsOfPlace(id);
       if (res != null) {
         reviews = res.result;
+        reviews.forEach((e) {
+          e.controller = TextEditingController();
+        });
         emit(DetailPlaceGetReviewsDoneState());
       }
     } catch (error) {
@@ -110,5 +158,80 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
         return 'Giá cả';
     }
     return '';
+  }
+
+  sendComment(
+    BuildContext context,
+    int index,
+  ) async {
+    if (reviews[index].controller?.text == '') {
+      return;
+    }
+    final token = await injector.get<StorageService>().getToken();
+    if (token == null) {
+      Navigator.of(context).pushNamed(
+        RouterName.option_login,
+        arguments: true,
+      );
+      return;
+    }
+    final data = {
+      'review': reviews[index].id,
+      'content': reviews[index].controller?.text ?? '',
+    };
+    final res = await injector.get<ApiClient>().commentReview(data);
+    if (res != null) {
+      reviews[index].commentCount += 1;
+      reviews[index].controller?.text = '';
+      emit(DetailPlaceGetReviewsDoneState());
+    }
+  }
+
+  addReview(
+    BuildContext context,
+  ) async {
+    final token = await injector.get<StorageService>().getToken();
+    if (token == null) {
+      Navigator.of(context).pushNamed(
+        RouterName.option_login,
+        arguments: true,
+      );
+      return;
+    }
+    Navigator.of(context).pushNamed(
+      RouterName.create_review,
+      arguments: place,
+    );
+  }
+
+  likePost(
+    BuildContext context,
+    int index,
+  ) async {
+    final token = await injector.get<StorageService>().getToken();
+    if (token == null) {
+      Navigator.of(context).pushNamed(
+        RouterName.option_login,
+        arguments: true,
+      );
+      return;
+    }
+    if (!reviews[index].isLiked) {
+      final res =
+          await injector.get<ApiClient>().likeReview(reviews[index].id ?? '');
+      if (res != null && res.success == true) {
+        reviews[index].isLiked = true;
+        reviews[index].likeCount += 1;
+        emit(DetailPlaceGetReviewsDoneState());
+      }
+    } else {
+      final res =
+          await injector.get<ApiClient>().unLikeReview(reviews[index].id ?? '');
+      if (res != null && res.success == true) {
+        reviews[index].isLiked = false;
+        reviews[index].likeCount -= 1;
+        emit(DetailPlaceGetReviewsDoneState());
+      }
+    }
   }
 }

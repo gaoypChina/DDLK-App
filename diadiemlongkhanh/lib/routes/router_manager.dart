@@ -1,5 +1,6 @@
 import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
+import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/screens/base_tabbar/base_tabbar_screen.dart';
 
 import 'package:diadiemlongkhanh/screens/forgot_password/forgot_password_screen.dart';
@@ -117,8 +118,14 @@ class RouterManager {
           builder: (_) => OTPLoginScreen(),
         );
       case RouterName.create_review:
+        PlaceModel? place;
+        if (settings.arguments != null) {
+          place = settings.arguments as PlaceModel;
+        }
         return MaterialPageRoute(
-          builder: (_) => CreateReviewScreen(),
+          builder: (_) => CreateReviewScreen(
+            place: place,
+          ),
         );
       case RouterName.promotion:
         return MaterialPageRoute(
@@ -189,10 +196,16 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => DetailNotificationScreen(),
         );
-      // case RouterName.map_places:
-      //   return MaterialPageRoute(
-      //     builder: (_) => MapPlacesSreen(),
-      //   );
+      case RouterName.map_places:
+        List<PlaceModel>? places;
+        if (settings.arguments != null) {
+          places = settings.arguments as List<PlaceModel>;
+        }
+        return MaterialPageRoute(
+          builder: (_) => MapPlacesSreen(
+            places: places,
+          ),
+        );
       case RouterName.new_feeds:
         bool isBack = false;
         if (settings.arguments != null) {

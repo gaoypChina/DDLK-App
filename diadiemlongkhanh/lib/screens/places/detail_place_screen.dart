@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/models/local/local_social_model.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/all_opening_time_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/full_name_content_place_view.dart';
@@ -13,6 +14,7 @@ import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/full_image_view.dart';
 import 'package:diadiemlongkhanh/widgets/line_dashed_painter.dart';
+import 'package:diadiemlongkhanh/widgets/mini_map_view.dart';
 import 'package:diadiemlongkhanh/widgets/my_back_button.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:diadiemlongkhanh/widgets/verified_view.dart';
@@ -179,43 +181,59 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorConstant.grey_F2F4F8,
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            CustomScrollView(
-              controller: scrollController,
-              // shrinkWrap: true,
-              slivers: <Widget>[
-                new SliverPadding(
-                  padding: const EdgeInsets.all(0),
-                  sliver: new SliverList(
-                    delegate: new SliverChildListDelegate(
-                      <Widget>[
-                        _buildInfoDetailPlaceView(context),
-                        BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
-                          buildWhen: (previous, current) =>
-                              current is DetailPlaceGetReviewsDoneState,
-                          builder: (_, state) {
-                            return ListReviewView(
-                              reviews: _cubit.reviews,
-                              padding: const EdgeInsets.only(
-                                bottom: 60,
-                              ),
-                            );
-                          },
-                        )
-                      ],
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: ColorConstant.grey_F2F4F8,
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              CustomScrollView(
+                controller: scrollController,
+                // shrinkWrap: true,
+                slivers: <Widget>[
+                  new SliverPadding(
+                    padding: const EdgeInsets.all(0),
+                    sliver: new SliverList(
+                      delegate: new SliverChildListDelegate(
+                        <Widget>[
+                          _buildInfoDetailPlaceView(context),
+                          BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
+                            buildWhen: (previous, current) =>
+                                current is DetailPlaceGetReviewsDoneState,
+                            builder: (_, state) {
+                              return ListReviewView(
+                                reviews: _cubit.reviews,
+                                nextToDetail: (index) =>
+                                    Navigator.of(context).pushNamed(
+                                  RouterName.detail_review,
+                                  arguments: _cubit.reviews[index],
+                                ),
+                                sendComment: (index) =>
+                                    _cubit.sendComment(context, index),
+                                likePost: (index) =>
+                                    _cubit.likePost(context, index),
+                                padding: const EdgeInsets.only(
+                                  bottom: 60,
+                                ),
+                              );
+                            },
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            _buildAppBarView(context),
-            _buildMenuTabView(context),
-            _buildRowButtonAction(context)
-          ],
+                ],
+              ),
+              _buildAppBarView(context),
+              _buildMenuTabView(context),
+              Visibility(
+                visible: !keyboardIsOpened,
+                child: _buildRowButtonAction(context),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -275,88 +293,107 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Align _buildRowButtonAction(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        height: 56,
-        width: 244,
-        margin: const EdgeInsets.only(bottom: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(28),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 32,
-              color: Theme.of(context).primaryColor.withOpacity(0.24),
-            )
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
+  Widget _buildRowButtonAction(BuildContext context) {
+    return BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
+      buildWhen: (previous, current) =>
+          current is DetailPlaceGetDoneState || current is DetailPlaceSaveState,
+      builder: (_, state) {
+        if (_cubit.place == null) {
+          return SizedBox.shrink();
+        }
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 56,
+            width: 244,
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 32,
+                  color: Theme.of(context).primaryColor.withOpacity(0.24),
+                )
+              ],
+            ),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset(ConstantIcons.ic_share),
-                SizedBox(
-                  height: 4,
+                GestureDetector(
+                  onTap: () => _cubit.sharePlace(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        ConstantIcons.ic_share,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        'Chia sẻ',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: ColorConstant.neutral_black,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-                Text(
-                  'Chia sẻ',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: ColorConstant.neutral_black,
+                SizedBox(
+                  width: 39,
+                ),
+                GestureDetector(
+                  onTap: () => _cubit.addReview(context),
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).primaryColor),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        ConstantIcons.ic_plus2,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 52,
+                ),
+                GestureDetector(
+                  onTap: () => _cubit.savePlace(context),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        ConstantIcons.ic_book_mark,
+                        color: _cubit.place!.isSaved
+                            ? null
+                            : ColorConstant.neutral_black,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        _cubit.place!.isSaved ? 'Bỏ lưu' : 'Lưu',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: ColorConstant.neutral_black,
+                        ),
+                      )
+                    ],
                   ),
                 )
               ],
             ),
-            SizedBox(
-              width: 39,
-            ),
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(context).primaryColor),
-              child: Center(
-                child: SvgPicture.asset(
-                  ConstantIcons.ic_plus2,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 52,
-            ),
-            GestureDetector(
-              onTap: () => _cubit.savePlace(context),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    ConstantIcons.ic_book_mark,
-                    color: ColorConstant.neutral_black,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    'Lưu',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: ColorConstant.neutral_black,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -738,30 +775,49 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
           place == null
               ? Expanded(
                   child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: ShimmerImage(),
-                ))
-              : Row(
-                  children: [
-                    SvgPicture.asset(
-                      ConstantIcons.ic_primary_marker,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Text(
-                        place.address?.specific ?? '',
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColor,
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: ShimmerImage(),
+                  ),
+                )
+              : Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            ConstantIcons.ic_primary_marker,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Text(
+                              place.address?.specific ?? '',
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                        child: MiniMapView(
+                          lat: place.address?.geo?.lat,
+                          long: place.address?.geo?.long,
                         ),
                       ),
-                    ),
-                  ],
-                )
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ),
         ],
       ),
     );
@@ -1434,12 +1490,15 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                       place.region?.name ?? '',
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
-                    Text(
-                      ' - Bản đồ chỉ đường',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColor,
+                    GestureDetector(
+                      onTap: () => _cubit.openMap(),
+                      child: Text(
+                        ' - Bản đồ chỉ đường',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                   ],

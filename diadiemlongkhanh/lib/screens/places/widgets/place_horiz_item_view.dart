@@ -43,6 +43,7 @@ class PlaceHorizItemView extends StatelessWidget {
               )
             ]),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRectImage(
               url: AppUtils.getUrlImage(

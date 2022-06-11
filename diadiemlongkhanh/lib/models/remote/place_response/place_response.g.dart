@@ -43,6 +43,7 @@ PlaceModel _$PlaceModelFromJson(Map<String, dynamic> json) => PlaceModel()
       []
   ..view = json['view'] as int? ?? 0
   ..deleted = json['deleted'] as bool? ?? false
+  ..isSaved = json['isSaved'] as bool? ?? false
   ..category = json['category'] == null
       ? null
       : CategoryModel.fromJson(json['category'] as Map<String, dynamic>)
@@ -90,6 +91,7 @@ Map<String, dynamic> _$PlaceModelToJson(PlaceModel instance) =>
       'menu': instance.menu,
       'view': instance.view,
       'deleted': instance.deleted,
+      'isSaved': instance.isSaved,
       'category': instance.category,
       'intro': instance.intro,
       'metaKeywords': instance.metaKeywords,

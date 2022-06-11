@@ -84,14 +84,16 @@ class _LoginScreenState extends State<LoginScreen> {
             title: 'Đăng nhập',
             isShowBgBackButton: true,
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  _buildLoginWithEmailView(),
-                ],
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    _buildLoginWithEmailView(),
+                  ],
+                ),
               ),
             ),
           ),

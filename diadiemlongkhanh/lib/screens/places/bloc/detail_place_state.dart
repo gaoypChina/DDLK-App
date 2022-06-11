@@ -30,3 +30,5 @@ class DetailPlaceShowMenuState extends DetailPlaceState {
 class DetailPlaceSelectMenuState extends DetailPlaceState {
   DetailPlaceSelectMenuState();
 }
+
+class DetailPlaceSaveState extends DetailPlaceState {}

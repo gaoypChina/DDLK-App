@@ -64,13 +64,14 @@ dependencies:
   image_picker: ^0.8.5+3
   mime: ^1.0.1
   http_parser: ^4.0.0
+  share_plus: ^4.0.7
 
   retrofit: ^3.0.1+1
   logger: ^1.1.0
   dio: ^4.0.6
   json_annotation: ^4.4.0
   flutter_bloc: ^8.0.1
-  # mapbox_gl: ^0.15.0
+  mapbox_gl: ^0.15.0
   
 
 dev_dependencies:
@@ -190,7 +191,7 @@ flutter_native_splash:
     # 640 pixels in diameter.
     # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
     # 768 pixels in diameter.
-    #image: assets/android12splash.png
+    image: assets/images/logo_2.png
 
     # App icon background color.
     #icon_background_color: "#eeeeee"

@@ -25,6 +25,7 @@ class NewFeedItemView extends StatelessWidget {
   final Function()? likePressed;
   final Function()? sendComment;
   final Function(int)? likeComment;
+  final Function()? moreSelect;
 
   NewFeedItemView({
     this.isShowComment = false,
@@ -36,8 +37,9 @@ class NewFeedItemView extends StatelessWidget {
     this.likePressed,
     this.sendComment,
     this.likeComment,
+    this.moreSelect,
   });
-  String comment = '';
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,9 +76,12 @@ class NewFeedItemView extends StatelessWidget {
           SizedBox(
             height: 8,
           ),
-          Text(
-            item!.content ?? '',
-            style: Theme.of(context).textTheme.bodyText1,
+          GestureDetector(
+            onTap: nextToDetail,
+            child: Text(
+              item!.content ?? '',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
           ),
           _buildPhotosView(context),
           _buildInfoView(context),
@@ -255,9 +260,6 @@ class NewFeedItemView extends StatelessWidget {
                 controller: item!.controller,
                 colorBorder: ColorConstant.neutral_gray_lightest,
                 radius: 18,
-                onChanged: (val) {
-                  comment = val;
-                },
               ),
             ),
           ),
@@ -846,11 +848,14 @@ class NewFeedItemView extends StatelessWidget {
     );
   }
 
-  Container _buildFollowButton(BuildContext context) {
-    return Container(
-      height: 24,
-      width: 24,
-      child: Icon(Icons.more_horiz),
+  Widget _buildFollowButton(BuildContext context) {
+    return GestureDetector(
+      onTap: moreSelect,
+      child: Container(
+        height: 24,
+        width: 24,
+        child: Icon(Icons.more_horiz),
+      ),
     );
   }
 }

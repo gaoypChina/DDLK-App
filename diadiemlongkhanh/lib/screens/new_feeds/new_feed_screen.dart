@@ -1,11 +1,14 @@
+import 'package:diadiemlongkhanh/models/local/report_type_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/bloc/new_feed_cubit.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_newfeed.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,6 +98,13 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                         ? ShimmerNewFeed(context)
                         : NewFeedItemView(
                             item: _cubit.newfeeds[index],
+                            moreSelect: () => AppUtils.showBottomDialog(
+                              context,
+                              PlaceActionDiaglog(
+                                type: ReportType.review,
+                                docId: _cubit.newfeeds[index].id,
+                              ),
+                            ),
                             nextToDetail: () => Navigator.of(context).pushNamed(
                               RouterName.detail_review,
                               arguments: _cubit.newfeeds[index],

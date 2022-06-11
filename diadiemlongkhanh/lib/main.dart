@@ -15,11 +15,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   Environment().initConfig(Environment.DEV);
 
@@ -42,7 +44,9 @@ void main() {
         child: MyApp(),
       ),
     );
-  }, (e, stack) {});
+  }, (e, stack) {
+    print(e);
+  });
   configLoading();
 }
 
@@ -85,6 +89,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    // FlutterNativeSplash.remove();
     handleFirebaseMessage();
     _requestLocation();
   }

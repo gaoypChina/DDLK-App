@@ -72,6 +72,10 @@ class AppUtils {
     return Environment().config.domain + _path;
   }
 
+  static String getPlaceUrl(String slug) {
+    return Environment().config.domain2 + 'dia-diem/$slug';
+  }
+
   static String getOpeningTitle(String status) {
     switch (status) {
       case 'is_open':
@@ -80,6 +84,17 @@ class AppUtils {
         return 'Đang đóng cửa';
       default:
         return 'Sắp đóng cửa';
+    }
+  }
+
+  static Color getOpeningColor(String status) {
+    switch (status) {
+      case 'is_open':
+        return ColorConstant.green_primary;
+      case 'is_closed':
+        return ColorConstant.sematic_red;
+      default:
+        return ColorConstant.neutral_gray;
     }
   }
 

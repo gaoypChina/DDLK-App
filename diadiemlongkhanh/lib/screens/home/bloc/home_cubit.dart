@@ -145,6 +145,9 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   getInfoUser() async {
+    if (injector.get<StorageService>().getToken() == null) {
+      return;
+    }
     final res = await injector.get<ApiClient>().getProfile();
     if (res != null && res.info != null) {
       GlobalValue.name = res.info!.name;

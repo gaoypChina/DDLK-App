@@ -1,3 +1,4 @@
+import 'package:diadiemlongkhanh/models/local/report_type_model.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
@@ -8,6 +9,7 @@ import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/home/bloc/home_cubit.dart';
 import 'package:diadiemlongkhanh/screens/home/widgets/custom_slider_view.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_horiz_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
@@ -194,6 +196,13 @@ class _HomeScreenState extends State<HomeScreen>
                   )
                 : NewFeedItemView(
                     item: newfeeds[index],
+                    moreSelect: () => AppUtils.showBottomDialog(
+                      context,
+                      PlaceActionDiaglog(
+                        type: ReportType.review,
+                        docId: newfeeds[index].id,
+                      ),
+                    ),
                     isShowComment:
                         injector.get<StorageService>().getToken() != null,
                     nextToDetail: () => Navigator.of(context).pushNamed(

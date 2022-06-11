@@ -113,6 +113,9 @@ class _ReportReasonsDialogState extends State<ReportReasonsDialog> {
           actions: [
             TextButton(
               onPressed: () {
+                if (_desCtler.text == '') {
+                  return;
+                }
                 Navigator.of(context).pop();
                 _sendReport(reason);
               },

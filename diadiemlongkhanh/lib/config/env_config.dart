@@ -32,6 +32,7 @@ abstract class BaseConfig {
   String get nameEnv;
   String get domain;
   String get mapAccessToken;
+  String get domain2;
 }
 
 class DevConfig implements BaseConfig {
@@ -41,7 +42,10 @@ class DevConfig implements BaseConfig {
   String get domain => 'http://45.32.58.54:8500/';
 
   String get mapAccessToken =>
-      'sk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsM2EyZmFxdzAxZ3Izam5yNnFtNGtpczUifQ.ryFpOtTHwwRp7L25_o4j6A';
+      'pk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsMmgxZGM0cjA5bnIzY21rbnk0NWI4N2oifQ.ZxyP2isXgHTZAwRIJZcGgQ';
+
+  @override
+  String get domain2 => 'http://103.130.219.99:8501/';
 }
 
 class ProdConfig implements BaseConfig {
@@ -50,5 +54,8 @@ class ProdConfig implements BaseConfig {
 
   String get domain => 'http://45.32.58.54:8500/';
   String get mapAccessToken =>
-      'sk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsM2EyZmFxdzAxZ3Izam5yNnFtNGtpczUifQ.ryFpOtTHwwRp7L25_o4j6A';
+      'pk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsMmgxZGM0cjA5bnIzY21rbnk0NWI4N2oifQ.ZxyP2isXgHTZAwRIJZcGgQ';
+
+  @override
+  String get domain2 => 'http://103.130.219.99:8501/';
 }

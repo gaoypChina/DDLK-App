@@ -2,7 +2,10 @@ import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/thumnail/thumbnail_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/full_image_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
@@ -13,9 +16,15 @@ import 'package:flutter_svg/svg.dart';
 class ListReviewView extends StatelessWidget {
   final EdgeInsets? padding;
   final List<NewFeedModel> reviews;
+  final Function(int)? sendComment;
+  final Function(int)? likePost;
+  final Function(int)? nextToDetail;
   ListReviewView({
     this.padding,
     required this.reviews,
+    this.sendComment,
+    this.likePost,
+    this.nextToDetail,
   });
   @override
   Widget build(BuildContext context) {
@@ -59,10 +68,18 @@ class ListReviewView extends StatelessWidget {
               SizedBox(
                 height: 8,
               ),
-              Text(
-                item.content ?? '',
-                maxLines: 1,
-                style: Theme.of(context).textTheme.bodyText1,
+              GestureDetector(
+                onTap: () {
+                  if (nextToDetail != null) {
+                    nextToDetail!(index);
+                  }
+                },
+                child: Text(
+                  item.content ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
               ),
               item.images.isEmpty
                   ? SizedBox.shrink()
@@ -70,11 +87,13 @@ class ListReviewView extends StatelessWidget {
                       context,
                       item.images,
                     ),
-              _buildBehaviorView(item),
+              _buildBehaviorView(index),
               SizedBox(
                 height: 16,
               ),
-              _buildInputCommentField(),
+              injector.get<StorageService>().getToken() == null
+                  ? SizedBox.shrink()
+                  : _buildInputCommentField(context, index),
               // SizedBox(
               //   height: 24,
               // ),
@@ -91,13 +110,19 @@ class ListReviewView extends StatelessWidget {
     );
   }
 
-  Row _buildInputCommentField() {
+  Row _buildInputCommentField(
+    BuildContext context,
+    int index,
+  ) {
     return Row(
       children: [
         ClipRRectImage(
           radius: 18,
-          url:
-              'https://upload.wikimedia.org/wikipedia/commons/8/89/Chris_Evans_2020_%28cropped%29.jpg',
+          url: AppUtils.getUrlImage(
+            GlobalValue.avatar ?? '',
+            width: 36,
+            height: 36,
+          ),
           width: 36,
           height: 36,
         ),
@@ -108,20 +133,30 @@ class ListReviewView extends StatelessWidget {
           child: SizedBox(
             height: 36,
             child: MainTextFormField(
+              controller: reviews[index].controller,
               hintText: 'Viết bình luận',
               colorBorder: ColorConstant.neutral_gray_lightest,
               radius: 18,
             ),
           ),
         ),
-        SvgPicture.asset(
-          ConstantIcons.ic_send,
+        GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            if (sendComment != null) {
+              sendComment!(index);
+            }
+          },
+          child: SvgPicture.asset(
+            ConstantIcons.ic_send,
+          ),
         )
       ],
     );
   }
 
-  Container _buildBehaviorView(NewFeedModel item) {
+  Container _buildBehaviorView(int index) {
+    final item = reviews[index];
     return Container(
       height: 48,
       decoration: BoxDecoration(
@@ -133,38 +168,56 @@ class ListReviewView extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Row(
-            children: [
-              SvgPicture.asset(ConstantIcons.ic_heart),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                '${item.likeCount} Thích',
-                style: TextStyle(
-                  fontSize: 10,
-                  color: ColorConstant.neutral_gray,
+          GestureDetector(
+            onTap: () {
+              if (likePost != null) {
+                likePost!(index);
+              }
+            },
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  item.isLiked
+                      ? ConstantIcons.ic_heart
+                      : ConstantIcons.ic_heart_outline,
                 ),
-              )
-            ],
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  '${item.likeCount} Thích',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: ColorConstant.neutral_gray,
+                  ),
+                )
+              ],
+            ),
           ),
           SizedBox(
             width: 18,
           ),
-          Row(
-            children: [
-              SvgPicture.asset(ConstantIcons.ic_comment),
-              SizedBox(
-                width: 6,
-              ),
-              Text(
-                '${item.commentCount} Bình luận',
-                style: TextStyle(
-                  fontSize: 10,
-                  color: ColorConstant.neutral_gray,
+          GestureDetector(
+            onTap: () {
+              if (nextToDetail != null) {
+                nextToDetail!(index);
+              }
+            },
+            child: Row(
+              children: [
+                SvgPicture.asset(ConstantIcons.ic_comment),
+                SizedBox(
+                  width: 6,
                 ),
-              )
-            ],
+                Text(
+                  '${item.commentCount} Bình luận',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: ColorConstant.neutral_gray,
+                  ),
+                )
+              ],
+            ),
           ),
           // SizedBox(
           //   width: 18,
