@@ -21,7 +21,7 @@ class ClipRRectImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
-      child: url == null || url!.contains('svg')
+      child: url == null || url!.contains('svg') || url == ''
           ? ClipRRect(
               borderRadius: BorderRadius.circular(radius),
               child: Image.asset(
@@ -33,15 +33,12 @@ class ClipRRectImage extends StatelessWidget {
             )
           : ClipRRect(
               borderRadius: BorderRadius.circular(radius),
-              child: FadeInImage.assetNetwork(
-                placeholder: ConstantImages.placeholder,
-                fadeInDuration: Duration(milliseconds: 100),
-                fadeOutDuration: Duration(milliseconds: 100),
-                image: url ?? '',
+              child: Image.network(
+                url ?? '',
                 width: width,
                 height: height,
                 fit: BoxFit.cover,
-                imageErrorBuilder: (context, exception, stackTrace) {
+                errorBuilder: (context, exception, stackTrace) {
                   return Image.asset(
                     ConstantImages.placeholder,
                     width: width,
@@ -50,6 +47,23 @@ class ClipRRectImage extends StatelessWidget {
                   );
                 },
               ),
+              // FadeInImage.assetNetwork(
+              //   placeholder: ConstantImages.placeholder,
+              //   fadeInDuration: Duration(milliseconds: 20),
+              //   fadeOutDuration: Duration(milliseconds: 20),
+              //   image: url ?? '',
+              //   width: width,
+              //   height: height,
+              //   fit: BoxFit.cover,
+              //   imageErrorBuilder: (context, exception, stackTrace) {
+              //     return Image.asset(
+              //       ConstantImages.placeholder,
+              //       width: width,
+              //       height: height,
+              //       fit: BoxFit.cover,
+              //     );
+              //   },
+              // ),
             ),
     );
   }

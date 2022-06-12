@@ -1,6 +1,9 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/welcome/model/welcome_model.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/widgets/dots_view.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +25,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void initState() {
     super.initState();
+    injector.get<StorageService>().setFirstInstall(false);
     scrollController.addListener(() {
       print(scrollController.offset);
     });
@@ -177,6 +181,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ),
             )
           : MainButton(
+              onPressed: () => Navigator.of(context)
+                ..pushNamedAndRemoveUntil(
+                    RouterName.base_tabbar, (route) => false),
               margin: const EdgeInsets.only(
                 left: 16,
                 right: 16,
@@ -189,35 +196,38 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     );
   }
 
-  Positioned _buildSkipButton() {
-    return Positioned(
-      top: 0,
-      right: 0,
-      child: Container(
-        height: 100,
-        width: 100,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage(
-              ConstantImages.skip_bg,
-            ),
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 16,
-              right: 16,
-              child: Text(
-                'Skip',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
+  Widget _buildSkipButton() {
+    return Visibility(
+      visible: step == 1,
+      child: Positioned(
+        top: 0,
+        right: 0,
+        child: Container(
+          height: 100,
+          width: 100,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage(
+                ConstantImages.skip_bg,
               ),
             ),
-          ],
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 16,
+                right: 16,
+                child: Text(
+                  'Skip',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

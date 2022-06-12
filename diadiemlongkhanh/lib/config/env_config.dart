@@ -49,10 +49,10 @@ class DevConfig implements BaseConfig {
 }
 
 class ProdConfig implements BaseConfig {
-  String get apiHost => "http://45.32.58.54:8500/api/app/";
+  String get apiHost => "http://103.130.219.99:8501/api/app/";
   String get nameEnv => 'PROD';
 
-  String get domain => 'http://45.32.58.54:8500/';
+  String get domain => 'http://103.130.219.99:8501/';
   String get mapAccessToken =>
       'pk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsMmgxZGM0cjA5bnIzY21rbnk0NWI4N2oifQ.ZxyP2isXgHTZAwRIJZcGgQ';
 

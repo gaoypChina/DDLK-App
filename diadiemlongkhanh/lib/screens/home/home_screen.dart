@@ -345,10 +345,10 @@ class _HomeScreenState extends State<HomeScreen>
                                       radius: 12,
                                       url: AppUtils.getUrlImage(
                                         vouchers[index].thumbnail?.path ?? '',
-                                        width: 218,
                                         height: 122,
                                       ),
                                       height: 122,
+                                      width: double.infinity,
                                     ),
                                     SizedBox(
                                       height: 8,

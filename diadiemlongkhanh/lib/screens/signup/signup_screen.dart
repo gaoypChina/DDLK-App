@@ -40,18 +40,14 @@ class _SignupScreenState extends State<SignupScreen> {
     if (disable) {
       return;
     }
+    bool isDebug = false;
     if (kDebugMode) {
-      Navigator.of(context).pushNamed(
-        RouterName.verify_phone,
-        arguments: {
-          'phone': _controller.text,
-          'type': VerifyPhoneType.signup,
-        },
-      );
-      return;
+      isDebug = true;
     }
+
     final data = {
       "phone": _controller.text,
+      'test': isDebug,
     };
     AppUtils.showLoading();
     final res = await injector.get<ApiClient>().registerWithPhone(data);
@@ -66,7 +62,9 @@ class _SignupScreenState extends State<SignupScreen> {
         'Hệ thống sẽ gửi mã OTP thông qua cuộc gọi, vui lòng chú ý tới điện thoại của bạn',
         okAction: () => Navigator.of(context).pushNamed(
           RouterName.verify_phone,
-          arguments: _controller.text,
+          arguments: {
+            'phone': _controller.text,
+          },
         ),
       );
       return;

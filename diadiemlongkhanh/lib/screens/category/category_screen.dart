@@ -92,6 +92,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                     margin: const EdgeInsets.only(right: 48),
                     child: Center(
                         child: ClipRRectImage(
+                      radius: 8,
                       url: AppUtils.getUrlImage(
                         item.thumbnail?.path ?? '',
                         width: 68,

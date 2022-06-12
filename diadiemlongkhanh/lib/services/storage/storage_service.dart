@@ -4,6 +4,14 @@ class StorageService {
   SharedPreferences shared;
   StorageService(this.shared);
 
+  setFirstInstall(bool isFirst) async {
+    return shared.setBool('is_first', isFirst);
+  }
+
+  bool? getFirstInstall() {
+    return shared.getBool('is_first');
+  }
+
   Future<bool> saveToken(String token) async {
     return shared.setString('token', token);
   }

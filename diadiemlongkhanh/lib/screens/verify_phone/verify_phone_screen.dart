@@ -8,6 +8,7 @@ import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/my_back_button.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -90,6 +91,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
       }
       if (res.token != null) {
         await injector.get<StorageService>().saveToken(res.token!);
+        await _saveTokenFCM();
         Navigator.of(context)
             .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
         return;
@@ -99,6 +101,12 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
       context,
       ConstantTitle.please_try_again,
     );
+  }
+
+  _saveTokenFCM() async {
+    final token = await FirebaseMessaging.instance.getToken() ?? '';
+    final data = {'token': token};
+    await injector.get<ApiClient>().saveToken(data);
   }
 
   @override

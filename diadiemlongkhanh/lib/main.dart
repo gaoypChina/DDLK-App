@@ -6,6 +6,7 @@ import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/notification/notification_manager.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/themes/themes.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -169,7 +170,9 @@ class _MyAppState extends State<MyApp> {
       ],
       theme: AppTheme.of(context, listen: true).currentTheme,
       onGenerateRoute: RouterManager.generateRoute,
-      initialRoute: RouterName.base_tabbar,
+      initialRoute: injector.get<StorageService>().getFirstInstall() == null
+          ? RouterName.welcome
+          : RouterName.base_tabbar,
       builder: EasyLoading.init(),
     );
   }

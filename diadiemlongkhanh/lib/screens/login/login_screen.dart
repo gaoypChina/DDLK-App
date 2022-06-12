@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       if (res.token != null) {
         await injector.get<StorageService>().saveToken(res.token!);
-        await _getInfoUser();
+        // await _getInfoUser();
         await _saveTokenFCM();
         Navigator.of(context)
             .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);

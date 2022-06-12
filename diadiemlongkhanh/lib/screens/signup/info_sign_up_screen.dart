@@ -8,6 +8,7 @@ import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -64,8 +65,15 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
     );
   }
 
+  _saveTokenFCM() async {
+    final token = await FirebaseMessaging.instance.getToken() ?? '';
+    final data = {'token': token};
+    await injector.get<ApiClient>().saveToken(data);
+  }
+
   _login(String token) async {
     await injector.get<StorageService>().saveToken(token);
+    await _saveTokenFCM();
     Navigator.of(context)
         .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
   }
