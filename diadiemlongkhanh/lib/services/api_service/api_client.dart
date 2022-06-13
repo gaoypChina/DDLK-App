@@ -173,4 +173,10 @@ abstract class ApiClient {
 
   @POST(Apis.report)
   Future<AuthResponse?> report(@Body() data);
+
+  @POST('${Apis.profile}/{id}/follower')
+  Future<AuthResponse?> follow(@Path() String id);
+
+  @DELETE('${Apis.profile}/{id}/follower')
+  Future<AuthResponse?> unfollow(@Path() String id);
 }

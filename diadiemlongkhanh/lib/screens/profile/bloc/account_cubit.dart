@@ -1,8 +1,10 @@
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/stats/stats_response.dart';
 import 'package:diadiemlongkhanh/models/remote/user/user_response.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +80,26 @@ class AccountCubit extends Cubit<AccountState> {
       }
     } catch (error) {
       print(error);
+    }
+  }
+
+  follow(BuildContext context) async {
+    if (injector.get<StorageService>().getToken() == null) {
+      Navigator.of(context).pushNamed(
+        RouterName.option_login,
+        arguments: true,
+      );
+      return;
+    }
+  }
+
+  contact(BuildContext context) {
+    if (injector.get<StorageService>().getToken() == null) {
+      Navigator.of(context).pushNamed(
+        RouterName.option_login,
+        arguments: true,
+      );
+      return;
     }
   }
 }

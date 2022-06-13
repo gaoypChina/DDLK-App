@@ -213,47 +213,53 @@ class _AccountScreenState extends State<AccountScreen>
         children: [
           Expanded(
             flex: 7,
-            child: Container(
-              height: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    ConstantIcons.ic_plus,
+            child: InkWell(
+              onTap: () => _cubit.follow(context),
+              child: Container(
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
                     color: Theme.of(context).primaryColor,
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Theo dõi',
-                    style: Theme.of(context).textTheme.headline4?.apply(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                  )
-                ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      ConstantIcons.ic_plus,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Theo dõi',
+                      style: Theme.of(context).textTheme.headline4?.apply(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
           SizedBox(
             width: 7,
           ),
-          Container(
-            width: 83,
-            decoration: BoxDecoration(
-              color: ColorConstant.neutral_gray_lightest,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Text(
-                'Liên hệ',
-                style: Theme.of(context).textTheme.bodyText2,
+          InkWell(
+            onTap: () => _cubit.contact(context),
+            child: Container(
+              width: 83,
+              decoration: BoxDecoration(
+                color: ColorConstant.neutral_gray_lightest,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(
+                  'Liên hệ',
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
               ),
             ),
           )
