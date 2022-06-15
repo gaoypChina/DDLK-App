@@ -28,4 +28,5 @@ class Apis {
   static const app_token = '/app-token';
   static const report_problems = 'report-problems';
   static const report = 'report';
+  static const logout = '/auth/logout';
 }

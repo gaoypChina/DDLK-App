@@ -179,4 +179,7 @@ abstract class ApiClient {
 
   @DELETE('${Apis.profile}/{id}/follower')
   Future<AuthResponse?> unfollow(@Path() String id);
+
+  @GET(Apis.logout)
+  Future<AuthResponse?> logout();
 }

@@ -26,6 +26,7 @@ class NewFeedItemView extends StatelessWidget {
   final Function()? sendComment;
   final Function(int)? likeComment;
   final Function()? moreSelect;
+  final bool disablNextProfile;
 
   NewFeedItemView({
     this.isShowComment = false,
@@ -38,6 +39,7 @@ class NewFeedItemView extends StatelessWidget {
     this.sendComment,
     this.likeComment,
     this.moreSelect,
+    this.disablNextProfile = false,
   });
 
   @override
@@ -759,10 +761,15 @@ class NewFeedItemView extends StatelessWidget {
           ),
           width: 44,
           height: 44,
-          onPressed: () => Navigator.of(context).pushNamed(
-            RouterName.account,
-            arguments: item!.author?.id,
-          ),
+          onPressed: () {
+            if (disablNextProfile) {
+              return;
+            }
+            Navigator.of(context).pushNamed(
+              RouterName.account,
+              arguments: item!.author?.id,
+            );
+          },
         ),
         SizedBox(
           width: 4,

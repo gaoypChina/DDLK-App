@@ -3,6 +3,11 @@ import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/profile/widgets/setting_item_view.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -49,6 +54,7 @@ class _SettingScreenState extends State<SettingScreen> {
     SettingMenuModel(
       SvgPicture.asset(ConstantIcons.ic_logout),
       'Đăng xuất',
+      type: SettingMenuType.logout,
     ),
   ];
   _selectMenu(SettingMenuType type) {
@@ -56,7 +62,24 @@ class _SettingScreenState extends State<SettingScreen> {
       Navigator.of(context).pushNamed(RouterName.setting_profile);
     } else if (type == SettingMenuType.contact) {
       Navigator.of(context).pushNamed(RouterName.contact);
+    } else if (type == SettingMenuType.logout) {
+      AppUtils.showOkDialog(
+        context,
+        'Bạn chắc chắn muốn đăng xuất?',
+        okAction: _logout,
+        isCancel: true,
+      );
     }
+  }
+
+  _logout() async {
+    await injector.get<ApiClient>().logout();
+    await injector.get<StorageService>().clear();
+    GlobalValue.avatar = null;
+    GlobalValue.id = null;
+    GlobalValue.name = null;
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
   }
 
   @override

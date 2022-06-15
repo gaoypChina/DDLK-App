@@ -19,7 +19,11 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel()
       ? null
       : SocialModel.fromJson(json['social'] as Map<String, dynamic>)
   ..phone = json['phone'] as String?
-  ..birth = json['birth'] as String?;
+  ..birth = json['birth'] as String?
+  ..isFollowed = json['isFollowed'] as bool? ?? false
+  ..createdAt = json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String);
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       '_id': instance.id,
@@ -33,4 +37,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'social': instance.social,
       'phone': instance.phone,
       'birth': instance.birth,
+      'isFollowed': instance.isFollowed,
+      'createdAt': instance.createdAt?.toIso8601String(),
     };

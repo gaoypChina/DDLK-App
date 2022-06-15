@@ -150,6 +150,7 @@ class _AccountScreenState extends State<AccountScreen>
                     return NewFeedItemView(
                       isShowComment: true,
                       item: _cubit.reviews[index],
+                      disablNextProfile: true,
                     );
                   },
                 );
@@ -163,7 +164,7 @@ class _AccountScreenState extends State<AccountScreen>
 
   Container _buildShowSavedBtn(BuildContext context) {
     return Container(
-      height: 112,
+      height: 56,
       child: Column(
         children: [
           _buildOptionItemView(
@@ -174,14 +175,14 @@ class _AccountScreenState extends State<AccountScreen>
             onPressed: () =>
                 Navigator.of(context).pushNamed(RouterName.places_saved),
           ),
-          _buildOptionItemView(
-            'Khuyến mãi đã lưu',
-            Image.asset(
-              ConstantIcons.ic_discount,
-              height: 24,
-              width: 24,
-            ),
-          )
+          // _buildOptionItemView(
+          //   'Khuyến mãi đã lưu',
+          //   Image.asset(
+          //     ConstantIcons.ic_discount,
+          //     height: 24,
+          //     width: 24,
+          //   ),
+          // )
         ],
       ),
     );
@@ -199,72 +200,90 @@ class _AccountScreenState extends State<AccountScreen>
     );
   }
 
-  Container _buildFollowView(BuildContext context) {
-    return Container(
-      height: 72,
-      width: double.infinity,
-      padding: const EdgeInsets.only(
-        left: 16,
-        right: 16,
-        bottom: 24,
-      ),
-      color: Colors.white,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 7,
-            child: InkWell(
-              onTap: () => _cubit.follow(context),
-              child: Container(
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
+  Widget _buildFollowView(BuildContext context) {
+    return BlocBuilder<AccountCubit, AccountState>(
+      buildWhen: (previous, current) =>
+          current is AccountGetProfileDoneState ||
+          current is AccountUpdateFollowState,
+      builder: (_, state) {
+        return Container(
+          height: 72,
+          width: double.infinity,
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: 24,
+          ),
+          color: Colors.white,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 7,
+                child: InkWell(
+                  onTap: () => _cubit.follow(context),
+                  child: Container(
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      color: _cubit.user?.isFollowed == true
+                          ? Theme.of(context).primaryColor
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _cubit.user?.isFollowed == true
+                            ? SvgPicture.asset(
+                                ConstantIcons.ic_user_check,
+                              )
+                            : SvgPicture.asset(
+                                ConstantIcons.ic_plus,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          _cubit.user?.isFollowed == true
+                              ? 'Đang theo dõi'
+                              : 'Theo dõi',
+                          style: Theme.of(context).textTheme.headline4?.apply(
+                                color: _cubit.user?.isFollowed == true
+                                    ? Colors.white
+                                    : Theme.of(context).primaryColor,
+                              ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      ConstantIcons.ic_plus,
-                      color: Theme.of(context).primaryColor,
+              ),
+              SizedBox(
+                width: 7,
+              ),
+              InkWell(
+                onTap: () => _cubit.contact(context),
+                child: Container(
+                  width: 83,
+                  decoration: BoxDecoration(
+                    color: ColorConstant.neutral_gray_lightest,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Liên hệ',
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Theo dõi',
-                      style: Theme.of(context).textTheme.headline4?.apply(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            ),
+              )
+            ],
           ),
-          SizedBox(
-            width: 7,
-          ),
-          InkWell(
-            onTap: () => _cubit.contact(context),
-            child: Container(
-              width: 83,
-              decoration: BoxDecoration(
-                color: ColorConstant.neutral_gray_lightest,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Text(
-                  'Liên hệ',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -296,7 +315,9 @@ class _AccountScreenState extends State<AccountScreen>
                       color: ColorConstant.neutral_gray_lightest,
                     ),
                     child: Text(
-                      'Ngày tham gia: 04/04/2022',
+                      _cubit.user?.createdAt != null
+                          ? 'Ngày tham gia: ${AppUtils.convertDateToString(_cubit.user!.createdAt!)}'
+                          : '',
                       style: TextStyle(
                         fontSize: 12,
                         color: ColorConstant.neutral_black,

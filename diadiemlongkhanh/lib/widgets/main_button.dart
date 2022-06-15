@@ -6,12 +6,14 @@ class MainButton extends StatelessWidget {
   final Color? textColor;
   final Function()? onPressed;
   final EdgeInsetsGeometry? margin;
+  final Widget? icon;
   MainButton({
     this.color,
     this.title,
     this.textColor,
     this.onPressed,
     this.margin,
+    this.icon,
   });
 
   @override
@@ -27,13 +29,22 @@ class MainButton extends StatelessWidget {
             color: color ?? Theme.of(context).primaryColor,
           ),
           child: Center(
-            child: Text(
-              title ?? '',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: textColor ?? Colors.white,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                icon ?? SizedBox.shrink(),
+                SizedBox(
+                  width: icon != null ? 12 : 0,
+                ),
+                Text(
+                  title ?? '',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: textColor ?? Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

@@ -17,6 +17,9 @@ class UserModel {
   SocialModel? social;
   String? phone;
   String? birth;
+  @JsonKey(defaultValue: false)
+  late bool isFollowed;
+  DateTime? createdAt;
 
   UserModel();
   factory UserModel.fromJson(Map<String, dynamic> json) =>

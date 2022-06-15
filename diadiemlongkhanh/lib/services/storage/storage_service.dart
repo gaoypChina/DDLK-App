@@ -64,4 +64,10 @@ class StorageService {
   Future<List<String>?> getPlaceIds() async {
     return shared.getStringList('place_ids');
   }
+
+  clear() async {
+    await shared.remove('key_words');
+    await shared.remove('place_ids');
+    await shared.remove('token');
+  }
 }
