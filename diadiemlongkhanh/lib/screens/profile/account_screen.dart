@@ -1,8 +1,8 @@
+import 'package:diadiemlongkhanh/app/app_profile_cubit.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
-import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/profile/bloc/account_cubit.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
@@ -43,120 +43,138 @@ class _AccountScreenState extends State<AccountScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      backgroundColor: ColorConstant.grey_F2F4F8,
-      appBar: MyAppBar(
-        title: 'Thông tin cá nhân',
-        isShowBackButton: _cubit.userId != null,
-        actions: [
-          _cubit.userId != null
-              ? SizedBox()
-              // ? IconButton(
-              //     onPressed: () => AppUtils.showBottomDialog(
-              //       context,
-              //       PlaceActionDiaglog(),
-              //     ),
-              //     icon: Icon(
-              //       Icons.more_horiz,
-              //       color: Colors.black,
-              //     ),
-              //   )
-              : IconButton(
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed(RouterName.setting),
-                  icon: SvgPicture.asset(
-                    ConstantIcons.ic_setting,
-                  ),
-                )
-        ],
-      ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: [
-            _buildInfoUserView(context),
-            _cubit.userId == GlobalValue.id || _cubit.userId == null
-                ? _buildShowSavedBtn(context)
-                : _buildFollowView(context),
-            BlocBuilder<AccountCubit, AccountState>(
-              buildWhen: (previous, current) =>
-                  current is AccountGetStatsDoneState,
-              builder: (_, state) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    top: 32,
-                    right: 16,
-                    left: 16,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: '${_cubit.stats?.countReviews ?? 0} ',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'Đánh giá',
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Mới nhất',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          SvgPicture.asset(ConstantIcons.ic_chevron_down)
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
-            BlocBuilder<AccountCubit, AccountState>(
-              buildWhen: (previous, current) =>
-                  current is AccountGetReviewsDoneState ||
-                  current is AccountLoadingState,
-              builder: (_, state) {
-                bool isLoading = false;
-                if (state is AccountLoadingState) {
-                  isLoading = true;
-                }
-                return ListView.builder(
-                  itemCount: _cubit.reviews.length + (isLoading ? 1 : 0),
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(
-                    top: 24,
-                    bottom: 30,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == _cubit.reviews.length) {
-                      return _buildProgressIndicator();
-                    }
-                    return NewFeedItemView(
-                      isShowComment: true,
-                      item: _cubit.reviews[index],
-                      disablNextProfile: true,
-                    );
-                  },
-                );
-              },
-            ),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AppProfileCubit, AppProfileState>(
+          listenWhen: (previous, current) => current is AppProfileUpdateState,
+          listener: (context, state) {
+            if (state is AppProfileUpdateState) {
+              _cubit.getInfoUser();
+            }
+          },
+        ),
+      ],
+      child: Scaffold(
+        backgroundColor: ColorConstant.grey_F2F4F8,
+        appBar: MyAppBar(
+          title: 'Thông tin cá nhân',
+          isShowBackButton: _cubit.userId != null,
+          actions: [
+            _cubit.userId != null
+                ? SizedBox()
+                // ? IconButton(
+                //     onPressed: () => AppUtils.showBottomDialog(
+                //       context,
+                //       PlaceActionDiaglog(),
+                //     ),
+                //     icon: Icon(
+                //       Icons.more_horiz,
+                //       color: Colors.black,
+                //     ),
+                //   )
+                : IconButton(
+                    onPressed: () =>
+                        Navigator.of(context).pushNamed(RouterName.setting),
+                    icon: SvgPicture.asset(
+                      ConstantIcons.ic_setting,
+                    ),
+                  )
           ],
+        ),
+        body: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: [
+              _buildInfoUserView(context),
+              _cubit.userId == GlobalValue.id || _cubit.userId == null
+                  ? _buildShowSavedBtn(context)
+                  : _buildFollowView(context),
+              BlocBuilder<AccountCubit, AccountState>(
+                buildWhen: (previous, current) =>
+                    current is AccountGetStatsDoneState,
+                builder: (_, state) {
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      top: 32,
+                      right: 16,
+                      left: 16,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: '${_cubit.stats?.countReviews ?? 0} ',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Đánh giá',
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Mới nhất',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            SvgPicture.asset(ConstantIcons.ic_chevron_down)
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+              BlocBuilder<AccountCubit, AccountState>(
+                buildWhen: (previous, current) =>
+                    current is AccountGetReviewsDoneState ||
+                    current is AccountLoadingState,
+                builder: (_, state) {
+                  bool isLoading = false;
+                  if (state is AccountLoadingState) {
+                    isLoading = true;
+                  }
+                  return ListView.builder(
+                    itemCount: _cubit.reviews.length + (isLoading ? 1 : 0),
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(
+                      top: 24,
+                      bottom: 30,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      if (index == _cubit.reviews.length) {
+                        return AppUtils.buildProgressIndicator(context);
+                      }
+                      return NewFeedItemView(
+                        isShowComment: true,
+                        item: _cubit.reviews[index],
+                        disablNextProfile: true,
+                        likePressed: () => _cubit.likePost(context, index),
+                        sendComment: () => _cubit.sendComment(index),
+                        nextToDetail: () => Navigator.of(context).pushNamed(
+                          RouterName.detail_review,
+                          arguments: _cubit.reviews[index],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -184,18 +202,6 @@ class _AccountScreenState extends State<AccountScreen>
           //   ),
           // )
         ],
-      ),
-    );
-  }
-
-  Widget _buildProgressIndicator() {
-    return new Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: new Center(
-        child: new CircularProgressIndicator(
-          color: Theme.of(context).primaryColor,
-          strokeWidth: 2,
-        ),
       ),
     );
   }

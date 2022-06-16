@@ -490,12 +490,19 @@ class _HomeScreenState extends State<HomeScreen>
             children: [
               _buildMenuItem(
                 title: 'Gần đây',
-                onPressed: () => Navigator.of(context).pushNamed(
-                  RouterName.list_places,
-                  arguments: {
-                    'near_me': true,
-                  },
-                ),
+                onPressed: () {
+                  if (GlobalValue.lat == null || GlobalValue.long == null) {
+                    AppUtils.showOkDialog(context,
+                        'Vui lòng Bật truy cập vị trí để gợi ý các địa điểm ăn uống gần bạn');
+                    return;
+                  }
+                  Navigator.of(context).pushNamed(
+                    RouterName.list_places,
+                    arguments: {
+                      'near_me': true,
+                    },
+                  );
+                },
                 icon: Image.asset(
                   ConstantIcons.ic_map,
                   width: 46,

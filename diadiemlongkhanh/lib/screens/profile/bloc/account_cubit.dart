@@ -127,4 +127,50 @@ class AccountCubit extends Cubit<AccountState> {
       ),
     );
   }
+
+  sendComment(index) async {
+    final data = {
+      'review': reviews[index].id,
+      'content': reviews[index].controller?.text ?? '',
+    };
+    final res = await injector.get<ApiClient>().commentReview(data);
+    if (res != null) {
+      reviews[index].commentCount += 1;
+      reviews[index].controller?.text = '';
+      emit(AccountGetReviewsDoneState());
+    }
+  }
+
+  likePost(
+    BuildContext context,
+    int index,
+  ) async {
+    final token = await injector.get<StorageService>().getToken();
+    if (token == null) {
+      Navigator.of(context).pushNamed(
+        RouterName.option_login,
+        arguments: true,
+      );
+      return;
+    }
+    if (!reviews[index].isLiked) {
+      final res = await injector.get<ApiClient>().likeReview(
+            reviews[index].id ?? '',
+          );
+      if (res != null && res.success == true) {
+        reviews[index].isLiked = true;
+        reviews[index].likeCount += 1;
+        emit(AccountGetReviewsDoneState());
+      }
+    } else {
+      final res = await injector.get<ApiClient>().unLikeReview(
+            reviews[index].id ?? '',
+          );
+      if (res != null && res.success == true) {
+        reviews[index].isLiked = false;
+        reviews[index].likeCount -= 1;
+        emit(AccountGetReviewsDoneState());
+      }
+    }
+  }
 }

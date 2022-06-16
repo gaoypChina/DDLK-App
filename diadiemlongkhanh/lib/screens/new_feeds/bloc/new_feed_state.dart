@@ -8,3 +8,5 @@ abstract class NewFeedState extends Equatable {
 class NewFeedInitialState extends NewFeedState {}
 
 class NewFeedGetDoneState extends NewFeedState {}
+
+class NewFeedLoadingState extends NewFeedState {}

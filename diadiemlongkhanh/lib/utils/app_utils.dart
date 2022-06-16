@@ -335,4 +335,16 @@ class AppUtils {
             r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
         .hasMatch(email);
   }
+
+  static Widget buildProgressIndicator(BuildContext context) {
+    return new Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: new Center(
+        child: new CircularProgressIndicator(
+          color: Theme.of(context).primaryColor,
+          strokeWidth: 2,
+        ),
+      ),
+    );
+  }
 }

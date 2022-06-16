@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:diadiemlongkhanh/app/app_profile_cubit.dart';
 import 'package:diadiemlongkhanh/models/remote/user/user_response.dart';
 import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
@@ -16,6 +17,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,6 +43,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   UserModel? _user;
   XFile? _imageFile;
   final _formKey = GlobalKey<FormState>();
+  AppProfileCubit get _appCubit => BlocProvider.of(context);
   @override
   void initState() {
     super.initState();
@@ -113,6 +116,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         title: 'Cập nhật thông tin cá nhân thành công!',
         okTitle: 'Xác nhận',
         okAction: () {
+          GlobalValue.name = _fullNameCtler.text;
+          GlobalValue.avatar = res.avatar;
+          _appCubit.updateProfile();
           Navigator.of(context).pop();
           Navigator.of(context).pop();
         },

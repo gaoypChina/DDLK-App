@@ -28,12 +28,19 @@ class _NewFeedScreenState extends State<NewFeedScreen>
     with AutomaticKeepAliveClientMixin {
   List<String> filterDatas = ['Tất cả', 'Đang theo dõi'];
   int _indexFilter = 0;
-  bool _isLoading = true;
+
   NewFeedCubit get _cubit => BlocProvider.of(context);
+  final _scrollController = ScrollController();
   @override
   void initState() {
     print('newfeed');
     super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _cubit.loadMoreReviews();
+      }
+    });
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _cubit.getNewFeeds();
     });
@@ -41,10 +48,6 @@ class _NewFeedScreenState extends State<NewFeedScreen>
 
   @override
   bool get wantKeepAlive => true;
-
-  Future<void> _onRefresh() async {
-    _cubit.getNewFeeds();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +83,24 @@ class _NewFeedScreenState extends State<NewFeedScreen>
             ];
           },
           body: BlocBuilder<NewFeedCubit, NewFeedState>(
-            buildWhen: (previous, current) => current is NewFeedGetDoneState,
+            buildWhen: (previous, current) =>
+                current is NewFeedGetDoneState ||
+                current is NewFeedLoadingState,
             builder: (context, state) {
+              bool isLoading = false;
+              if (state is NewFeedLoadingState) {
+                isLoading = true;
+              }
               return RefreshIndicator(
                 color: Theme.of(context).primaryColor,
-                onRefresh: _onRefresh,
+                onRefresh: () => _cubit.onRefresh(),
                 child: ListView.builder(
-                  itemCount:
-                      _cubit.newfeeds.isEmpty ? 5 : _cubit.newfeeds.length,
+                  controller: _scrollController,
+                  itemCount: _cubit.newfeeds.isEmpty
+                      ? 5
+                      : (isLoading
+                          ? _cubit.newfeeds.length + 1
+                          : _cubit.newfeeds.length),
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(
                     top: 24,
@@ -96,23 +109,29 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                   itemBuilder: (BuildContext context, int index) {
                     return _cubit.newfeeds.isEmpty
                         ? ShimmerNewFeed(context)
-                        : NewFeedItemView(
-                            item: _cubit.newfeeds[index],
-                            moreSelect: () => AppUtils.showBottomDialog(
-                              context,
-                              PlaceActionDiaglog(
-                                type: ReportType.review,
-                                docId: _cubit.newfeeds[index].id,
-                              ),
-                            ),
-                            nextToDetail: () => Navigator.of(context).pushNamed(
-                              RouterName.detail_review,
-                              arguments: _cubit.newfeeds[index],
-                            ),
-                            isShowComment:
-                                injector.get<StorageService>().getToken() !=
-                                    null,
-                          );
+                        : index == _cubit.newfeeds.length
+                            ? AppUtils.buildProgressIndicator(context)
+                            : NewFeedItemView(
+                                item: _cubit.newfeeds[index],
+                                moreSelect: () => AppUtils.showBottomDialog(
+                                  context,
+                                  PlaceActionDiaglog(
+                                    type: ReportType.review,
+                                    docId: _cubit.newfeeds[index].id,
+                                  ),
+                                ),
+                                nextToDetail: () =>
+                                    Navigator.of(context).pushNamed(
+                                  RouterName.detail_review,
+                                  arguments: _cubit.newfeeds[index],
+                                ),
+                                sendComment: () => _cubit.sendComment(index),
+                                likePressed: () =>
+                                    _cubit.likePost(context, index),
+                                isShowComment:
+                                    injector.get<StorageService>().getToken() !=
+                                        null,
+                              );
                   },
                 ),
               );
