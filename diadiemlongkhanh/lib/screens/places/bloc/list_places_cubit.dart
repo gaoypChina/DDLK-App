@@ -39,21 +39,32 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
       dataSearch.categories = [category!.id ?? ''];
     }
     dataSearch.nearby = nearMe ? 'me' : '';
-    final res = await injector.get<ApiClient>().searchPlaces(
-          dataSearch.toJson(),
-        );
-    print(res);
-    if (res != null) {
-      places = res.result;
-      emit(ListPlacesGetDoneState());
+    try {
+      final res = await injector.get<ApiClient>().searchPlaces(
+            dataSearch.toJson(),
+          );
+      print(res);
+      if (res != null) {
+        places = res.result;
+        emit(ListPlacesGetDoneState());
+      }
+    } catch (error) {
+      print(error);
     }
   }
 
   filterComplete(SearchModel data) {
-    dataSearch.nearby = data.nearby;
+    nearMe = data.nearby != '';
     dataSearch.opening = data.opening;
     dataSearch.price = data.price;
     dataSearch.categories = data.categories;
+    if (nearMe) {
+      dataSearch.lat = GlobalValue.lat;
+      dataSearch.long = GlobalValue.long;
+    } else {
+      dataSearch.lat = null;
+      dataSearch.long = null;
+    }
     searchPlaces();
   }
 

@@ -26,7 +26,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  Environment().initConfig(Environment.DEV);
+  Environment().initConfig(Environment.PROD);
 
   HttpOverrides.global = MyHttpOverrides();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(

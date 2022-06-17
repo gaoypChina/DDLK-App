@@ -133,6 +133,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                   return PlaceHorizItemView(
                                     context: context,
                                     item: state.places[index],
+                                    onPressed: () =>
+                                        Navigator.of(context).pushNamed(
+                                      RouterName.detail_place,
+                                      arguments: state.places[index].id,
+                                    ),
                                   );
                                 },
                               );

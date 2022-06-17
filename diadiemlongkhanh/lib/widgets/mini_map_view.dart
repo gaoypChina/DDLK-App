@@ -50,7 +50,7 @@ class _MiniMapViewState extends State<MiniMapView> {
         accessToken: Environment().config.mapAccessToken,
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
-            zoom: 11,
+            zoom: 14,
             target: LatLng(
               widget.lat ?? 0,
               widget.long ?? 0,
