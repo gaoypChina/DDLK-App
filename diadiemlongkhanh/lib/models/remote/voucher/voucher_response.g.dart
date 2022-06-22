@@ -7,6 +7,9 @@ part of 'voucher_response.dart';
 // **************************************************************************
 
 VoucherModel _$VoucherModelFromJson(Map<String, dynamic> json) => VoucherModel()
+  ..error = json['error'] == null
+      ? null
+      : ErrorModel.fromJson(json['error'] as Map<String, dynamic>)
   ..id = json['_id'] as String?
   ..count = json['count'] as int?
   ..code = json['code'] as String?
@@ -24,6 +27,7 @@ VoucherModel _$VoucherModelFromJson(Map<String, dynamic> json) => VoucherModel()
 
 Map<String, dynamic> _$VoucherModelToJson(VoucherModel instance) =>
     <String, dynamic>{
+      'error': instance.error,
       '_id': instance.id,
       'count': instance.count,
       'code': instance.code,

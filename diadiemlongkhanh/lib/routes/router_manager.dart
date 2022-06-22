@@ -193,8 +193,14 @@ class RouterManager {
           builder: (_) => NotificationScreen(),
         );
       case RouterName.detail_notification:
+        String? id;
+        if (settings.arguments != null) {
+          id = settings.arguments as String;
+        }
         return MaterialPageRoute(
-          builder: (_) => DetailNotificationScreen(),
+          builder: (_) => DetailNotificationScreen(
+            id: id ?? '',
+          ),
         );
       case RouterName.map_places:
         List<PlaceModel>? places;

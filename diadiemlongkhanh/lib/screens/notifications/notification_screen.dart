@@ -1,7 +1,10 @@
+import 'package:diadiemlongkhanh/models/remote/notification/notification_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/notifications/notification_actions_dialog.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
@@ -16,6 +19,27 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   int _currentIndex = 0;
+  List<NotificationModel> notifications = [];
+  int page = 1;
+  @override
+  void initState() {
+    super.initState();
+    _getNotifications();
+  }
+
+  _getNotifications() async {
+    AppUtils.showLoading();
+    final res = await injector.get<ApiClient>().getNotifications(
+          page: page,
+        );
+    AppUtils.hideLoading();
+    if (res != null) {
+      setState(() {
+        notifications = res.result ?? [];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,21 +61,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 24,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildTabItem('Tất cả (12)', 0),
-                _buildTabItem('Thông báo mới (3)', 1),
-                _buildTabItem('Đã đọc (9)', 2),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     left: 16,
+          //     right: 16,
+          //     top: 24,
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       _buildTabItem('Tất cả (12)', 0),
+          //       _buildTabItem('Thông báo mới (3)', 1),
+          //       _buildTabItem('Đã đọc (9)', 2),
+          //     ],
+          //   ),
+          // ),
           Expanded(
             child: _buildListNotiView(context),
           )
@@ -60,16 +84,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
+  _selectNoti(NotificationModel item) {
+    if (item.docModel!.toLowerCase() == 'none') {
+      Navigator.of(context).pushNamed(
+        RouterName.detail_notification,
+        arguments: item.id,
+      );
+    }
+  }
+
   ListView _buildListNotiView(BuildContext context) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: notifications.length,
       shrinkWrap: true,
       padding: const EdgeInsets.all(16),
       itemBuilder: (_, index) {
+        final item = notifications[index];
         return InkWell(
-          onTap: () => Navigator.of(context).pushNamed(
-            RouterName.detail_notification,
-          ),
+          onTap: () => _selectNoti(item),
           child: Container(
             height: 96,
             margin: const EdgeInsets.only(bottom: 8),
@@ -94,8 +126,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   height: 72,
                   width: 72,
                   radius: 4,
-                  url:
-                      'https://static.hotdeal.vn/images/1532/1531992/60x60/349432-king-bbq-menu-329k-buffet-nuong-lau-dang-cap-vua-nuong-han-quoc.jpg',
+                  url: AppUtils.getUrlImage(
+                    item.thumbnail?.path ?? '',
+                    width: 72,
+                    height: 72,
+                  ),
                 ),
                 SizedBox(
                   width: 12,
@@ -116,7 +151,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           borderRadius: BorderRadius.circular(9),
                         ),
                         child: Text(
-                          'Địa điểm mới',
+                          item.title ?? '',
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 10,
@@ -125,7 +160,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ),
                       ),
                       Text(
-                        'Mono Coffee đã có mặt tại Long Khánh',
+                        item.body ?? '',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1
@@ -135,7 +172,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         height: 4,
                       ),
                       Text(
-                        '1 giờ',
+                        AppUtils.convertDatetimePrefix(item.sendTime ?? ''),
                         style: TextStyle(
                           fontSize: 10,
                           color: ColorConstant.neutral_gray,

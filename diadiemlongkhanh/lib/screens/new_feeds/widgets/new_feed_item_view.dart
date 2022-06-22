@@ -480,9 +480,7 @@ class NewFeedItemView extends StatelessWidget {
             onPressed: () => AppUtils.showBottomDialog(
               context,
               FullImageView(
-                AppUtils.getUrlImage(
-                  images.first.path ?? '',
-                ),
+                [images.first.path ?? ''],
               ),
             ),
           ),
@@ -500,9 +498,9 @@ class NewFeedItemView extends StatelessWidget {
             onPressed: () => AppUtils.showBottomDialog(
               context,
               FullImageView(
-                AppUtils.getUrlImage(
+                [
                   images.last.path ?? '',
-                ),
+                ],
               ),
             ),
           ),
@@ -527,9 +525,7 @@ class NewFeedItemView extends StatelessWidget {
             onPressed: () => AppUtils.showBottomDialog(
               context,
               FullImageView(
-                AppUtils.getUrlImage(
-                  images.first.path ?? '',
-                ),
+                [images.first.path ?? ''],
               ),
             ),
           ),
@@ -550,9 +546,7 @@ class NewFeedItemView extends StatelessWidget {
                   onPressed: () => AppUtils.showBottomDialog(
                     context,
                     FullImageView(
-                      AppUtils.getUrlImage(
-                        images[1].path ?? '',
-                      ),
+                      [images[1].path ?? ''],
                     ),
                   ),
                 ),
@@ -570,9 +564,7 @@ class NewFeedItemView extends StatelessWidget {
                   onPressed: () => AppUtils.showBottomDialog(
                     context,
                     FullImageView(
-                      AppUtils.getUrlImage(
-                        images.last.path ?? '',
-                      ),
+                      [images.last.path ?? ''],
                     ),
                   ),
                 ),
@@ -602,9 +594,7 @@ class NewFeedItemView extends StatelessWidget {
             onPressed: () => AppUtils.showBottomDialog(
               context,
               FullImageView(
-                AppUtils.getUrlImage(
-                  images.first.path ?? '',
-                ),
+                [images.first.path ?? ''],
               ),
             ),
           ),
@@ -625,9 +615,7 @@ class NewFeedItemView extends StatelessWidget {
                 onPressed: () => AppUtils.showBottomDialog(
                   context,
                   FullImageView(
-                    AppUtils.getUrlImage(
-                      images[1].path ?? '',
-                    ),
+                    [images[1].path ?? ''],
                   ),
                 ),
               ),
@@ -645,9 +633,7 @@ class NewFeedItemView extends StatelessWidget {
                 onPressed: () => AppUtils.showBottomDialog(
                   context,
                   FullImageView(
-                    AppUtils.getUrlImage(
-                      images[2].path ?? '',
-                    ),
+                    [images[2].path ?? ''],
                   ),
                 ),
               ),
@@ -668,25 +654,32 @@ class NewFeedItemView extends StatelessWidget {
                     onPressed: () => AppUtils.showBottomDialog(
                       context,
                       FullImageView(
-                        AppUtils.getUrlImage(
-                          images[3].path ?? '',
-                        ),
+                        [images[3].path ?? ''],
                       ),
                     ),
                   ),
                   isMulti
-                      ? Container(
-                          height: double.infinity,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.6),
-                            borderRadius: BorderRadius.circular(8),
+                      ? GestureDetector(
+                          onTap: () => AppUtils.showBottomDialog(
+                            context,
+                            FullImageView(
+                              images.map((e) => e.path ?? '').toList(),
+                              currentIndex: 3,
+                            ),
                           ),
-                          child: Center(
-                            child: Text(
-                              '+5',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
+                          child: Container(
+                            height: double.infinity,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '+${images.length - 3}',
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
                             ),
                           ),
                         )
@@ -718,9 +711,7 @@ class NewFeedItemView extends StatelessWidget {
           onPressed: () => AppUtils.showBottomDialog(
             context,
             FullImageView(
-              AppUtils.getUrlImage(
-                images.first.path ?? '',
-              ),
+              [images.first.path ?? ''],
             ),
           ),
         );

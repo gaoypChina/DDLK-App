@@ -23,11 +23,18 @@ class ListPlaceScreen extends StatefulWidget {
 class _ListPlaceScreenState extends State<ListPlaceScreen> {
   ListPlacesCubit get _cubit => BlocProvider.of(context);
   final _debouncer = Debouncer(milliseconds: 500);
+  final _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
     _cubit.getCategories();
     _cubit.searchPlaces();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _cubit.loadMore();
+      }
+    });
   }
 
   @override
@@ -146,6 +153,7 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                       return _buildEmptyView();
                     }
                     return PlacesGridView(
+                      controller: _scrollController,
                       topPadding: 12,
                       bottomPadding: 78,
                       places: _cubit.places,

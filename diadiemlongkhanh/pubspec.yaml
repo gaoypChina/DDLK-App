@@ -72,6 +72,7 @@ dependencies:
   json_annotation: ^4.4.0
   flutter_bloc: ^8.0.1
   mapbox_gl: ^0.15.0
+  device_info_plus: ^3.2.3
   
 
 dev_dependencies:

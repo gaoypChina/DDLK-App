@@ -5,6 +5,8 @@ PODS:
   - AppAuth/Core (1.5.0)
   - AppAuth/ExternalUserAgent (1.5.0):
     - AppAuth/Core
+  - device_info_plus (0.0.1):
+    - Flutter
   - Firebase/CoreOnly (8.15.0):
     - FirebaseCore (= 8.15.0)
   - Firebase/Messaging (8.15.0):
@@ -114,6 +116,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
@@ -151,6 +154,8 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
@@ -184,6 +189,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
+  device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
   firebase_core: 318de541b0e61d3f24262982a3f0b54afe72439b
   firebase_messaging: 943cfe65e0b3f457240489ce67655e40da1d270c

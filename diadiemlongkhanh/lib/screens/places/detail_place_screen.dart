@@ -874,9 +874,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                               onPressed: () => AppUtils.showBottomDialog(
                                 context,
                                 FullImageView(
-                                  AppUtils.getUrlImage(
-                                    item.path ?? '',
-                                  ),
+                                  [item.path ?? ''],
                                 ),
                               ),
                               height: 72,
@@ -1543,9 +1541,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                               onPressed: () => AppUtils.showBottomDialog(
                                 context,
                                 FullImageView(
-                                  AppUtils.getUrlImage(
-                                    item.path ?? '',
-                                  ),
+                                  [item.path ?? ''],
                                 ),
                               ),
                               height: 72,

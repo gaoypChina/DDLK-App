@@ -12,12 +12,14 @@ class PlacesGridView extends StatelessWidget {
   final double? bottomPadding;
   final List<PlaceModel> places;
   final Function(PlaceModel)? onSelect;
+  final ScrollController? controller;
   PlacesGridView({
     this.physics,
     this.topPadding,
     this.bottomPadding,
     this.places = const [],
     this.onSelect,
+    this.controller,
   });
 
   @override
@@ -26,6 +28,7 @@ class PlacesGridView extends StatelessWidget {
       physics: physics,
       itemCount: places.isEmpty ? 4 : places.length,
       shrinkWrap: true,
+      controller: controller,
       padding: EdgeInsets.only(
         left: 16,
         right: 16,

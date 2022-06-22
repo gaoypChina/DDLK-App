@@ -25,6 +25,7 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
   }
   List<PlaceModel> places = [];
   int _page = 1;
+  bool isLast = true;
   bool nearMe;
   final CategoryModel? subCategory;
   final CategoryModel? category;
@@ -45,12 +46,23 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
           );
       print(res);
       if (res != null) {
-        places = res.result;
+        if (_page == 1) {
+          places = res.result;
+        } else {
+          places.addAll(res.result);
+        }
+        isLast = res.info?.total == places.length;
         emit(ListPlacesGetDoneState());
       }
     } catch (error) {
       print(error);
     }
+  }
+
+  loadMore() async {
+    _page += 1;
+    dataSearch.page = _page;
+    searchPlaces();
   }
 
   filterComplete(SearchModel data) {
@@ -65,6 +77,8 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
       dataSearch.lat = null;
       dataSearch.long = null;
     }
+    _page = 1;
+    dataSearch.page = _page;
     searchPlaces();
   }
 
@@ -77,6 +91,8 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
 
   searchKeyWord(String v) async {
     dataSearch.keyword = v;
+    _page = 1;
+    dataSearch.page = _page;
     searchPlaces();
   }
 }

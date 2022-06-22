@@ -3,6 +3,7 @@ import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/models/remote/comment/comment_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/result_new_feed_response.dart';
+import 'package:diadiemlongkhanh/models/remote/notification/notification_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/result_place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
@@ -182,4 +183,18 @@ abstract class ApiClient {
 
   @GET(Apis.logout)
   Future<AuthResponse?> logout();
+
+  @GET(Apis.notifications)
+  Future<ResultNotificationResponse?> getNotifications({
+    @Query('page') int page = 1,
+    @Query('pageSize') int pageSize = 10,
+  });
+  @GET('${Apis.notification}/{id}')
+  Future<NotificationModel?> getNotification(@Path() String id);
+
+  @GET('${Apis.voucher}/{id}/code')
+  Future<VoucherModel?> getVoucherCode(
+    @Path() String id,
+    @Query('device') String devideId,
+  );
 }

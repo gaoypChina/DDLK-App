@@ -50,9 +50,6 @@ class _SearchScreenState extends State<SearchScreen> {
           actions: [
             BlocBuilder<SearchCubit, SearchState>(
               builder: (_, state) {
-                if (_cubit.places.isEmpty) {
-                  return SizedBox.shrink();
-                }
                 int numFilter = 0;
                 if (_cubit.dataSearch.nearby != '') {
                   numFilter += 1;
@@ -119,30 +116,27 @@ class _SearchScreenState extends State<SearchScreen> {
                           buildWhen: (previous, current) =>
                               current is SearchPlacesGetHotDoneState,
                           builder: (_, state) {
-                            if (state is SearchPlacesGetHotDoneState) {
-                              return ListView.builder(
-                                itemCount: state.places.length,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                padding: const EdgeInsets.only(
-                                  top: 16,
-                                  left: 16,
-                                  bottom: 40,
-                                ),
-                                itemBuilder: (_, index) {
-                                  return PlaceHorizItemView(
-                                    context: context,
-                                    item: state.places[index],
-                                    onPressed: () =>
-                                        Navigator.of(context).pushNamed(
-                                      RouterName.detail_place,
-                                      arguments: state.places[index].id,
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                            return SizedBox.shrink();
+                            return ListView.builder(
+                              itemCount: _cubit.hotPlaces.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              padding: const EdgeInsets.only(
+                                top: 16,
+                                left: 16,
+                                bottom: 40,
+                              ),
+                              itemBuilder: (_, index) {
+                                return PlaceHorizItemView(
+                                  context: context,
+                                  item: _cubit.hotPlaces[index],
+                                  onPressed: () =>
+                                      Navigator.of(context).pushNamed(
+                                    RouterName.detail_place,
+                                    arguments: _cubit.hotPlaces[index].id,
+                                  ),
+                                );
+                              },
+                            );
                           },
                         ),
                       )
@@ -188,11 +182,24 @@ class _SearchScreenState extends State<SearchScreen> {
       child: _cubit.places.isEmpty
           ? _buildEmptyView()
           : ListView.builder(
-              itemCount: _cubit.places.length,
+              itemCount: _cubit.places.length + (_cubit.isLast ? 0 : 1),
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               padding: const EdgeInsets.all(16),
               itemBuilder: (_, index) {
+                if (index == _cubit.places.length) {
+                  return GestureDetector(
+                    onTap: () => _cubit.loadMore(),
+                    child: Text(
+                      'Tải thêm',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColor),
+                    ),
+                  );
+                }
                 final item = _cubit.places[index];
                 return InkWell(
                   onTap: () {

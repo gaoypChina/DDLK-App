@@ -19,6 +19,5 @@ class SearchClearKeyWordDoneState extends SearchState {}
 class SearchGetSubCategoriesDoneState extends SearchState {}
 
 class SearchPlacesGetHotDoneState extends SearchState {
-  final List<PlaceModel> places;
-  SearchPlacesGetHotDoneState(this.places);
+  SearchPlacesGetHotDoneState();
 }

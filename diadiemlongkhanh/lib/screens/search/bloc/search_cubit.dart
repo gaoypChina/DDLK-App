@@ -14,15 +14,17 @@ part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchInitialState()) {
     dataSearch = SearchModel(
-      pageSize: 10,
+      pageSize: 5,
       page: _page,
       lat: GlobalValue.lat,
       long: GlobalValue.long,
     );
   }
   int _page = 1;
+  bool isLast = true;
   late SearchModel dataSearch;
   List<PlaceModel> places = [];
+  List<PlaceModel> hotPlaces = [];
   List<CategoryModel> subCategories = [];
   List<CategoryModel> categories = [];
   getHistorySearch() async {
@@ -39,6 +41,8 @@ class SearchCubit extends Cubit<SearchState> {
 
   searchKeyWord(String v) async {
     dataSearch.keyword = v;
+    _page = 1;
+    dataSearch.page = _page;
     if (v.isEmpty) {
       places.clear();
       emit(SearchClearKeyWordDoneState());
@@ -51,8 +55,9 @@ class SearchCubit extends Cubit<SearchState> {
   getPlacesHot() async {
     final res = await injector.get<ApiClient>().getPlacesHot();
     if (res != null) {
+      hotPlaces = res;
       emit(
-        SearchPlacesGetHotDoneState(res),
+        SearchPlacesGetHotDoneState(),
       );
     }
   }
@@ -73,7 +78,13 @@ class SearchCubit extends Cubit<SearchState> {
         );
     print(res);
     if (res != null) {
-      places = res.result;
+      if (_page == 1) {
+        places = res.result;
+      } else {
+        places.addAll(res.result);
+      }
+
+      isLast = res.info?.total == places.length;
       emit(SearchGetPlacesDoneState());
     }
   }
@@ -83,6 +94,8 @@ class SearchCubit extends Cubit<SearchState> {
     dataSearch.opening = data.opening;
     dataSearch.price = data.price;
     dataSearch.categories = data.categories;
+    _page = 1;
+    dataSearch.page = _page;
     searchPlaces();
   }
 
@@ -111,6 +124,12 @@ class SearchCubit extends Cubit<SearchState> {
       places = res.result;
       emit(SearchGetPlacesDoneState());
     }
+  }
+
+  loadMore() async {
+    _page += 1;
+    dataSearch.page = _page;
+    searchPlaces();
   }
 
   saveHistorySearch(String val) {

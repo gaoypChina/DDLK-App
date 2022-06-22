@@ -5,11 +5,12 @@ import 'package:diadiemlongkhanh/screens/promotion/bloc/detail_promotion_cubit.d
 import 'package:diadiemlongkhanh/screens/promotion/code_promotion_dialog.dart';
 import 'package:diadiemlongkhanh/screens/promotion/widgets/list_promotion_view.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/line_dashed_painter.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
-import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -195,71 +196,89 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 7,
-                                  child: InkWell(
-                                    onTap: () => showDialog(
-                                      context: context,
-                                      builder: (_) => CodePromotionDialog(),
-                                    ),
-                                    child: Container(
-                                      height: 48,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).primaryColor,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            ConstantIcons.ic_qr,
-                                            height: 24,
-                                            width: 24,
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            'Lấy mã giảm giá',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline4
-                                                ?.apply(
-                                                  color: Colors.white,
+                            voucher == null
+                                ? SizedBox.shrink()
+                                : Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 7,
+                                        child: InkWell(
+                                          onTap: () {
+                                            if (injector
+                                                    .get<StorageService>()
+                                                    .getToken() ==
+                                                null) {
+                                              Navigator.of(context).pushNamed(
+                                                  RouterName.option_login,
+                                                  arguments: true);
+                                              return;
+                                            }
+                                            showDialog(
+                                              context: context,
+                                              builder: (_) =>
+                                                  CodePromotionDialog(
+                                                voucher: voucher,
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            height: 48,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SvgPicture.asset(
+                                                  ConstantIcons.ic_qr,
+                                                  height: 24,
+                                                  width: 24,
                                                 ),
-                                          )
-                                        ],
+                                                SizedBox(
+                                                  width: 8,
+                                                ),
+                                                Text(
+                                                  'Lấy mã giảm giá',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline4
+                                                      ?.apply(
+                                                        color: Colors.white,
+                                                      ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Container(
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          ColorConstant.neutral_gray_lightest,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Lưu',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4,
+                                      SizedBox(
+                                        width: 8,
                                       ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
+                                      // Expanded(
+                                      //   flex: 3,
+                                      //   child: Container(
+                                      //     height: 48,
+                                      //     decoration: BoxDecoration(
+                                      //       color:
+                                      //           ColorConstant.neutral_gray_lightest,
+                                      //       borderRadius: BorderRadius.circular(12),
+                                      //     ),
+                                      //     child: Center(
+                                      //       child: Text(
+                                      //         'Lưu',
+                                      //         style: Theme.of(context)
+                                      //             .textTheme
+                                      //             .headline4,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // )
+                                    ],
+                                  )
                           ],
                         ),
                       ),

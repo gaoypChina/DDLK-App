@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:diadiemlongkhanh/config/env_config.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
@@ -134,7 +135,7 @@ class AppUtils {
           return '${minutes.truncate()} phút trước';
         } else {
           double hours = distance / AppConstant.HOUR;
-          return '${hours.truncate()}giờ trước';
+          return '${hours.truncate()} giờ trước';
         }
       }
     } else {
@@ -346,5 +347,16 @@ class AppUtils {
         ),
       ),
     );
+  }
+
+  static Future<String?> getUDID() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId; // unique ID on Android
+    }
   }
 }

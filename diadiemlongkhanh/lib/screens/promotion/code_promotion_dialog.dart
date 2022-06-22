@@ -1,17 +1,53 @@
+import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class CodePromotionDialog extends StatefulWidget {
-  const CodePromotionDialog({Key? key}) : super(key: key);
+  const CodePromotionDialog({
+    Key? key,
+    required this.voucher,
+  }) : super(key: key);
+  final VoucherModel voucher;
 
   @override
   _CodePromotionDialogState createState() => _CodePromotionDialogState();
 }
 
 class _CodePromotionDialogState extends State<CodePromotionDialog> {
+  String code = '';
+  @override
+  void initState() {
+    super.initState();
+    _getVoucherCode();
+  }
+
+  _getVoucherCode() async {
+    AppUtils.showLoading();
+    final udid = await AppUtils.getUDID() ?? '';
+    final res = await injector.get<ApiClient>().getVoucherCode(
+          widget.voucher.id ?? '',
+          udid,
+        );
+    AppUtils.hideLoading();
+    if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!.message ?? '', okAction: () {
+          Navigator.of(context).pop();
+        });
+        return;
+      }
+      setState(() {
+        code = res.code ?? '';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +56,7 @@ class _CodePromotionDialogState extends State<CodePromotionDialog> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: 480,
+            height: 420,
             width: double.infinity,
             margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
@@ -50,23 +86,23 @@ class _CodePromotionDialogState extends State<CodePromotionDialog> {
                       SizedBox(
                         height: 37,
                       ),
-                      Text(
-                        'Giảm giá 30%',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
-                          color: ColorConstant.orange_secondary,
-                        ),
-                      ),
-                      Text(
-                        'Số lượng: 40',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
+                      // Text(
+                      //   widget.voucher.title ?? '',
+                      //   style: TextStyle(
+                      //     fontSize: 24,
+                      //     fontWeight: FontWeight.w500,
+                      //     color: ColorConstant.orange_secondary,
+                      //   ),
+                      // ),
+                      // Text(
+                      //   'Số lượng: 40',
+                      //   style: Theme.of(context).textTheme.subtitle1,
+                      // ),
+                      // SizedBox(
+                      //   height: 24,
+                      // ),
                       QrImage(
-                        data: "1234567890",
+                        data: code,
                         padding: const EdgeInsets.all(0),
                         version: QrVersions.auto,
                         size: 200.0,

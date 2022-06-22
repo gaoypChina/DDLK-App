@@ -852,6 +852,62 @@ class _ApiClient implements ApiClient {
     return value;
   }
 
+  @override
+  Future<ResultNotificationResponse?> getNotifications(
+      {page = 1, pageSize = 10}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize
+    };
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<ResultNotificationResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/notifications',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data == null
+        ? null
+        : ResultNotificationResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<NotificationModel?> getNotification(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<NotificationModel>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/notification/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : NotificationModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<VoucherModel?> getVoucherCode(id, devideId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'device': devideId};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<VoucherModel>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/voucher/${id}/code',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : VoucherModel.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

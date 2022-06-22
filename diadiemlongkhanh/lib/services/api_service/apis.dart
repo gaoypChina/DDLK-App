@@ -29,4 +29,6 @@ class Apis {
   static const report_problems = 'report-problems';
   static const report = 'report';
   static const logout = '/auth/logout';
+  static const notifications = '/notifications';
+  static const notification = '/notification';
 }
