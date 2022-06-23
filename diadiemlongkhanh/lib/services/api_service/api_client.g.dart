@@ -74,9 +74,9 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<List<VoucherModel>?> getVouchers({limit = 5}) async {
+  Future<List<VoucherModel>?> getVouchers() async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'limit': limit};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(

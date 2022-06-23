@@ -1,24 +1,33 @@
+import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/line_dashed_painter.dart';
 import 'package:flutter/material.dart';
 
 class ListPromotionView extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
-  ListPromotionView({this.margin});
+  final List<VoucherModel> vouhchers;
+  ListPromotionView({
+    this.margin,
+    required this.vouhchers,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: vouhchers.length,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       padding: margin,
       itemBuilder: (_, index) {
+        final item = vouhchers[index];
         return InkWell(
-          onTap: () =>
-              Navigator.of(context).pushNamed(RouterName.detail_promotion),
+          onTap: () => Navigator.of(context).pushNamed(
+            RouterName.detail_promotion,
+            arguments: item.id,
+          ),
           child: Container(
             height: 112,
             margin: const EdgeInsets.only(
@@ -46,8 +55,11 @@ class ListPromotionView extends StatelessWidget {
                       children: [
                         ClipRRectImage(
                           radius: 8,
-                          url:
-                              'https://img.giftpop.vn/brand/GOGIHOUSE/MP1905280011_BASIC_origin.jpg',
+                          url: AppUtils.getUrlImage(
+                            item.thumbnail?.path ?? '',
+                            width: 96,
+                            height: 96,
+                          ),
                           width: 96,
                           height: double.infinity,
                         ),
@@ -60,13 +72,13 @@ class ListPromotionView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Mono Coffee Lab',
+                                item.place?.name ?? '',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context).textTheme.headline4,
                               ),
                               Text(
-                                'Số 3, Đường A, Phường Xuân an',
+                                item.place?.name ?? '',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -82,7 +94,7 @@ class ListPromotionView extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Giảm giá 30%',
+                                    item.title ?? '',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -92,7 +104,9 @@ class ListPromotionView extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Còn 15 ngày',
+                                    item.endDate != null
+                                        ? AppUtils.getExpireDate(item.endDate!)
+                                        : '',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(

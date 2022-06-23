@@ -1,7 +1,11 @@
+import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
-import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/promotion/widgets/list_promotion_view.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +20,26 @@ class PromotionScreen extends StatefulWidget {
 class _PromotionScreenState extends State<PromotionScreen> {
   List<String> filterDatas = ['Tất cả', 'Cơm', 'Bún', 'Phở'];
   int _indexFilter = 0;
+  List<VoucherModel> vouchers = [];
+  VoucherModel? firstItem;
+  @override
+  void initState() {
+    super.initState();
+    _getPromotions();
+  }
+
+  _getPromotions() async {
+    final res = await injector.get<ApiClient>().getVouchers();
+    if (res != null) {
+      setState(() {
+        vouchers = res;
+        if (vouchers.isNotEmpty) {
+          firstItem = vouchers.removeAt(0);
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +68,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
                 child: Column(
                   children: [
                     _buildHeaderPromotionVie(context),
-                    _buildFilterPromotionView(),
+                    // _buildFilterPromotionView(),
                     _buildListPromotionView(context)
                   ],
                 ),
@@ -56,7 +80,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
     );
   }
 
-  Container _buildHeaderPromotionVie(BuildContext context) {
+  Widget _buildHeaderPromotionVie(BuildContext context) {
     return Container(
       height: 280,
       margin: const EdgeInsets.only(
@@ -75,65 +99,70 @@ class _PromotionScreenState extends State<PromotionScreen> {
           )
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRectImage(
-            radius: 8,
-            height: 189,
-            width: double.infinity,
-            url:
-                'https://img.giftpop.vn/brand/GOGIHOUSE/MP1905280011_BASIC_origin.jpg',
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
+      child: firstItem == null
+          ? ShimmerImage()
+          : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Mono Coffee Lab',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  'Số 3, Đường A, Phường Xuân an',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: ColorConstant.neutral_gray,
+                ClipRRectImage(
+                  radius: 8,
+                  height: 189,
+                  width: double.infinity,
+                  url: AppUtils.getUrlImage(
+                    firstItem!.thumbnail?.path ?? '',
+                    height: 189,
                   ),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  'Giảm giá 30%',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: ColorConstant.orange_secondary,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        firstItem!.place?.name ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        firstItem!.place?.address?.specific ?? '',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: ColorConstant.neutral_gray,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        firstItem!.title ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: ColorConstant.orange_secondary,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 
   Widget _buildListPromotionView(BuildContext context) {
     return ListPromotionView(
       margin: const EdgeInsets.only(top: 24),
+      vouhchers: vouchers,
     );
   }
 

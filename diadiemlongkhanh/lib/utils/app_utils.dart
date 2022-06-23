@@ -359,4 +359,16 @@ class AppUtils {
       return androidDeviceInfo.androidId; // unique ID on Android
     }
   }
+
+  static String getExpireDate(
+    String endDate,
+  ) {
+    final end = DateTime.parse(endDate);
+    final now = DateTime.now();
+    if (now.isAfter(end)) {
+      return 'Đã hết hạn';
+    }
+    final days = end.difference(now).inDays;
+    return 'Còn $days ngày';
+  }
 }

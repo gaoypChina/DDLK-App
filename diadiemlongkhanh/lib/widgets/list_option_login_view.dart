@@ -13,15 +13,19 @@ class ListOptionLoginView extends StatelessWidget {
     GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: [
         'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
       ],
     );
-    try {
-      final res = await _googleSignIn.signIn();
-      print(res);
-    } catch (error) {
-      print(error);
-    }
+    _googleSignIn.signIn().then((result) {
+      result?.authentication.then((googleKey) {
+        print(googleKey.accessToken);
+        print(googleKey.idToken);
+        print(_googleSignIn.currentUser?.displayName);
+      }).catchError((err) {
+        print('inner error');
+      });
+    }).catchError((err) {
+      print('error occured');
+    });
   }
 
   @override

@@ -75,16 +75,17 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                     SizedBox(
                       height: 40,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: Text(
-                        'Các khuyến mãi khác',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ),
-                    ListPromotionView(
-                      margin: const EdgeInsets.only(top: 16),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 16),
+                    //   child: Text(
+                    //     'Các khuyến mãi khác',
+                    //     style: Theme.of(context).textTheme.headline5,
+                    //   ),
+                    // ),
+                    // ListPromotionView(
+                    //   margin: const EdgeInsets.only(top: 16),
+                    //   vouhchers: [],
+                    // ),
                   ],
                 ),
               ),

@@ -37,9 +37,7 @@ abstract class ApiClient {
   });
 
   @GET(Apis.vouchers)
-  Future<List<VoucherModel>?> getVouchers({
-    @Query('limit') int limit = 5,
-  });
+  Future<List<VoucherModel>?> getVouchers();
 
   @GET('${Apis.voucher}/{id}')
   Future<VoucherModel?> getDetailVoucher(@Path() String id);
