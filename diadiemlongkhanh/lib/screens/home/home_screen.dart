@@ -1,4 +1,6 @@
+import 'package:diadiemlongkhanh/config/env_config.dart';
 import 'package:diadiemlongkhanh/models/local/report_type_model.dart';
+import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
@@ -535,6 +537,14 @@ class _HomeScreenState extends State<HomeScreen>
               ),
               _buildMenuItem(
                 title: 'Ăn uống',
+                onPressed: () => Navigator.of(context).pushNamed(
+                  RouterName.list_places,
+                  arguments: {
+                    'category': CategoryModel(
+                      id: Environment().config.categoryStatic.food,
+                    ),
+                  },
+                ),
                 icon: Image.asset(
                   ConstantIcons.ic_food,
                   width: 42,
@@ -550,7 +560,15 @@ class _HomeScreenState extends State<HomeScreen>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildMenuItem(
-                title: 'Dịch vụ',
+                title: 'Giải trí',
+                onPressed: () => Navigator.of(context).pushNamed(
+                  RouterName.list_places,
+                  arguments: {
+                    'category': CategoryModel(
+                      id: Environment().config.categoryStatic.entertainment,
+                    ),
+                  },
+                ),
                 icon: Image.asset(
                   ConstantIcons.ic_store,
                   width: 45,
@@ -559,6 +577,14 @@ class _HomeScreenState extends State<HomeScreen>
               ),
               _buildMenuItem(
                 title: 'Khách sạn',
+                onPressed: () => Navigator.of(context).pushNamed(
+                  RouterName.list_places,
+                  arguments: {
+                    'category': CategoryModel(
+                      id: Environment().config.categoryStatic.hotel,
+                    ),
+                  },
+                ),
                 icon: Image.asset(
                   ConstantIcons.ic_hotel,
                   width: 45,
@@ -567,6 +593,14 @@ class _HomeScreenState extends State<HomeScreen>
               ),
               _buildMenuItem(
                 title: 'Du lịch',
+                onPressed: () => Navigator.of(context).pushNamed(
+                  RouterName.list_places,
+                  arguments: {
+                    'category': CategoryModel(
+                      id: Environment().config.categoryStatic.travel,
+                    ),
+                  },
+                ),
                 icon: Image.asset(
                   ConstantIcons.ic_travel,
                   width: 37,

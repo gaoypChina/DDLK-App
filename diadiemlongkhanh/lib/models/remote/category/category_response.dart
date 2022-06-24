@@ -14,7 +14,10 @@ class CategoryModel {
   ThumbnailModel? thumbnail;
   CategoryModel? category;
 
-  CategoryModel();
+  CategoryModel({
+    this.id,
+    this.name,
+  });
   factory CategoryModel.fromJson(Map<String, dynamic> json) =>
       _$CategoryModelFromJson(json);
 }

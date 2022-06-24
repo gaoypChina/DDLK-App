@@ -7,11 +7,12 @@ part of 'category_response.dart';
 // **************************************************************************
 
 CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
-    CategoryModel()
-      ..id = json['_id'] as String?
+    CategoryModel(
+      id: json['_id'] as String?,
+      name: json['name'] as String?,
+    )
       ..isHot = json['isHot'] as bool?
       ..order = json['order'] as int?
-      ..name = json['name'] as String?
       ..slug = json['slug'] as String?
       ..thumbnail = json['thumbnail'] == null
           ? null

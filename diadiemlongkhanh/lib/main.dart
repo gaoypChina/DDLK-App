@@ -134,6 +134,9 @@ class _MyAppState extends State<MyApp> {
         }
       });
     }
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print(event);
+    });
   }
 
   _requestLocation() async {

@@ -33,6 +33,7 @@ abstract class BaseConfig {
   String get domain;
   String get mapAccessToken;
   String get domain2;
+  CategoryStatic get categoryStatic;
 }
 
 class DevConfig implements BaseConfig {
@@ -46,6 +47,9 @@ class DevConfig implements BaseConfig {
 
   @override
   String get domain2 => 'http://103.130.219.99:8501/';
+
+  @override
+  CategoryStatic get categoryStatic => CategoryStaticDev();
 }
 
 class ProdConfig implements BaseConfig {
@@ -58,4 +62,31 @@ class ProdConfig implements BaseConfig {
 
   @override
   String get domain2 => 'http://103.130.219.99:8500/';
+
+  @override
+  CategoryStatic get categoryStatic => CategoryStaticProd();
+}
+
+abstract class CategoryStatic {
+  String get food;
+  String get hotel;
+  String get entertainment;
+  String get shopping;
+  String get travel;
+}
+
+class CategoryStaticDev extends CategoryStatic {
+  String get food => '6259bcedcab22708e32ee7f7';
+  String get hotel => '6259bcf7cab22708e32ee7fe';
+  String get entertainment => '625e5afbbd70a52b457f11e1';
+  String get shopping => '625e5abdbd70a52b457f11da';
+  String get travel => '6261162914b5104a52304237';
+}
+
+class CategoryStaticProd extends CategoryStatic {
+  String get food => '629c9f6617dd741c0c5b5cf8';
+  String get hotel => '629c9fb917dd741c0c5b5d0c';
+  String get entertainment => '629c9f8817dd741c0c5b5d00';
+  String get shopping => '629c9f7817dd741c0c5b5cfc';
+  String get travel => '629c9fac17dd741c0c5b5d08';
 }

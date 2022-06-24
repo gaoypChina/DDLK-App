@@ -61,7 +61,7 @@ class NotificationsManager {
       } else {
         print('User declined or has not accepted permission');
       }
-
+      await FirebaseMessaging.instance.subscribeToTopic('ddlk');
       final token = await FirebaseMessaging.instance.getToken() ?? '';
       print(token);
       initialized = true;
