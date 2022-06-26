@@ -73,6 +73,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   mapbox_gl: ^0.15.0
   device_info_plus: ^3.2.3
+  qr_code_scanner: ^0.7.0
   
 
 dev_dependencies:

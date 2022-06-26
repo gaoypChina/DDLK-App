@@ -17,5 +17,6 @@ enum SettingMenuType {
   contact,
   settingProfile,
   logout,
+  scan,
   none,
 }

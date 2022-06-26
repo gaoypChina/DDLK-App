@@ -45,6 +45,7 @@ class _SettingScreenState extends State<SettingScreen> {
     SettingMenuModel(
       SvgPicture.asset(ConstantIcons.ic_qr_black),
       'Quét mã QR',
+      type: SettingMenuType.scan,
     ),
     SettingMenuModel(
       SvgPicture.asset(ConstantIcons.ic_contact),
@@ -62,6 +63,8 @@ class _SettingScreenState extends State<SettingScreen> {
       Navigator.of(context).pushNamed(RouterName.setting_profile);
     } else if (type == SettingMenuType.contact) {
       Navigator.of(context).pushNamed(RouterName.contact);
+    } else if (type == SettingMenuType.scan) {
+      Navigator.of(context).pushNamed(RouterName.scan);
     } else if (type == SettingMenuType.logout) {
       AppUtils.showOkDialog(
         context,

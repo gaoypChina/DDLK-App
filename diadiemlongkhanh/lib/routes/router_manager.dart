@@ -29,6 +29,7 @@ import 'package:diadiemlongkhanh/screens/promotion/detail_promotion_screen.dart'
 import 'package:diadiemlongkhanh/screens/promotion/promotion_screen.dart';
 import 'package:diadiemlongkhanh/screens/request_contact/contact_screen.dart';
 import 'package:diadiemlongkhanh/screens/review/create_review_screen.dart';
+import 'package:diadiemlongkhanh/screens/scan/scan_screen.dart';
 import 'package:diadiemlongkhanh/screens/search/bloc/search_cubit.dart';
 import 'package:diadiemlongkhanh/screens/search/search_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/info_sign_up_screen.dart';
@@ -188,6 +189,10 @@ class RouterManager {
         return MaterialPageRoute(
           builder: (_) => ContactScreen(),
         );
+      case RouterName.scan:
+        return MaterialPageRoute(
+          builder: (_) => ScanScreen(),
+        );
       case RouterName.notification:
         return MaterialPageRoute(
           builder: (_) => NotificationScreen(),
@@ -317,4 +322,5 @@ class RouterName {
   static const contact = '/contact';
   static const account = '/account';
   static const places_saved = '/places_saved';
+  static const scan = 'scan';
 }

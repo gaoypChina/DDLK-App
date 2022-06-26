@@ -10,6 +10,7 @@ import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
 import 'package:diadiemlongkhanh/models/remote/stats/stats_response.dart';
 import 'package:diadiemlongkhanh/models/remote/user/info_user_response.dart';
 import 'package:diadiemlongkhanh/models/remote/user/user_response.dart';
+import 'package:diadiemlongkhanh/models/remote/voucher/scan_response.dart';
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -194,5 +195,11 @@ abstract class ApiClient {
   Future<VoucherModel?> getVoucherCode(
     @Path() String id,
     @Query('device') String devideId,
+  );
+
+  @GET('${Apis.voucher}/scan/{code}')
+  Future<ScanResponse?> sendQR(
+    @Path() String code,
+    @Query('device') String deviceId,
   );
 }
