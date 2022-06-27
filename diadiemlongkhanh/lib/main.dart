@@ -87,6 +87,8 @@ class _MyAppState extends State<MyApp> {
   AppTheme? _theme;
   LocationData? _locationData;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey(debugLabel: "MainNavigator");
   @override
   void didChangeDependencies() {
     if (_theme == null) {
@@ -134,9 +136,55 @@ class _MyAppState extends State<MyApp> {
         }
       });
     }
+    FirebaseMessaging.instance.getInitialMessage().then((event) {
+      if (event == null) {
+        return;
+      }
+      final data = event.data;
+      final doc = data['doc'] as String;
+      final docModel = data['docModel'] as String;
+
+      Future.delayed(Duration(milliseconds: 500), () {
+        _nextToDetail(doc, docModel);
+      });
+    });
+    FirebaseMessaging.onMessage.listen((event) {
+      print(event.data);
+    });
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       print(event);
+      final data = event.data;
+      final doc = data['doc'] as String;
+      final docModel = data['docModel'] as String;
+      _nextToDetail(doc, docModel);
     });
+  }
+
+  _nextToDetail(
+    String doc,
+    String docModel,
+  ) {
+    if (docModel.toLowerCase() == 'none') {
+      navigatorKey.currentState?.pushNamed(
+        RouterName.detail_notification,
+        arguments: doc,
+      );
+    } else if (docModel.toLowerCase() == 'place') {
+      navigatorKey.currentState?.pushNamed(
+        RouterName.detail_place,
+        arguments: doc,
+      );
+    } else if (docModel.toLowerCase() == 'review') {
+      navigatorKey.currentState?.pushNamed(
+        RouterName.detail_review,
+        arguments: doc,
+      );
+    } else if (docModel.toLowerCase() == 'voucher') {
+      navigatorKey.currentState?.pushNamed(
+        RouterName.detail_promotion,
+        arguments: doc,
+      );
+    }
   }
 
   _requestLocation() async {
@@ -172,6 +220,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: navigatorKey,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

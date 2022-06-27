@@ -202,4 +202,10 @@ abstract class ApiClient {
     @Path() String code,
     @Query('device') String deviceId,
   );
+
+  @POST(Apis.login_with_google)
+  Future<AuthResponse?> loginWithGoogle(@Body() data);
+
+  @GET('${Apis.review}/{id}')
+  Future<NewFeedModel?> getDetailReview(@Path() String id);
 }

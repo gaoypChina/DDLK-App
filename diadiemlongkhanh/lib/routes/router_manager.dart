@@ -257,12 +257,19 @@ class RouterManager {
         );
       case RouterName.detail_review:
         NewFeedModel? item;
+        String? id;
         if (settings.arguments != null) {
-          item = settings.arguments as NewFeedModel;
+          if (settings.arguments is NewFeedModel) {
+            item = settings.arguments as NewFeedModel;
+          } else {
+            id = settings.arguments as String;
+          }
         }
+
         return MaterialPageRoute(
           builder: (_) => DetailReviewScreen(
             item: item,
+            id: id,
           ),
         );
       case RouterName.info_signup:

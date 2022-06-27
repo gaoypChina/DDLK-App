@@ -1,6 +1,12 @@
+import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -9,7 +15,7 @@ class ListOptionLoginView extends StatelessWidget {
   final bool isLogin;
   ListOptionLoginView({this.isLogin = true});
 
-  Future<void> _handleSignIn() async {
+  Future<void> _handleSignIn(BuildContext context) async {
     GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: [
         'email',
@@ -20,12 +26,54 @@ class ListOptionLoginView extends StatelessWidget {
         print(googleKey.accessToken);
         print(googleKey.idToken);
         print(_googleSignIn.currentUser?.displayName);
+        if (_googleSignIn.currentUser != null) {
+          _loginWithGoogle(context, _googleSignIn.currentUser!);
+        }
       }).catchError((err) {
         print('inner error');
       });
     }).catchError((err) {
       print('error occured');
     });
+  }
+
+  _loginWithGoogle(
+    BuildContext context,
+    GoogleSignInAccount account,
+  ) async {
+    final data = {
+      "displayName": account.displayName,
+      "email": account.email,
+      "id": account.id,
+      "photoUrl": account.photoUrl,
+    };
+    AppUtils.showLoading();
+    final res = await injector.get<ApiClient>().loginWithGoogle(data);
+    AppUtils.hideLoading();
+    if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!);
+        return;
+      }
+      if (res.token != null) {
+        await injector.get<StorageService>().saveToken(res.token!);
+        // await _getInfoUser();
+        await _saveTokenFCM();
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
+        return;
+      }
+    }
+    AppUtils.showOkDialog(
+      context,
+      ConstantTitle.please_try_again,
+    );
+  }
+
+  _saveTokenFCM() async {
+    final token = await FirebaseMessaging.instance.getToken() ?? '';
+    final data = {'token': token};
+    await injector.get<ApiClient>().saveToken(data);
   }
 
   @override
@@ -56,7 +104,7 @@ class ListOptionLoginView extends StatelessWidget {
         ),
         _buildOptionButton(
           context,
-          onPressed: _handleSignIn,
+          onPressed: () => _handleSignIn(context),
           icon: SvgPicture.asset(
             ConstantIcons.ic_gg,
           ),

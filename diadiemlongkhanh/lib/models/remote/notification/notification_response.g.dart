@@ -25,6 +25,9 @@ Map<String, dynamic> _$ResultNotificationResponseToJson(
 
 NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
     NotificationModel()
+      ..error = json['error'] == null
+          ? null
+          : ErrorModel.fromJson(json['error'] as Map<String, dynamic>)
       ..id = json['_id'] as String?
       ..receiverType = json['receiverType'] as String?
       ..sendTime = json['sendTime'] as String?
@@ -38,6 +41,7 @@ NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$NotificationModelToJson(NotificationModel instance) =>
     <String, dynamic>{
+      'error': instance.error,
       '_id': instance.id,
       'receiverType': instance.receiverType,
       'sendTime': instance.sendTime,

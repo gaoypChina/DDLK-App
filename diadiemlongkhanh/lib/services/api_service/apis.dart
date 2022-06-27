@@ -31,4 +31,5 @@ class Apis {
   static const logout = '/auth/logout';
   static const notifications = '/notifications';
   static const notification = '/notification';
+  static const login_with_google = '/auth/login-with-google';
 }

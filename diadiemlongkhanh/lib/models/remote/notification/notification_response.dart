@@ -1,4 +1,5 @@
 import 'package:diadiemlongkhanh/models/remote/info_paging/info_paging_response.dart';
+import 'package:diadiemlongkhanh/models/remote/result_base/base_response.dart';
 import 'package:diadiemlongkhanh/models/remote/result_base/result_base_response.dart';
 import 'package:diadiemlongkhanh/models/remote/thumnail/thumbnail_model.dart';
 
@@ -15,7 +16,7 @@ class ResultNotificationResponse extends ResultBaseResponse {
 }
 
 @JsonSerializable()
-class NotificationModel {
+class NotificationModel extends BaseResponse {
   @JsonKey(name: '_id')
   String? id;
   String? receiverType;

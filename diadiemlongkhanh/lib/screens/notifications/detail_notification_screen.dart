@@ -32,6 +32,11 @@ class _DetailNotificationScreenState extends State<DetailNotificationScreen> {
     final res = await injector.get<ApiClient>().getNotification(widget.id);
     AppUtils.hideLoading();
     if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!.message ?? '',
+            okAction: () => Navigator.of(context).pop());
+        return;
+      }
       setState(() {
         _noti = res;
       });
