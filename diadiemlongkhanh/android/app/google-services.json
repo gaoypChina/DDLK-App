@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "209860038987-v8bok0eauf42ni3lpffr24urs7ego2el.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.diadiemlongkhanh.app",
+            "certificate_hash": "7a70f82029f3d5d18f004d6814e041ddfa2f8ae2"
+          }
+        },
+        {
           "client_id": "209860038987-7gbjqhgt8b5tvq8r212n25jhbahp7ufn.apps.googleusercontent.com",
           "client_type": 3
         }

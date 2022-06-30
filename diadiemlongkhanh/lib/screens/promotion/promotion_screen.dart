@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/promotion/widgets/list_promotion_view.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
@@ -101,60 +102,65 @@ class _PromotionScreenState extends State<PromotionScreen> {
       ),
       child: firstItem == null
           ? ShimmerImage()
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRectImage(
-                  radius: 8,
-                  height: 189,
-                  width: double.infinity,
-                  url: AppUtils.getUrlImage(
-                    firstItem!.thumbnail?.path ?? '',
+          : GestureDetector(
+              onTap: () => Navigator.of(context).pushNamed(
+                RouterName.detail_promotion,
+                arguments: firstItem!.id,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRectImage(
+                    radius: 8,
                     height: 189,
+                    width: double.infinity,
+                    url: AppUtils.getUrlImage(
+                      firstItem!.thumbnail?.path ?? '',
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        firstItem!.place?.name ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        firstItem!.place?.address?.specific ?? '',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: ColorConstant.neutral_gray,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        firstItem!.title ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: ColorConstant.orange_secondary,
-                        ),
-                      ),
-                    ],
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          firstItem!.place?.name ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          firstItem!.place?.address?.specific ?? '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: ColorConstant.neutral_gray,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          firstItem!.title ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: ColorConstant.orange_secondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
     );
   }

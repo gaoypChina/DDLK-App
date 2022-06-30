@@ -42,14 +42,14 @@
 	<true/>
 	<key>MBXAccessToken</key>
 	<string>sk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsM2EyZmFxdzAxZ3Izam5yNnFtNGtpczUifQ.ryFpOtTHwwRp7L25_o4j6A</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Cần truy cập máy ảnh để scan mã khuyến mãi</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Để gợi ý địa điểm ở gần vị trí của bạn</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Để gợi ý địa điểm ở gần vị trí của bạn</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Để thực hiện chức năng này ứng dụng cần truy cập thư viện ảnh của bạn</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Cần truy cập máy ảnh để scan mã khuyến mãi</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

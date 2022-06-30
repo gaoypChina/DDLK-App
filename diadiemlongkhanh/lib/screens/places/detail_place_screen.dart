@@ -600,33 +600,36 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               Text('${place?.reviewCount ?? 0} đánh giá')
             ],
           ),
-          Container(
-            height: 40,
-            width: 127,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Theme.of(context).primaryColor,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  ConstantIcons.ic_plus,
-                  width: 16,
-                  height: 16,
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  'Viết đánh giá',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
+          GestureDetector(
+            onTap: () => _cubit.addReview(context),
+            child: Container(
+              height: 40,
+              width: 127,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(context).primaryColor,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    ConstantIcons.ic_plus,
+                    width: 16,
+                    height: 16,
                   ),
-                )
-              ],
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    'Viết đánh giá',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],
@@ -881,8 +884,8 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                               width: 72,
                               url: AppUtils.getUrlImage(
                                 item.path ?? '',
-                                width: 72,
-                                height: 72,
+                                width: 200,
+                                height: 200,
                               ),
                               radius: 8,
                             )
@@ -1401,8 +1404,8 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                       radius: 26,
                       url: AppUtils.getUrlImage(
                         place.avatar?.path ?? '',
-                        width: 52,
-                        height: 52,
+                        width: 200,
+                        height: 200,
                       ),
                     ),
                     SizedBox(
@@ -1541,15 +1544,18 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                               onPressed: () => AppUtils.showBottomDialog(
                                 context,
                                 FullImageView(
-                                  [item.path ?? ''],
+                                  place.images
+                                      .map((e) => e.path ?? '')
+                                      .toList(),
+                                  currentIndex: index,
                                 ),
                               ),
                               height: 72,
                               width: 72,
                               url: AppUtils.getUrlImage(
                                 item.path ?? '',
-                                width: 72,
-                                height: 72,
+                                width: 200,
+                                height: 200,
                               ),
                               radius: 8,
                             )
@@ -1708,8 +1714,6 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                       width: double.infinity,
                       url: AppUtils.getUrlImage(
                         item.path ?? '',
-                        width: width,
-                        height: 268,
                       ),
                     );
                   },

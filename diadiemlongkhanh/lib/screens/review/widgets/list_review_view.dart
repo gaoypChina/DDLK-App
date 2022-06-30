@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/thumnail/thumbnail_model.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
@@ -272,8 +273,8 @@ class ListReviewView extends StatelessWidget {
                   ),
                   url: AppUtils.getUrlImage(
                     item.path ?? '',
-                    width: 72,
-                    height: 72,
+                    width: 200,
+                    height: 200,
                   ),
                   radius: 8,
                 )
@@ -293,10 +294,22 @@ class ListReviewView extends StatelessWidget {
       children: [
         ClipRRectImage(
           radius: 22,
-          url: AppUtils.getUrlImage(item.author?.avatar ?? '',
-              width: 44, height: 44),
+          url: AppUtils.getUrlImage(
+            item.author?.avatar ?? '',
+            width: 100,
+            height: 100,
+          ),
           width: 44,
           height: 44,
+          onPressed: () {
+            if (item.anonymous == true) {
+              return;
+            }
+            Navigator.of(context).pushNamed(
+              RouterName.account,
+              arguments: item.author?.id,
+            );
+          },
         ),
         SizedBox(
           width: 4,

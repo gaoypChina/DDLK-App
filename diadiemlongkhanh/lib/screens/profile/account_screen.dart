@@ -453,8 +453,8 @@ class _AccountScreenState extends State<AccountScreen>
             radius: 39,
             url: AppUtils.getUrlImage(
               _cubit.user?.avatar ?? '',
-              height: 78,
-              width: 78,
+              height: 200,
+              width: 200,
             ),
             width: 78,
             height: 78,

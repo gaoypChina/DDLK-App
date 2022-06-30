@@ -138,8 +138,6 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                   width: double.infinity,
                   url: AppUtils.getUrlImage(
                     voucher.thumbnail?.path ?? '',
-                    height: 286,
-                    width: MediaQuery.of(context).size.width,
                   ),
                 ),
           Positioned(
@@ -316,8 +314,8 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                               radius: 22,
                               url: AppUtils.getUrlImage(
                                 voucher?.place?.avatar?.path ?? '',
-                                width: 44,
-                                height: 44,
+                                width: 200,
+                                height: 200,
                               ),
                               height: 44,
                               width: 44,

@@ -7,6 +7,7 @@ import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
+import 'package:diadiemlongkhanh/widgets/empty_data_view.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 
@@ -21,21 +22,47 @@ class _NotificationScreenState extends State<NotificationScreen> {
   int _currentIndex = 0;
   List<NotificationModel> notifications = [];
   int page = 1;
+  bool isLast = false;
+  final _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _loadMore();
+      }
+    });
+    _getNotifications();
+  }
+
+  _loadMore() async {
+    if (isLast) {
+      return;
+    }
+    page += 1;
     _getNotifications();
   }
 
   _getNotifications() async {
-    AppUtils.showLoading();
+    // AppUtils.showLoading();
     final res = await injector.get<ApiClient>().getNotifications(
           page: page,
         );
-    AppUtils.hideLoading();
+    // AppUtils.hideLoading();
     if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!.message ?? '',
+            okAction: () => Navigator.of(context).pop());
+        return;
+      }
       setState(() {
-        notifications = res.result ?? [];
+        if (page == 1) {
+          notifications = res.result ?? [];
+        } else {
+          notifications.addAll(res.result ?? []);
+        }
+        isLast = notifications.length == res.info!.total;
       });
     }
   }
@@ -77,7 +104,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
           //   ),
           // ),
           Expanded(
-            child: _buildListNotiView(context),
+            child: notifications.isEmpty
+                ? EmptyDataView(
+                    title: 'Bạn chưa có thông báo nào!',
+                  )
+                : _buildListNotiView(context),
           )
         ],
       ),
@@ -90,11 +121,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
         RouterName.detail_notification,
         arguments: item.id,
       );
+    } else if (item.docModel!.toLowerCase() == 'place') {
+      Navigator.of(context).pushNamed(
+        RouterName.detail_place,
+        arguments: item.doc,
+      );
+    } else if (item.docModel!.toLowerCase() == 'review') {
+      Navigator.of(context).pushNamed(
+        RouterName.detail_review,
+        arguments: item.doc,
+      );
+    } else if (item.docModel!.toLowerCase() == 'voucher') {
+      Navigator.of(context).pushNamed(
+        RouterName.detail_promotion,
+        arguments: item.doc,
+      );
     }
   }
 
   ListView _buildListNotiView(BuildContext context) {
     return ListView.builder(
+      controller: _scrollController,
       itemCount: notifications.length,
       shrinkWrap: true,
       padding: const EdgeInsets.all(16),
@@ -128,8 +175,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   radius: 4,
                   url: AppUtils.getUrlImage(
                     item.thumbnail?.path ?? '',
-                    width: 72,
-                    height: 72,
+                    width: 200,
+                    height: 200,
                   ),
                 ),
                 SizedBox(

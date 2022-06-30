@@ -55,8 +55,8 @@ class PlaceGridItemView extends StatelessWidget {
                 radius: 8,
                 url: AppUtils.getUrlImage(
                   item!.avatar?.path ?? '',
-                  width: 148,
-                  height: 148,
+                  width: 500,
+                  height: 500,
                 ),
                 height: 148,
                 width: double.infinity,

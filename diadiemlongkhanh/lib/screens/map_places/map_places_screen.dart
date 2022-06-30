@@ -128,8 +128,8 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
                     radius: 8,
                     url: AppUtils.getUrlImage(
                       item.avatar?.path ?? '',
-                      width: 96,
-                      height: 96,
+                      width: 200,
+                      height: 200,
                     ),
                   ),
                   SizedBox(

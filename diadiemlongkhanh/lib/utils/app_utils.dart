@@ -369,6 +369,9 @@ class AppUtils {
       return 'Đã hết hạn';
     }
     final days = end.difference(now).inDays;
+    if (days == 0) {
+      return 'Còn hôm nay';
+    }
     return 'Còn $days ngày';
   }
 }

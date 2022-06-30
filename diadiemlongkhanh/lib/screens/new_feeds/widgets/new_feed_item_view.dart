@@ -245,8 +245,8 @@ class NewFeedItemView extends StatelessWidget {
             radius: 18,
             url: AppUtils.getUrlImage(
               GlobalValue.avatar ?? '',
-              width: 36,
-              height: 36,
+              width: 100,
+              height: 100,
             ),
             width: 36,
             height: 36,
@@ -373,8 +373,8 @@ class NewFeedItemView extends StatelessWidget {
               radius: 4,
               url: AppUtils.getUrlImage(
                 item!.place?.avatar?.path ?? '',
-                width: 64,
-                height: 64,
+                width: 200,
+                height: 200,
               ),
               width: 64,
               height: 64,
@@ -747,13 +747,16 @@ class NewFeedItemView extends StatelessWidget {
           radius: 22,
           url: AppUtils.getUrlImage(
             item!.author?.avatar ?? '',
-            width: 44,
-            height: 44,
+            width: 100,
+            height: 100,
           ),
           width: 44,
           height: 44,
           onPressed: () {
             if (disablNextProfile) {
+              return;
+            }
+            if (item!.anonymous == true) {
               return;
             }
             Navigator.of(context).pushNamed(

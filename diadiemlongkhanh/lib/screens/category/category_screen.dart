@@ -95,8 +95,8 @@ class _CategoryScreenState extends State<CategoryScreen>
                       radius: 8,
                       url: AppUtils.getUrlImage(
                         item.thumbnail?.path ?? '',
-                        width: 68,
-                        height: 69,
+                        width: 200,
+                        height: 200,
                       ),
                       width: 68,
                       height: 59,

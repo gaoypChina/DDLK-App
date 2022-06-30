@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
@@ -10,6 +12,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class ListOptionLoginView extends StatelessWidget {
   final bool isLogin;
@@ -35,6 +38,49 @@ class ListOptionLoginView extends StatelessWidget {
     }).catchError((err) {
       print('error occured');
     });
+  }
+
+  _signinApple(BuildContext context) async {
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      print(credential.authorizationCode);
+      final data = {
+        'email': credential.email,
+        'familyName': credential.familyName,
+        'givenName': credential.givenName,
+        'userIdentifier': credential.userIdentifier,
+      };
+      AppUtils.showLoading();
+      final res = await injector.get<ApiClient>().loginWithApple(data);
+
+      AppUtils.hideLoading();
+      if (res != null) {
+        if (res.error != null) {
+          AppUtils.showOkDialog(context, res.error!);
+          return;
+        }
+        if (res.token != null) {
+          await injector.get<StorageService>().saveToken(res.token!);
+          // await _getInfoUser();
+          await _saveTokenFCM();
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              RouterName.base_tabbar, (route) => false);
+          return;
+        }
+      }
+      AppUtils.showOkDialog(
+        context,
+        ConstantTitle.please_try_again,
+      );
+    } catch (error) {
+      print(error);
+    }
   }
 
   _loginWithGoogle(
@@ -89,16 +135,16 @@ class ListOptionLoginView extends StatelessWidget {
           onPressed: () => Navigator.of(context)
               .pushNamed(isLogin ? RouterName.login : RouterName.signup),
         ),
-        SizedBox(
-          height: 16,
-        ),
-        _buildOptionButton(
-          context,
-          icon: SvgPicture.asset(
-            ConstantIcons.ic_fb,
-          ),
-          title: 'Tiếp tục với Facebook',
-        ),
+        // SizedBox(
+        //   height: 16,
+        // ),
+        // _buildOptionButton(
+        //   context,
+        //   icon: SvgPicture.asset(
+        //     ConstantIcons.ic_fb,
+        //   ),
+        //   title: 'Tiếp tục với Facebook',
+        // ),
         SizedBox(
           height: 16,
         ),
@@ -111,15 +157,18 @@ class ListOptionLoginView extends StatelessWidget {
           title: 'Tiếp tục với Google',
         ),
         SizedBox(
-          height: 16,
+          height: Platform.isIOS ? 16 : 0,
         ),
-        _buildOptionButton(
-          context,
-          icon: SvgPicture.asset(
-            ConstantIcons.ic_apple,
-          ),
-          title: 'Tiếp tục với Apple',
-        ),
+        Platform.isIOS
+            ? _buildOptionButton(
+                context,
+                onPressed: () => _signinApple(context),
+                icon: SvgPicture.asset(
+                  ConstantIcons.ic_apple,
+                ),
+                title: 'Tiếp tục với Apple',
+              )
+            : SizedBox.shrink(),
         SizedBox(
           height: 16,
         ),

@@ -563,8 +563,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         radius: 39,
                         url: AppUtils.getUrlImage(
                           _user?.avatar ?? '',
-                          width: 78,
-                          height: 78,
+                          width: 200,
+                          height: 200,
                         ),
                       ),
                 Positioned(

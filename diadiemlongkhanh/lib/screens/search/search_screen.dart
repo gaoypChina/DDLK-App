@@ -232,8 +232,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           radius: 8,
                           url: AppUtils.getUrlImage(
                             item.avatar?.path ?? '',
-                            width: 96,
-                            height: 96,
+                            width: 250,
+                            height: 250,
                           ),
                         ),
                         SizedBox(

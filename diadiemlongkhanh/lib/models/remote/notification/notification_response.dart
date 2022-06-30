@@ -9,6 +9,7 @@ part 'notification_response.g.dart';
 @JsonSerializable()
 class ResultNotificationResponse extends ResultBaseResponse {
   List<NotificationModel>? result;
+  ErrorModel? error;
 
   ResultNotificationResponse();
   factory ResultNotificationResponse.fromJson(Map<String, dynamic> json) =>

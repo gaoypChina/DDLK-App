@@ -48,8 +48,8 @@ class PlaceHorizItemView extends StatelessWidget {
             ClipRRectImage(
               url: AppUtils.getUrlImage(
                 item!.avatar?.path ?? '',
-                width: 170,
-                height: 170,
+                width: 500,
+                height: 500,
               ),
               radius: 8,
               width: 170,

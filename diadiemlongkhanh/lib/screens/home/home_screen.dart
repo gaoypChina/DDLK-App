@@ -347,7 +347,6 @@ class _HomeScreenState extends State<HomeScreen>
                                       radius: 12,
                                       url: AppUtils.getUrlImage(
                                         vouchers[index].thumbnail?.path ?? '',
-                                        height: 122,
                                       ),
                                       height: 122,
                                       width: double.infinity,
@@ -493,8 +492,6 @@ class _HomeScreenState extends State<HomeScreen>
               _buildMenuItem(
                 title: 'Gần đây',
                 onPressed: () {
-                  GlobalValue.lat = 10.9368;
-                  GlobalValue.long = 107.2458678;
                   if (GlobalValue.lat == null || GlobalValue.long == null) {
                     AppUtils.showOkDialog(context,
                         'Vui lòng Bật truy cập vị trí để gợi ý các địa điểm ăn uống gần bạn');
@@ -695,87 +692,97 @@ class _HomeScreenState extends State<HomeScreen>
     final token = injector.get<StorageService>().getToken();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: token == null
-          ? Align(
-              alignment: Alignment.centerLeft,
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).pushNamed(
-                  RouterName.option_login,
-                  arguments: true,
-                ),
-                child: Text(
-                  'Đăng nhập/Đăng ký',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).primaryColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          token == null
+              ? Align(
+                  alignment: Alignment.centerLeft,
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pushNamed(
+                      RouterName.option_login,
+                      arguments: true,
+                    ),
+                    child: Text(
+                      'Đăng nhập/Đăng ký',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
                   ),
+                )
+              : BlocBuilder<HomeCubit, HomeState>(
+                  buildWhen: (previous, current) =>
+                      current is HomeGetProfileDoneState,
+                  builder: (_, state) {
+                    return Expanded(
+                      child: Row(
+                        children: [
+                          ClipRRectImage(
+                            height: 44,
+                            width: 44,
+                            radius: 22,
+                            url: AppUtils.getUrlImage(
+                              GlobalValue.avatar ?? '',
+                              width: 44,
+                              height: 44,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(
+                            child: Text(
+                              GlobalValue.name ?? '',
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+          _buildNotiButton()
+        ],
+      ),
+    );
+  }
+
+  GestureDetector _buildNotiButton() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pushNamed(RouterName.notification),
+      child: Container(
+        height: 36,
+        width: 36,
+        child: Stack(
+          children: [
+            Container(
+              height: 36,
+              width: 36,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                color: ColorConstant.neutral_gray_lightest,
+              ),
+              child: Center(
+                child: SvgPicture.asset(ConstantIcons.ic_bell),
+              ),
+            ),
+            Positioned(
+              top: 2,
+              right: 0,
+              child: Container(
+                height: 8,
+                width: 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: ColorConstant.sematic_red,
                 ),
               ),
-            )
-          : BlocBuilder<HomeCubit, HomeState>(
-              buildWhen: (previous, current) =>
-                  current is HomeGetProfileDoneState,
-              builder: (_, state) {
-                return Row(
-                  children: [
-                    ClipRRectImage(
-                      height: 44,
-                      width: 44,
-                      radius: 22,
-                      url: AppUtils.getUrlImage(
-                        GlobalValue.avatar ?? '',
-                        width: 44,
-                        height: 44,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      child: Text(
-                        GlobalValue.name ?? '',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.of(context)
-                          .pushNamed(RouterName.notification),
-                      child: Container(
-                        height: 36,
-                        width: 36,
-                        child: Stack(
-                          children: [
-                            Container(
-                              height: 36,
-                              width: 36,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(18),
-                                color: ColorConstant.neutral_gray_lightest,
-                              ),
-                              child: Center(
-                                child: SvgPicture.asset(ConstantIcons.ic_bell),
-                              ),
-                            ),
-                            Positioned(
-                              top: 2,
-                              right: 0,
-                              child: Container(
-                                height: 8,
-                                width: 8,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  color: ColorConstant.sematic_red,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              },
             ),
+          ],
+        ),
+      ),
     );
   }
 }

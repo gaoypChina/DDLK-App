@@ -57,8 +57,8 @@ class ListPromotionView extends StatelessWidget {
                           radius: 8,
                           url: AppUtils.getUrlImage(
                             item.thumbnail?.path ?? '',
-                            width: 96,
-                            height: 96,
+                            width: 200,
+                            height: 200,
                           ),
                           width: 96,
                           height: double.infinity,
@@ -93,14 +93,16 @@ class ListPromotionView extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    item.title ?? '',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      color: ColorConstant.orange_secondary,
+                                  Expanded(
+                                    child: Text(
+                                      item.title ?? '',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: ColorConstant.orange_secondary,
+                                      ),
                                     ),
                                   ),
                                   Text(

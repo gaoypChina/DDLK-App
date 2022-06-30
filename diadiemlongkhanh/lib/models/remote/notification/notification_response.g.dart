@@ -14,13 +14,17 @@ ResultNotificationResponse _$ResultNotificationResponseFromJson(
           : InfoPagingModel.fromJson(json['info'] as Map<String, dynamic>)
       ..result = (json['result'] as List<dynamic>?)
           ?.map((e) => NotificationModel.fromJson(e as Map<String, dynamic>))
-          .toList();
+          .toList()
+      ..error = json['error'] == null
+          ? null
+          : ErrorModel.fromJson(json['error'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$ResultNotificationResponseToJson(
         ResultNotificationResponse instance) =>
     <String, dynamic>{
       'info': instance.info,
       'result': instance.result,
+      'error': instance.error,
     };
 
 NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>

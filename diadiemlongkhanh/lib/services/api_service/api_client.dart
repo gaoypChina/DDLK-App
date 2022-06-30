@@ -206,6 +206,9 @@ abstract class ApiClient {
   @POST(Apis.login_with_google)
   Future<AuthResponse?> loginWithGoogle(@Body() data);
 
+  @POST(Apis.login_with_apple)
+  Future<AuthResponse?> loginWithApple(@Body() data);
+
   @GET('${Apis.review}/{id}')
   Future<NewFeedModel?> getDetailReview(@Path() String id);
 }

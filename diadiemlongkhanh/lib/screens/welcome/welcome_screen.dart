@@ -202,31 +202,35 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       child: Positioned(
         top: 0,
         right: 0,
-        child: Container(
-          height: 100,
-          width: 100,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage(
-                ConstantImages.skip_bg,
-              ),
-            ),
-          ),
-          child: Stack(
-            children: [
-              Positioned(
-                top: 16,
-                right: 16,
-                child: Text(
-                  'Skip',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                  ),
+        child: GestureDetector(
+          onTap: () => Navigator.of(context)
+            ..pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false),
+          child: Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage(
+                  ConstantImages.skip_bg,
                 ),
               ),
-            ],
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 16,
+                  right: 16,
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
