@@ -108,7 +108,7 @@ class _FullImageViewState extends State<FullImageView> {
                         fadeInDuration: Duration(milliseconds: 100),
                         fadeOutDuration: Duration(milliseconds: 100),
                         image: item,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                         imageErrorBuilder: (context, exception, stackTrace) {
                           return Image.asset(
                             ConstantImages.ddlk_no_color,

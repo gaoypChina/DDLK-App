@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:diadiemlongkhanh/services/network/interceptor/dio_connectivity_request_retrier.dart';
+import 'package:diadiemlongkhanh/services/network/interceptor/retry_interceptor.dart';
 import 'package:dio/dio.dart';
 
 import 'interceptor/auth_interceptor.dart';
@@ -22,14 +25,14 @@ class DioClient {
 
     /// Unified add authentication request header
     _dio.interceptors.add(AuthInterceptor());
-    // _dio.interceptors.add(
-    //   RetryOnConnectionChangeInterceptor(
-    //     requestRetrier: DioConnectivityRequestRetrier(
-    //       dio: _dio,
-    //       connectivity: Connectivity(),
-    //     ),
-    //   ),
-    // );
+    _dio.interceptors.add(
+      RetryOnConnectionChangeInterceptor(
+        requestRetrier: DioConnectivityRequestRetrier(
+          dio: _dio,
+          connectivity: Connectivity(),
+        ),
+      ),
+    );
 
     /// Adapt data (according to your own data structure
     /// , you can choose to add it)

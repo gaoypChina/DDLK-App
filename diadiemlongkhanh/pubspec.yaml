@@ -75,6 +75,7 @@ dependencies:
   device_info_plus: ^3.2.3
   qr_code_scanner: ^0.7.0
   sign_in_with_apple: ^4.0.0
+  connectivity_plus: ^2.3.5
 
 dev_dependencies:
   flutter_test:

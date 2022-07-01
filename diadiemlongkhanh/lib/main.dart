@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:diadiemlongkhanh/app/app_profile_cubit.dart';
 import 'package:diadiemlongkhanh/config/env_config.dart';
+import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
@@ -9,6 +10,7 @@ import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/notification/notification_manager.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/themes/themes.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -37,8 +39,6 @@ void main() {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runZonedGuarded(() async {
-    await Firebase.initializeApp();
-    await NotificationsManager().init();
     await DependencyInjection.inject();
 
     runApp(
@@ -76,6 +76,8 @@ void configLoading() {
     ..dismissOnTap = false;
 }
 
+GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "MainNavigator");
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -87,8 +89,7 @@ class _MyAppState extends State<MyApp> {
   AppTheme? _theme;
   LocationData? _locationData;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey(debugLabel: "MainNavigator");
+
   @override
   void didChangeDependencies() {
     if (_theme == null) {
@@ -101,12 +102,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     // FlutterNativeSplash.remove();
     handleFirebaseMessage();
     _requestLocation();
   }
 
-  handleFirebaseMessage() {
+  handleFirebaseMessage() async {
+    await Firebase.initializeApp();
+    await NotificationsManager().init();
     if (Platform.isAndroid) {
       var initializationSettingsAndroid =
           new AndroidInitializationSettings('@mipmap/ic_launcher');

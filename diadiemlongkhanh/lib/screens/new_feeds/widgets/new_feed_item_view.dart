@@ -480,7 +480,8 @@ class NewFeedItemView extends StatelessWidget {
             onPressed: () => AppUtils.showBottomDialog(
               context,
               FullImageView(
-                [images.first.path ?? ''],
+                images.map((e) => e.path ?? '').toList(),
+                currentIndex: 0,
               ),
             ),
           ),
@@ -498,9 +499,8 @@ class NewFeedItemView extends StatelessWidget {
             onPressed: () => AppUtils.showBottomDialog(
               context,
               FullImageView(
-                [
-                  images.last.path ?? '',
-                ],
+                images.map((e) => e.path ?? '').toList(),
+                currentIndex: 1,
               ),
             ),
           ),
@@ -525,7 +525,8 @@ class NewFeedItemView extends StatelessWidget {
             onPressed: () => AppUtils.showBottomDialog(
               context,
               FullImageView(
-                [images.first.path ?? ''],
+                images.map((e) => e.path ?? '').toList(),
+                currentIndex: 0,
               ),
             ),
           ),
@@ -546,7 +547,8 @@ class NewFeedItemView extends StatelessWidget {
                   onPressed: () => AppUtils.showBottomDialog(
                     context,
                     FullImageView(
-                      [images[1].path ?? ''],
+                      images.map((e) => e.path ?? '').toList(),
+                      currentIndex: 1,
                     ),
                   ),
                 ),
@@ -564,7 +566,8 @@ class NewFeedItemView extends StatelessWidget {
                   onPressed: () => AppUtils.showBottomDialog(
                     context,
                     FullImageView(
-                      [images.last.path ?? ''],
+                      images.map((e) => e.path ?? '').toList(),
+                      currentIndex: 2,
                     ),
                   ),
                 ),
@@ -594,7 +597,8 @@ class NewFeedItemView extends StatelessWidget {
             onPressed: () => AppUtils.showBottomDialog(
               context,
               FullImageView(
-                [images.first.path ?? ''],
+                images.map((e) => e.path ?? '').toList(),
+                currentIndex: 0,
               ),
             ),
           ),
@@ -615,7 +619,8 @@ class NewFeedItemView extends StatelessWidget {
                 onPressed: () => AppUtils.showBottomDialog(
                   context,
                   FullImageView(
-                    [images[1].path ?? ''],
+                    images.map((e) => e.path ?? '').toList(),
+                    currentIndex: 1,
                   ),
                 ),
               ),
@@ -633,7 +638,8 @@ class NewFeedItemView extends StatelessWidget {
                 onPressed: () => AppUtils.showBottomDialog(
                   context,
                   FullImageView(
-                    [images[2].path ?? ''],
+                    images.map((e) => e.path ?? '').toList(),
+                    currentIndex: 2,
                   ),
                 ),
               ),
@@ -654,7 +660,8 @@ class NewFeedItemView extends StatelessWidget {
                     onPressed: () => AppUtils.showBottomDialog(
                       context,
                       FullImageView(
-                        [images[3].path ?? ''],
+                        images.map((e) => e.path ?? '').toList(),
+                        currentIndex: 3,
                       ),
                     ),
                   ),
@@ -711,7 +718,8 @@ class NewFeedItemView extends StatelessWidget {
           onPressed: () => AppUtils.showBottomDialog(
             context,
             FullImageView(
-              [images.first.path ?? ''],
+              images.map((e) => e.path ?? '').toList(),
+              currentIndex: 0,
             ),
           ),
         );
