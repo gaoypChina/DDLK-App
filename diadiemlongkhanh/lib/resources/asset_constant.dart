@@ -12,6 +12,8 @@ class ConstantImages {
   static const placeholder = 'assets/images/placeholder.png';
   static const no_data = 'assets/images/no_data.png';
   static const ddlk_no_color = 'assets/images/ddlk-no-color.png';
+
+  static const ddlk_no_color_small = 'assets/images/ddlk-no-color-small.png';
 }
 
 class ConstantIcons {

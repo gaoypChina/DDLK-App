@@ -12,7 +12,7 @@ class VerifiedView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 16,
-      width: 70,
+      width: 72,
       margin: margin,
       padding: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(

@@ -794,13 +794,17 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                             width: 10,
                           ),
                           Expanded(
-                            child: Text(
-                              place.address?.specific ?? '',
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).primaryColor,
+                            child: GestureDetector(
+                              onTap: () => _cubit.openMap(),
+                              child: Text(
+                                place.address?.specific ?? '',
+                                maxLines: 2,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).primaryColor,
+                                  decoration: TextDecoration.underline,
+                                ),
                               ),
                             ),
                           ),
@@ -1091,31 +1095,33 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               ? Expanded(
                   child: ShimmerImage(),
                 )
-              : Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  children: [
-                    _buildReviewItem(
-                      'Vị trí',
-                      place.rate?.position ?? 0,
-                    ),
-                    _buildReviewItem(
-                      'Không gian',
-                      place.rate?.view ?? 0,
-                    ),
-                    _buildReviewItem(
-                      'Ăn uống',
-                      place.rate?.drink ?? 0,
-                    ),
-                    _buildReviewItem(
-                      'Phục vụ',
-                      place.rate?.service ?? 0,
-                    ),
-                    _buildReviewItem(
-                      'Giá cả',
-                      place.rate?.price ?? 0,
-                    ),
-                  ],
+              : Expanded(
+                  child: Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: [
+                      _buildReviewItem(
+                        'Vị trí',
+                        place.rate?.position ?? 0,
+                      ),
+                      _buildReviewItem(
+                        'Không gian',
+                        place.rate?.view ?? 0,
+                      ),
+                      _buildReviewItem(
+                        'Ăn uống',
+                        place.rate?.drink ?? 0,
+                      ),
+                      _buildReviewItem(
+                        'Phục vụ',
+                        place.rate?.service ?? 0,
+                      ),
+                      _buildReviewItem(
+                        'Giá cả',
+                        place.rate?.price ?? 0,
+                      ),
+                    ],
+                  ),
                 )
         ],
       ),
@@ -1565,34 +1571,36 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     },
                   ),
                 ),
-                Container(
-                  height: 40,
-                  margin: const EdgeInsets.only(top: 24),
-                  padding: const EdgeInsets.symmetric(horizontal: 9),
-                  decoration: BoxDecoration(
-                    color: ColorConstant.neutral_gray_lightest,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(ConstantIcons.ic_discountstore),
-                      SizedBox(
-                        width: 7,
-                      ),
-                      Expanded(
-                        child: Text(
-                          '40 khuyến mãi',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).primaryColor,
+                Expanded(
+                  child: Container(
+                    height: 40,
+                    margin: const EdgeInsets.only(top: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 9),
+                    decoration: BoxDecoration(
+                      color: ColorConstant.neutral_gray_lightest,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(ConstantIcons.ic_discountstore),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Expanded(
+                          child: Text(
+                            '40 khuyến mãi',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         ),
-                      ),
-                      SvgPicture.asset(
-                        ConstantIcons.ic_chevron_right,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ],
+                        SvgPicture.asset(
+                          ConstantIcons.ic_chevron_right,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],

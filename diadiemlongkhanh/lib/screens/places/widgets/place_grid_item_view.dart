@@ -89,13 +89,15 @@ class PlaceGridItemView extends StatelessWidget {
               SizedBox(
                 height: 4,
               ),
-              Text(
-                item!.name ?? '',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: ColorConstant.neutral_black,
+              Expanded(
+                child: Text(
+                  item!.name ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: ColorConstant.neutral_black,
+                  ),
                 ),
               ),
               SizedBox(
