@@ -38,6 +38,10 @@ class _CustomSliderViewState extends State<CustomSliderView> {
 
   swipedLeft() {
     if (_indexSelected == widget.datas.length - 1) {
+      setState(() {
+        _indexSelected = 0;
+        _underIndexSelectd = 1;
+      });
       return;
     }
     setState(() {
@@ -52,6 +56,10 @@ class _CustomSliderViewState extends State<CustomSliderView> {
 
   swipeRight() {
     if (_indexSelected == 0) {
+      setState(() {
+        _indexSelected = widget.datas.length - 1;
+        _underIndexSelectd = widget.datas.length - 2;
+      });
       return;
     }
     setState(() {

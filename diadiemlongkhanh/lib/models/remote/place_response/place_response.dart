@@ -54,6 +54,7 @@ class PlaceModel {
   RateModel? rate;
   PriceModel? price;
   SocialModel? social;
+  int? voucherCount;
 
   PlaceModel();
   factory PlaceModel.fromJson(Map<String, dynamic> json) =>

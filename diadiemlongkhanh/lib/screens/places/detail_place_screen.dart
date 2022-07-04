@@ -1588,7 +1588,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         ),
                         Expanded(
                           child: Text(
-                            '40 khuyến mãi',
+                            '${place.voucherCount ?? 0} khuyến mãi',
                             style: TextStyle(
                               fontSize: 14,
                               color: Theme.of(context).primaryColor,

@@ -69,7 +69,8 @@ PlaceModel _$PlaceModelFromJson(Map<String, dynamic> json) => PlaceModel()
       : PriceModel.fromJson(json['price'] as Map<String, dynamic>)
   ..social = json['social'] == null
       ? null
-      : SocialModel.fromJson(json['social'] as Map<String, dynamic>);
+      : SocialModel.fromJson(json['social'] as Map<String, dynamic>)
+  ..voucherCount = json['voucherCount'] as int?;
 
 Map<String, dynamic> _$PlaceModelToJson(PlaceModel instance) =>
     <String, dynamic>{
@@ -106,6 +107,7 @@ Map<String, dynamic> _$PlaceModelToJson(PlaceModel instance) =>
       'rate': instance.rate,
       'price': instance.price,
       'social': instance.social,
+      'voucherCount': instance.voucherCount,
     };
 
 RegionModel _$RegionModelFromJson(Map<String, dynamic> json) =>
