@@ -9,6 +9,8 @@ class SlideModel {
   int? order;
   String? name;
   PhotoModel? photo;
+  String? docModel;
+  String? doc;
 
   SlideModel();
   factory SlideModel.fromJson(Map<String, dynamic> json) =>

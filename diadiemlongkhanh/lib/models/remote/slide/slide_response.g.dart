@@ -12,7 +12,9 @@ SlideModel _$SlideModelFromJson(Map<String, dynamic> json) => SlideModel()
   ..name = json['name'] as String?
   ..photo = json['photo'] == null
       ? null
-      : PhotoModel.fromJson(json['photo'] as Map<String, dynamic>);
+      : PhotoModel.fromJson(json['photo'] as Map<String, dynamic>)
+  ..docModel = json['docModel'] as String?
+  ..doc = json['doc'] as String?;
 
 Map<String, dynamic> _$SlideModelToJson(SlideModel instance) =>
     <String, dynamic>{
@@ -20,6 +22,8 @@ Map<String, dynamic> _$SlideModelToJson(SlideModel instance) =>
       'order': instance.order,
       'name': instance.name,
       'photo': instance.photo,
+      'docModel': instance.docModel,
+      'doc': instance.doc,
     };
 
 PhotoModel _$PhotoModelFromJson(Map<String, dynamic> json) => PhotoModel()

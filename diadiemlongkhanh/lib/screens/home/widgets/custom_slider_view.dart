@@ -1,4 +1,5 @@
 import 'package:diadiemlongkhanh/models/remote/slide/slide_response.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
@@ -77,6 +78,25 @@ class _CustomSliderViewState extends State<CustomSliderView> {
     });
   }
 
+  _onSelect(SlideModel item) {
+    if (item.docModel?.toLowerCase() == 'place') {
+      Navigator.of(context).pushNamed(
+        RouterName.detail_place,
+        arguments: item.doc,
+      );
+    } else if (item.docModel?.toLowerCase() == 'review') {
+      Navigator.of(context).pushNamed(
+        RouterName.detail_review,
+        arguments: item.doc,
+      );
+    } else if (item.docModel?.toLowerCase() == 'voucher') {
+      Navigator.of(context).pushNamed(
+        RouterName.detail_promotion,
+        arguments: item.doc,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -129,6 +149,8 @@ class _CustomSliderViewState extends State<CustomSliderView> {
                         ),
                         child: ClipRRectImage(
                           radius: 12,
+                          onPressed: () =>
+                              _onSelect(widget.datas[_indexSelected]),
                           url: AppUtils.getUrlImage(
                               widget.datas[_indexSelected].photo?.path ?? ''),
                         ),
