@@ -1,7 +1,9 @@
+import 'package:diadiemlongkhanh/models/local/report_type_model.dart';
 import 'package:diadiemlongkhanh/models/remote/comment/comment_response.dart';
 import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_newfeed.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
@@ -9,6 +11,7 @@ import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DetailReviewScreen extends StatefulWidget {
   final NewFeedModel? item;
@@ -155,6 +158,15 @@ class _DetailReviewScreenState extends State<DetailReviewScreen> {
                       sendComment: sendComment,
                       likeComment: (index) => likeComment(index),
                       likePressed: _likePost,
+                      moreSelect: () => AppUtils.showBottomDialog(
+                        context,
+                        PlaceActionDiaglog(
+                          type: ReportType.review,
+                          docId: item?.id,
+                          showShare: true,
+                          onShare: shareReview,
+                        ),
+                      ),
                     )
                   : ShimmerNewFeed(context),
             ],
@@ -162,5 +174,10 @@ class _DetailReviewScreenState extends State<DetailReviewScreen> {
         ),
       ),
     );
+  }
+
+  shareReview() async {
+    final url = AppUtils.getReviewUrl(item?.slug ?? '');
+    Share.share(url);
   }
 }

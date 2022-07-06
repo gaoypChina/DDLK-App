@@ -11,9 +11,13 @@ class PlaceActionDiaglog extends StatelessWidget {
     Key? key,
     this.docId,
     this.type = ReportType.place,
+    this.showShare = false,
+    this.onShare,
   }) : super(key: key);
   final String? docId;
   final String type;
+  final bool showShare;
+  final Function()? onShare;
 
   @override
   Widget build(BuildContext context) {
@@ -61,35 +65,57 @@ class PlaceActionDiaglog extends StatelessWidget {
                   SizedBox(
                     height: 8,
                   ),
-                  InkWell(
-                    onTap: () => AppUtils.showBottomDialog(
+                  _buildItemView(
+                    context,
+                    title: 'Báo cáo',
+                    icon: ConstantIcons.ic_report,
+                    onPressed: () => AppUtils.showBottomDialog(
                       context,
                       ReportReasonsDialog(
                         docId: docId,
                       ),
                     ),
-                    child: Container(
-                      height: 50,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(ConstantIcons.ic_report),
-                          SizedBox(
-                            width: 13,
-                          ),
-                          Text(
-                            'Báo cáo',
-                            style: Theme.of(context).textTheme.bodyText2,
-                          )
-                        ],
-                      ),
-                    ),
-                  )
+                  ),
+                  showShare
+                      ? _buildItemView(
+                          context,
+                          title: 'Chia sẻ',
+                          icon: ConstantIcons.ic_share,
+                          onPressed: onShare,
+                        )
+                      : SizedBox.shrink()
                 ],
               ),
             ),
           )
         ],
+      ),
+    );
+  }
+
+  InkWell _buildItemView(
+    BuildContext context, {
+    required String title,
+    required String icon,
+    Function()? onPressed,
+  }) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        height: 50,
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            SvgPicture.asset(icon),
+            SizedBox(
+              width: 13,
+            ),
+            Text(
+              title,
+              style: Theme.of(context).textTheme.bodyText2,
+            )
+          ],
+        ),
       ),
     );
   }

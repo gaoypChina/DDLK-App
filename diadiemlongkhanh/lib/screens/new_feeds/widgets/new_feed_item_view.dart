@@ -14,6 +14,7 @@ import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:readmore/readmore.dart';
 
 class NewFeedItemView extends StatelessWidget {
   final bool isShowComment;
@@ -78,10 +79,22 @@ class NewFeedItemView extends StatelessWidget {
           SizedBox(
             height: 8,
           ),
+          // GestureDetector(
+          //   onTap: nextToDetail,
+          //   child: Text(
+          //     item!.content ?? '',
+          //     style: Theme.of(context).textTheme.bodyText1,
+          //   ),
+          // ),
           GestureDetector(
             onTap: nextToDetail,
-            child: Text(
+            child: ReadMoreText(
               item!.content ?? '',
+              trimLines: 3,
+              colorClickableText: Theme.of(context).primaryColor,
+              trimMode: TrimMode.Line,
+              trimCollapsedText: 'Xem thêm',
+              trimExpandedText: 'Ẩn bớt',
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
@@ -748,6 +761,19 @@ class NewFeedItemView extends StatelessWidget {
     );
   }
 
+  _nexToInfoUser(BuildContext context) {
+    if (disablNextProfile) {
+      return;
+    }
+    if (item!.anonymous == true) {
+      return;
+    }
+    Navigator.of(context).pushNamed(
+      RouterName.account,
+      arguments: item!.author?.id,
+    );
+  }
+
   Row _buildHeaderView(BuildContext context) {
     return Row(
       children: [
@@ -760,18 +786,7 @@ class NewFeedItemView extends StatelessWidget {
           ),
           width: 44,
           height: 44,
-          onPressed: () {
-            if (disablNextProfile) {
-              return;
-            }
-            if (item!.anonymous == true) {
-              return;
-            }
-            Navigator.of(context).pushNamed(
-              RouterName.account,
-              arguments: item!.author?.id,
-            );
-          },
+          onPressed: () => _nexToInfoUser(context),
         ),
         SizedBox(
           width: 4,
@@ -781,9 +796,12 @@ class NewFeedItemView extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    item!.author?.name ?? '',
-                    style: Theme.of(context).textTheme.headline2,
+                  GestureDetector(
+                    onTap: () => _nexToInfoUser(context),
+                    child: Text(
+                      item!.author?.name ?? '',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
                   ),
                   SizedBox(
                     width: 4,

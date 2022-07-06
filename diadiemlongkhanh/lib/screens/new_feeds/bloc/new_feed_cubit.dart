@@ -3,9 +3,11 @@ import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 
 part 'new_feed_state.dart';
@@ -45,6 +47,11 @@ class NewFeedCubit extends Cubit<NewFeedState> {
     } catch (error) {
       print(error);
     }
+  }
+
+  shareReview(NewFeedModel review) async {
+    final url = AppUtils.getReviewUrl(review.slug ?? '');
+    Share.share(url);
   }
 
   loadMoreReviews() async {

@@ -25,7 +25,7 @@ class ClipRRectImage extends StatelessWidget {
           ? ClipRRect(
               borderRadius: BorderRadius.circular(radius),
               child: Image.asset(
-                ConstantImages.ddlk_no_color,
+                ConstantImages.placeholder2,
                 width: width,
                 height: height,
                 fit: BoxFit.cover,
@@ -40,7 +40,7 @@ class ClipRRectImage extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (context, exception, stackTrace) {
                   return Image.asset(
-                    ConstantImages.ddlk_no_color,
+                    ConstantImages.placeholder2,
                     width: width,
                     height: height,
                     fit: BoxFit.cover,

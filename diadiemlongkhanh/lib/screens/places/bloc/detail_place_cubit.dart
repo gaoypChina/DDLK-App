@@ -9,6 +9,7 @@ import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -39,12 +40,21 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
   openMap() async {
     final lat = place?.address?.geo?.lat;
     final long = place?.address?.geo?.long;
-    String googleUrl =
-        'https://www.google.com/maps/search/?api=1&query=$lat,$long';
-    if (await canLaunchUrlString(googleUrl)) {
-      await launchUrlString(googleUrl);
+    if (await MapLauncher.isMapAvailable(MapType.google) ?? false) {
+      await MapLauncher.showMarker(
+        mapType: MapType.google,
+        coords: Coords(lat ?? 0, long ?? 0),
+        title: '',
+        description: '',
+      );
     } else {
-      throw 'Could not open the map.';
+      String googleUrl =
+          'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+      if (await canLaunchUrlString(googleUrl)) {
+        await launchUrlString(googleUrl);
+      } else {
+        throw 'Could not open the map.';
+      }
     }
   }
 

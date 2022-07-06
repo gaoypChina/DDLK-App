@@ -77,6 +77,10 @@ class AppUtils {
     return Environment().config.domain2 + 'dia-diem/$slug';
   }
 
+  static String getReviewUrl(String slug) {
+    return Environment().config.domain2 + 'review/$slug';
+  }
+
   static String getOpeningTitle(String status) {
     switch (status) {
       case 'is_open':

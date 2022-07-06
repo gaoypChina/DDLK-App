@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   bool isLoading = true;
   HomeCubit get _cubit => BlocProvider.of(context);
-  bool _isScroll = false;
+  bool _isScroll = true;
   @override
   void initState() {
     print('home');
@@ -55,15 +55,15 @@ class _HomeScreenState extends State<HomeScreen>
     Future.delayed(
       Duration(seconds: 1),
       () {
-        setState(() {
-          _isScroll = true;
-        });
+        // setState(() {
+        //   _isScroll = true;
+        // });
         _cubit.getInfoUser();
-        _cubit.getPlacesNear();
-        _cubit.getPlacesHot();
-        _cubit.getVouchers();
-        _cubit.getSubCategories();
-        _cubit.getNewFeeds();
+        // _cubit.getPlacesNear();
+        // _cubit.getPlacesHot();
+        // _cubit.getVouchers();
+        // _cubit.getSubCategories();
+        // _cubit.getNewFeeds();
       },
     );
   }

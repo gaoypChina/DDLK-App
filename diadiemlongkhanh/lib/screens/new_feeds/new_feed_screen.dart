@@ -118,6 +118,9 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                                   PlaceActionDiaglog(
                                     type: ReportType.review,
                                     docId: _cubit.newfeeds[index].id,
+                                    showShare: true,
+                                    onShare: () => _cubit
+                                        .shareReview(_cubit.newfeeds[index]),
                                   ),
                                 ),
                                 nextToDetail: () =>

@@ -881,7 +881,8 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                               onPressed: () => AppUtils.showBottomDialog(
                                 context,
                                 FullImageView(
-                                  [item.path ?? ''],
+                                  place.menu.map((e) => e.path ?? '').toList(),
+                                  currentIndex: index,
                                 ),
                               ),
                               height: 72,

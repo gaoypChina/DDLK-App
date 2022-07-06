@@ -286,88 +286,90 @@ class ListReviewView extends StatelessWidget {
     );
   }
 
-  Row _buildHeaderInfoView(
+  Widget _buildHeaderInfoView(
     BuildContext context,
     NewFeedModel item,
   ) {
-    return Row(
-      children: [
-        ClipRRectImage(
-          radius: 22,
-          url: AppUtils.getUrlImage(
-            item.author?.avatar ?? '',
-            width: 100,
-            height: 100,
+    return GestureDetector(
+      onTap: () {
+        if (item.anonymous == true) {
+          return;
+        }
+        Navigator.of(context).pushNamed(
+          RouterName.account,
+          arguments: item.author?.id,
+        );
+      },
+      child: Row(
+        children: [
+          ClipRRectImage(
+            radius: 22,
+            url: AppUtils.getUrlImage(
+              item.author?.avatar ?? '',
+              width: 100,
+              height: 100,
+            ),
+            width: 44,
+            height: 44,
           ),
-          width: 44,
-          height: 44,
-          onPressed: () {
-            if (item.anonymous == true) {
-              return;
-            }
-            Navigator.of(context).pushNamed(
-              RouterName.account,
-              arguments: item.author?.id,
-            );
-          },
-        ),
-        SizedBox(
-          width: 4,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.author?.name ?? '',
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Row(
-                children: [
-                  Text(
-                    AppUtils.roundedRating(item.rateAvg ?? 0).toString(),
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: ColorConstant.neutral_gray_lighter,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 7,
-                  ),
-                  MyRatingBar(
-                    rating: item.rateAvg ?? 0,
-                    onRatingUpdate: (rate, isEmpty) {},
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      left: 5,
-                      right: 8,
-                    ),
-                    height: 4,
-                    width: 4,
-                    decoration: BoxDecoration(
-                      color: ColorConstant.neutral_gray_lighter,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  Text(
-                    AppUtils.convertDatetimePrefix(item.createdAt ?? ''),
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: ColorConstant.neutral_gray_lighter,
-                    ),
-                  )
-                ],
-              )
-            ],
+          SizedBox(
+            width: 4,
           ),
-        )
-      ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.author?.name ?? '',
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      AppUtils.roundedRating(item.rateAvg ?? 0).toString(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ColorConstant.neutral_gray_lighter,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 7,
+                    ),
+                    MyRatingBar(
+                      rating: item.rateAvg ?? 0,
+                      onRatingUpdate: (rate, isEmpty) {},
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        left: 5,
+                        right: 8,
+                      ),
+                      height: 4,
+                      width: 4,
+                      decoration: BoxDecoration(
+                        color: ColorConstant.neutral_gray_lighter,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    Text(
+                      AppUtils.convertDatetimePrefix(item.createdAt ?? ''),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ColorConstant.neutral_gray_lighter,
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
