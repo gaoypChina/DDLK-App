@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen>
         //   _isScroll = true;
         // });
         _cubit.getInfoUser();
-        // _cubit.getPlacesNear();
+        _cubit.getPlacesNear();
         // _cubit.getPlacesHot();
         // _cubit.getVouchers();
         // _cubit.getSubCategories();
@@ -430,7 +430,7 @@ class _HomeScreenState extends State<HomeScreen>
         Container(
           height: 314,
           child: ListView.builder(
-            itemCount: places.isEmpty ? 10 : places.length,
+            itemCount: places.isEmpty ? 5 : places.length,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(
@@ -440,9 +440,12 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             itemBuilder: (_, index) {
               return places.isEmpty
-                  ? ShimmerImage(
-                      width: 194,
-                      height: 314,
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: ShimmerImage(
+                        width: 194,
+                        height: 314,
+                      ),
                     )
                   : PlaceHorizItemView(
                       context: context,

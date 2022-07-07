@@ -38,6 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (res != null) {
       emit(HomeGetPlaceNearDoneState(res));
     }
+    getPlacesHot();
   }
 
   getPlacesHot() async {
@@ -45,6 +46,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (res != null) {
       emit(HomeGetPlaceHotDoneState(res));
     }
+    getVouchers();
   }
 
   likePost(
@@ -98,6 +100,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (res != null) {
       emit(HomeGetVouchersDoneState(res));
     }
+    getSubCategories();
   }
 
   getSubCategories() async {
@@ -131,6 +134,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (res != null) {
       emit(HomeGetPlaceNewDoneState(res));
     }
+    getNewFeeds();
   }
 
   getNewFeeds() async {

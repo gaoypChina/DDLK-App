@@ -154,15 +154,22 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                       if (_cubit.places.isEmpty) {
                         return SingleChildScrollView(child: _buildEmptyView());
                       }
-                      return PlacesGridView(
-                        controller: _scrollController,
-                        topPadding: 12,
-                        bottomPadding: 78,
-                        places: _cubit.places,
-                        onSelect: (item) => Navigator.of(context).pushNamed(
-                          RouterName.detail_place,
-                          arguments: item.id,
-                        ),
+                      return Column(
+                        children: [
+                          Expanded(
+                            child: PlacesGridView(
+                              controller: _scrollController,
+                              topPadding: 12,
+                              bottomPadding: 78,
+                              places: _cubit.places,
+                              onSelect: (item) =>
+                                  Navigator.of(context).pushNamed(
+                                RouterName.detail_place,
+                                arguments: item.id,
+                              ),
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),

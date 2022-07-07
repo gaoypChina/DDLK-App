@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_paragraph.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -13,6 +14,7 @@ class PlacesGridView extends StatelessWidget {
   final List<PlaceModel> places;
   final Function(PlaceModel)? onSelect;
   final ScrollController? controller;
+
   PlacesGridView({
     this.physics,
     this.topPadding,

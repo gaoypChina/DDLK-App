@@ -8,3 +8,5 @@ abstract class ListPlacesState extends Equatable {
 class ListPlacesInitialState extends ListPlacesState {}
 
 class ListPlacesGetDoneState extends ListPlacesState {}
+
+class ListPlacesLoadingState extends ListPlacesState {}

@@ -30,6 +30,7 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
   final CategoryModel? subCategory;
   final CategoryModel? category;
   List<CategoryModel> categories = [];
+  bool isLoading = false;
 
   late SearchModel dataSearch;
   searchPlaces() async {
@@ -44,6 +45,7 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
       final res = await injector.get<ApiClient>().searchPlaces(
             dataSearch.toJson(),
           );
+      isLoading = false;
       print(res);
       if (res != null) {
         if (_page == 1) {
@@ -60,8 +62,13 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
   }
 
   loadMore() async {
+    if (isLoading) {
+      return;
+    }
+    isLoading = true;
     _page += 1;
     dataSearch.page = _page;
+    emit(ListPlacesLoadingState());
     searchPlaces();
   }
 
