@@ -61,6 +61,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     _cubit.dataSearch.categories!.isNotEmpty) {
                   numFilter += 1;
                 }
+                if (_cubit.dataSearch.subCategories != null &&
+                    _cubit.dataSearch.subCategories!.isNotEmpty) {
+                  numFilter += 1;
+                }
 
                 return FilterButton(
                   numFilter: numFilter == 0 ? null : numFilter,

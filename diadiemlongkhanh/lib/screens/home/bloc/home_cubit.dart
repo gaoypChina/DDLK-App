@@ -7,6 +7,7 @@ import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
+import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +136,20 @@ class HomeCubit extends Cubit<HomeState> {
       emit(HomeGetPlaceNewDoneState(res));
     }
     getNewFeeds();
+  }
+
+  nextToAllPlaceNear(BuildContext context) {
+    if (GlobalValue.lat == null || GlobalValue.long == null) {
+      AppUtils.showOkDialog(context,
+          'Vui lòng Bật truy cập vị trí để gợi ý các địa điểm ăn uống gần bạn');
+      return;
+    }
+    Navigator.of(context).pushNamed(
+      RouterName.list_places,
+      arguments: {
+        'near_me': true,
+      },
+    );
   }
 
   getNewFeeds() async {

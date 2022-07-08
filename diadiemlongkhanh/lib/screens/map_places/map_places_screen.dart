@@ -29,7 +29,7 @@ class MapPlacesSreen extends StatefulWidget {
 class _MapPlacesSreenState extends State<MapPlacesSreen> {
   MapboxMapController? mapController;
   List<PlaceModel> places = [];
-
+  int _currentIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -111,6 +111,9 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
               CameraUpdate cameraUpdate =
                   CameraUpdate.newLatLngZoom(newCenter, 20);
               mapController?.moveCamera(cameraUpdate);
+              setState(() {
+                _currentIndex = index;
+              });
             },
             child: Container(
               height: 112,
@@ -118,9 +121,12 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
               margin: const EdgeInsets.only(right: 12),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                    width: _currentIndex == index ? 2 : 0,
+                  )),
               child: Row(
                 children: [
                   ClipRRectImage(

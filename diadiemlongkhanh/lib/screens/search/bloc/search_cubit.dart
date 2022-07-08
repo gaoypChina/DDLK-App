@@ -94,6 +94,7 @@ class SearchCubit extends Cubit<SearchState> {
     dataSearch.opening = data.opening;
     dataSearch.price = data.price;
     dataSearch.categories = data.categories;
+    dataSearch.subCategories = data.subCategories;
     _page = 1;
     dataSearch.page = _page;
     searchPlaces();

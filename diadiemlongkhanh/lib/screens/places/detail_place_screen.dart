@@ -208,7 +208,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                                 nextToDetail: (index) =>
                                     Navigator.of(context).pushNamed(
                                   RouterName.detail_review,
-                                  arguments: _cubit.reviews[index],
+                                  arguments: _cubit.reviews[index].id,
                                 ),
                                 sendComment: (index) =>
                                     _cubit.sendComment(context, index),
@@ -1297,10 +1297,10 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   color: Theme.of(context).primaryColor,
                 ),
               ),
-              SvgPicture.asset(
-                ConstantIcons.ic_chevron_right,
-                color: Theme.of(context).primaryColor,
-              ),
+              // SvgPicture.asset(
+              //   ConstantIcons.ic_chevron_right,
+              //   color: Theme.of(context).primaryColor,
+              // ),
               SizedBox(
                 width: 16,
               ),
@@ -1455,14 +1455,16 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                               )
                             ],
                           ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: VerifiedView(
-                              margin: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                            ),
-                          ),
+                          place.verified
+                              ? Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: VerifiedView(
+                                    margin: const EdgeInsets.only(
+                                      top: 12,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox.shrink(),
                         ],
                       ),
                     ),

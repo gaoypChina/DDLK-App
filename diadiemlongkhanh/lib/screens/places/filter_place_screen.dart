@@ -2,6 +2,8 @@ import 'package:diadiemlongkhanh/models/remote/body_search/search_model.dart';
 import 'package:diadiemlongkhanh/models/remote/category/category_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:diadiemlongkhanh/widgets/app_checkbox.dart';
@@ -19,6 +21,7 @@ class FilterPlaceScreen extends StatefulWidget {
     this.complete,
   }) : super(key: key);
   final List<CategoryModel>? categories;
+
   final SearchModel? searchData;
   final Function(SearchModel)? complete;
   @override
@@ -36,7 +39,8 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
   bool _nearMe = false;
   bool _isOpening = false;
   List<String> _categoriesSelected = [];
-
+  List<CategoryModel> subCategories = [];
+  List<String> _subCategoriesSelected = [];
   @override
   void initState() {
     super.initState();
@@ -44,8 +48,20 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
       _nearMe = widget.searchData!.nearby == 'me';
       _isOpening = widget.searchData!.opening;
       _categoriesSelected = widget.searchData!.categories ?? [];
+      _subCategoriesSelected = widget.searchData!.subCategories ?? [];
     }
     _categories = widget.categories ?? [];
+
+    _getSubCategory();
+  }
+
+  _getSubCategory() async {
+    final res = await injector.get<ApiClient>().getSubCategories();
+    if (res != null) {
+      setState(() {
+        subCategories = res;
+      });
+    }
   }
 
   resetFilter() {
@@ -55,6 +71,17 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
       _lowerValue = 0;
       _upperValue = 2000000;
       _categoriesSelected.clear();
+      _subCategoriesSelected.clear();
+    });
+  }
+
+  _selectSubCategory(CategoryModel item) {
+    setState(() {
+      if (!_subCategoriesSelected.contains(item.id)) {
+        _subCategoriesSelected.add(item.id!);
+      } else {
+        _subCategoriesSelected.removeWhere((e) => e == item.id!);
+      }
     });
   }
 
@@ -205,6 +232,41 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: subCategories
+                                .map(
+                                  (e) => GestureDetector(
+                                    onTap: () => _selectSubCategory(e),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 5,
+                                        vertical: 5,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                          color: _subCategoriesSelected
+                                                  .contains(e.id)
+                                              ? Theme.of(context).primaryColor
+                                              : ColorConstant.border_gray,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        e.name ?? '',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          )
                         ],
                       ),
                     ),
@@ -225,6 +287,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                               nearby: _nearMe ? 'me' : '',
                               opening: _isOpening,
                               categories: _categoriesSelected,
+                              subCategories: _subCategoriesSelected,
                               price:
                                   '${_lowerValue.round()}-${_upperValue.round()}',
                             ),

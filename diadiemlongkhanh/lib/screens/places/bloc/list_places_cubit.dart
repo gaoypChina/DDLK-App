@@ -19,6 +19,8 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
     dataSearch = SearchModel(
       pageSize: 10,
       page: _page,
+      subCategories: subCategory != null ? [subCategory!.id!] : [],
+      categories: category != null ? [category!.id!] : [],
       lat: GlobalValue.lat,
       long: GlobalValue.long,
     );
@@ -34,12 +36,6 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
 
   late SearchModel dataSearch;
   searchPlaces() async {
-    if (subCategory != null && subCategory?.id != '') {
-      dataSearch.subCategories = [subCategory!.id ?? ''];
-    }
-    if (category != null && category?.id != '') {
-      dataSearch.categories = [category!.id ?? ''];
-    }
     dataSearch.nearby = nearMe ? 'me' : '';
     try {
       final res = await injector.get<ApiClient>().searchPlaces(
@@ -62,10 +58,10 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
   }
 
   loadMore() async {
-    if (isLoading) {
-      return;
-    }
-    isLoading = true;
+    // if (isLoading) {
+    //   return;
+    // }
+    // isLoading = true;
     _page += 1;
     dataSearch.page = _page;
     emit(ListPlacesLoadingState());
@@ -77,6 +73,7 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
     dataSearch.opening = data.opening;
     dataSearch.price = data.price;
     dataSearch.categories = data.categories;
+    dataSearch.subCategories = data.subCategories;
     if (nearMe) {
       dataSearch.lat = GlobalValue.lat;
       dataSearch.long = GlobalValue.long;

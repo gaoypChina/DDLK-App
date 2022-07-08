@@ -8,9 +8,11 @@ import 'package:diadiemlongkhanh/screens/search/search_screen.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'filter_place_screen.dart';
 import 'widgets/filter_button.dart';
@@ -24,6 +26,7 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
   ListPlacesCubit get _cubit => BlocProvider.of(context);
   final _debouncer = Debouncer(milliseconds: 500);
   final _scrollController = ScrollController();
+  final _smartController = RefreshController();
   @override
   void initState() {
     super.initState();
@@ -154,22 +157,54 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                       if (_cubit.places.isEmpty) {
                         return SingleChildScrollView(child: _buildEmptyView());
                       }
-                      return Column(
-                        children: [
-                          Expanded(
-                            child: PlacesGridView(
-                              controller: _scrollController,
-                              topPadding: 12,
-                              bottomPadding: 78,
-                              places: _cubit.places,
-                              onSelect: (item) =>
-                                  Navigator.of(context).pushNamed(
-                                RouterName.detail_place,
-                                arguments: item.id,
+                      _smartController.loadComplete();
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 78),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: SmartRefresher(
+                                enablePullDown: false,
+                                enablePullUp: true,
+                                controller: _smartController,
+                                onLoading: () => _cubit.loadMore(),
+                                footer: CustomFooter(
+                                  builder: (context, mode) {
+                                    Widget body;
+                                    print(mode);
+                                    if (mode == LoadStatus.idle) {
+                                      body = Text("pull up load");
+                                    } else if (mode == LoadStatus.loading) {
+                                      body = CupertinoActivityIndicator();
+                                    } else if (mode == LoadStatus.failed) {
+                                      body = Text("Load Failed!Click retry!");
+                                    } else if (mode == LoadStatus.canLoading) {
+                                      body = Text("release to load more");
+                                    } else {
+                                      body = Text("No more Data");
+                                    }
+                                    return Container(
+                                      height: 55.0,
+                                      child: Center(child: body),
+                                    );
+                                  },
+                                ),
+                                child: PlacesGridView(
+                                  // controller: _scrollController,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  topPadding: 12,
+                                  // bottomPadding: 78,
+                                  places: _cubit.places,
+                                  onSelect: (item) =>
+                                      Navigator.of(context).pushNamed(
+                                    RouterName.detail_place,
+                                    arguments: item.id,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     },
                   ),

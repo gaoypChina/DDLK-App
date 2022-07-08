@@ -13,6 +13,7 @@ import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:readmore/readmore.dart';
 
 class ListReviewView extends StatelessWidget {
   final EdgeInsets? padding;
@@ -75,13 +76,17 @@ class ListReviewView extends StatelessWidget {
                     nextToDetail!(index);
                   }
                 },
-                child: Text(
+                child: ReadMoreText(
                   item.content ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  trimLines: 3,
+                  colorClickableText: Theme.of(context).primaryColor,
+                  trimMode: TrimMode.Line,
+                  trimCollapsedText: 'Xem thêm',
+                  trimExpandedText: 'Ẩn bớt',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
+
               item.images.isEmpty
                   ? SizedBox.shrink()
                   : _buildListPictureView(

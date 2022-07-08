@@ -117,6 +117,8 @@ class _HomeScreenState extends State<HomeScreen>
                             return _buildListHorizontalSingleView(
                               title: 'Địa điểm gần bạn',
                               places: places,
+                              nextToAll: () =>
+                                  _cubit.nextToAllPlaceNear(context),
                             );
                           },
                         ),
@@ -322,7 +324,11 @@ class _HomeScreenState extends State<HomeScreen>
               SizedBox(
                 height: 24,
               ),
-              _buildHeaderSection('Khuyến mãi Hot'),
+              _buildHeaderSection(
+                'Khuyến mãi Hot',
+                nextToAll: () =>
+                    Navigator.of(context).pushNamed(RouterName.promotion),
+              ),
               Expanded(
                 child: ListView.builder(
                     itemCount: vouchers.isEmpty ? 5 : vouchers.length,
@@ -389,6 +395,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildHeaderSection(
     String title, {
     bool showIcon = true,
+    Function()? nextToAll,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -404,9 +411,8 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           showIcon
-              ? GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => print('asdasd'),
+              ? InkWell(
+                  onTap: nextToAll,
                   child: SvgPicture.asset(
                     ConstantIcons.ic_chevron_right,
                     width: 20,
@@ -422,11 +428,15 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildListHorizontalSingleView({
     required String title,
     required List<PlaceModel> places,
+    Function()? nextToAll,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildHeaderSection(title),
+        _buildHeaderSection(
+          title,
+          nextToAll: nextToAll,
+        ),
         Container(
           height: 314,
           child: ListView.builder(
@@ -494,19 +504,7 @@ class _HomeScreenState extends State<HomeScreen>
             children: [
               _buildMenuItem(
                 title: 'Gần đây',
-                onPressed: () {
-                  if (GlobalValue.lat == null || GlobalValue.long == null) {
-                    AppUtils.showOkDialog(context,
-                        'Vui lòng Bật truy cập vị trí để gợi ý các địa điểm ăn uống gần bạn');
-                    return;
-                  }
-                  Navigator.of(context).pushNamed(
-                    RouterName.list_places,
-                    arguments: {
-                      'near_me': true,
-                    },
-                  );
-                },
+                onPressed: () => _cubit.nextToAllPlaceNear(context),
                 icon: Image.asset(
                   ConstantIcons.ic_map,
                   width: 46,

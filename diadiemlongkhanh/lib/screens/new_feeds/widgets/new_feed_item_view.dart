@@ -354,13 +354,15 @@ class NewFeedItemView extends StatelessWidget {
     );
   }
 
+  _nextToDetailPlace(BuildContext context) async {
+    injector.get<StorageService>().savePlaceIds(item?.place?.id ?? '');
+    Navigator.of(context)
+        .pushNamed(RouterName.detail_place, arguments: item?.place?.id);
+  }
+
   Widget _buildInfoView(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        injector.get<StorageService>().savePlaceIds(item?.place?.id ?? '');
-        Navigator.of(context)
-            .pushNamed(RouterName.detail_place, arguments: item?.place?.id);
-      },
+      onTap: () => _nextToDetailPlace(context),
       child: Container(
         height: 82,
         margin: const EdgeInsets.only(top: 12),
@@ -813,11 +815,14 @@ class NewFeedItemView extends StatelessWidget {
                     width: 4,
                   ),
                   Flexible(
-                    child: Text(
-                      item!.place?.name ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline2,
+                    child: GestureDetector(
+                      onTap: () => _nextToDetailPlace(context),
+                      child: Text(
+                        item!.place?.name ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headline2,
+                      ),
                     ),
                   ),
                 ],
