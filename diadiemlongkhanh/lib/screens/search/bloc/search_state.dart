@@ -21,3 +21,5 @@ class SearchGetSubCategoriesDoneState extends SearchState {}
 class SearchPlacesGetHotDoneState extends SearchState {
   SearchPlacesGetHotDoneState();
 }
+
+class SearchPlacesLoadingState extends SearchState {}

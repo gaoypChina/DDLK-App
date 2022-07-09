@@ -4,15 +4,18 @@ import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/bloc/new_feed_cubit.dart';
 import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.dart';
+import 'package:diadiemlongkhanh/screens/places/bloc/list_places_cubit.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_newfeed.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NewFeedScreen extends StatefulWidget {
   const NewFeedScreen({
@@ -31,6 +34,7 @@ class _NewFeedScreenState extends State<NewFeedScreen>
 
   NewFeedCubit get _cubit => BlocProvider.of(context);
   final _scrollController = ScrollController();
+  final _smartController = RefreshController();
   @override
   void initState() {
     print('newfeed');
@@ -87,20 +91,39 @@ class _NewFeedScreenState extends State<NewFeedScreen>
                 current is NewFeedGetDoneState ||
                 current is NewFeedLoadingState,
             builder: (context, state) {
-              bool isLoading = false;
-              if (state is NewFeedLoadingState) {
-                isLoading = true;
-              }
-              return RefreshIndicator(
-                color: Theme.of(context).primaryColor,
-                onRefresh: () => _cubit.onRefresh(),
+              _smartController.loadComplete();
+              _smartController.refreshCompleted();
+              return SmartRefresher(
+                controller: _smartController,
+                enablePullDown: true,
+                enablePullUp: true,
+                onLoading: _cubit.loadMoreReviews,
+                onRefresh: _cubit.onRefresh,
+                header: WaterDropMaterialHeader(),
+                footer: CustomFooter(
+                  builder: (context, mode) {
+                    Widget body;
+                    if (mode == LoadStatus.idle) {
+                      body = Text('');
+                    } else if (mode == LoadStatus.loading) {
+                      if (_cubit.isLast) {
+                        _smartController.loadComplete();
+                      }
+                      body = CupertinoActivityIndicator();
+                    } else if (mode == LoadStatus.failed) {
+                      body = Text('');
+                    } else if (mode == LoadStatus.canLoading) {
+                      body = Text('');
+                    } else {
+                      body = Text('');
+                    }
+                    return Center(child: body);
+                  },
+                ),
                 child: ListView.builder(
                   controller: _scrollController,
-                  itemCount: _cubit.newfeeds.isEmpty
-                      ? 5
-                      : (isLoading
-                          ? _cubit.newfeeds.length + 1
-                          : _cubit.newfeeds.length),
+                  itemCount:
+                      _cubit.newfeeds.isEmpty ? 5 : _cubit.newfeeds.length,
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(
                     top: 24,

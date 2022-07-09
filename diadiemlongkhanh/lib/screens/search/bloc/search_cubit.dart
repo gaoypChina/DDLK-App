@@ -39,6 +39,10 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
+  typingKeyWord() {
+    emit(SearchPlacesLoadingState());
+  }
+
   searchKeyWord(String v) async {
     dataSearch.keyword = v;
     _page = 1;

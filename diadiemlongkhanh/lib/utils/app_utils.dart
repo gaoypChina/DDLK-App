@@ -34,17 +34,22 @@ class AppUtils {
         opaque: false,
         pageBuilder: (context, animation, secondaryAnimation) => screen,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0.0, 1.0);
-          const end = Offset.zero;
-          const curve = Curves.ease;
-
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          return SlideTransition(
-            position: animation.drive(tween),
+          return ScaleTransition(
+            scale: Tween<double>(
+              begin: 0.0,
+              end: 1.0,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Curves.fastOutSlowIn,
+              ),
+            ),
             child: child,
           );
+          // SlideTransition(
+          //   position: animation.drive(tween),
+          //   child: child,
+          // );
         },
       ),
     );
@@ -342,12 +347,16 @@ class AppUtils {
   }
 
   static Widget buildProgressIndicator(BuildContext context) {
-    return new Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: new Center(
-        child: new CircularProgressIndicator(
-          color: Theme.of(context).primaryColor,
-          strokeWidth: 2,
+    return Center(
+      child: Container(
+        width: 20,
+        height: 20,
+        margin: const EdgeInsets.all(8),
+        child: new Center(
+          child: new CircularProgressIndicator(
+            color: Theme.of(context).primaryColor,
+            strokeWidth: 2,
+          ),
         ),
       ),
     );

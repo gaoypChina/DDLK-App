@@ -92,6 +92,14 @@ class _SearchScreenState extends State<SearchScreen> {
             children: [
               _buildSearchView(),
               BlocBuilder<SearchCubit, SearchState>(
+                builder: (_, state) {
+                  if (state is SearchPlacesLoadingState) {
+                    return AppUtils.buildProgressIndicator(context);
+                  }
+                  return SizedBox.shrink();
+                },
+              ),
+              BlocBuilder<SearchCubit, SearchState>(
                 buildWhen: (previous, current) =>
                     current is SearchGetPlacesDoneState ||
                     current is SearchClearKeyWordDoneState,
@@ -546,6 +554,7 @@ class _SearchScreenState extends State<SearchScreen> {
               maxLines: 1,
               hintText: 'Nhập địa điểm cần tìm',
               onChanged: (val) {
+                _cubit.typingKeyWord();
                 _debouncer.run(() {
                   print(val);
                   _cubit.searchKeyWord(val);

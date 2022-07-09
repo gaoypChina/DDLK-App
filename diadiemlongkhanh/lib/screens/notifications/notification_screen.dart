@@ -9,7 +9,9 @@ import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/empty_data_view.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   int page = 1;
   bool isLast = false;
   final _scrollController = ScrollController();
+  final _smartController = RefreshController();
   @override
   void initState() {
     super.initState();
@@ -41,6 +44,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
       return;
     }
     page += 1;
+    _getNotifications();
+  }
+
+  _refresh() async {
+    isLast = false;
+    page = 1;
     _getNotifications();
   }
 
@@ -74,16 +83,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
       appBar: MyAppBar(
         title: 'Thông báo',
         actions: [
-          IconButton(
-            onPressed: () => AppUtils.showBottomDialog(
-              context,
-              NotificationActionsDialog(),
-            ),
-            icon: Icon(
-              Icons.more_horiz,
-              color: ColorConstant.neutral_black,
-            ),
-          )
+          // IconButton(
+          //   onPressed: () => AppUtils.showBottomDialog(
+          //     context,
+          //     NotificationActionsDialog(),
+          //   ),
+          //   icon: Icon(
+          //     Icons.more_horiz,
+          //     color: ColorConstant.neutral_black,
+          //   ),
+          // )
         ],
       ),
       body: Column(
@@ -139,108 +148,139 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
   }
 
-  ListView _buildListNotiView(BuildContext context) {
-    return ListView.builder(
-      controller: _scrollController,
-      itemCount: notifications.length,
-      shrinkWrap: true,
-      padding: const EdgeInsets.all(16),
-      itemBuilder: (_, index) {
-        final item = notifications[index];
-        return InkWell(
-          onTap: () => _selectNoti(item),
-          child: Container(
-            height: 96,
-            margin: const EdgeInsets.only(bottom: 8),
-            padding: const EdgeInsets.only(
-              left: 12,
-              right: 9,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  offset: Offset(0, 8),
-                  blurRadius: 20,
-                  color: ColorConstant.neutral_black.withOpacity(0.12),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                ClipRRectImage(
-                  height: 72,
-                  width: 72,
-                  radius: 4,
-                  url: AppUtils.getUrlImage(
-                    item.thumbnail?.path ?? '',
-                    width: 200,
-                    height: 200,
+  Widget _buildListNotiView(BuildContext context) {
+    return SmartRefresher(
+      controller: _smartController,
+      enablePullUp: true,
+      enablePullDown: false,
+      onLoading: _loadMore,
+      onRefresh: _refresh,
+      footer: CustomFooter(
+        builder: (context, mode) {
+          Widget body;
+          print(mode);
+          if (mode == LoadStatus.idle) {
+            body = Text('');
+          } else if (mode == LoadStatus.loading) {
+            if (isLast) {
+              _smartController.loadComplete();
+            }
+            body = CupertinoActivityIndicator();
+          } else if (mode == LoadStatus.failed) {
+            body = Text('');
+          } else if (mode == LoadStatus.canLoading) {
+            body = Text('');
+          } else {
+            body = Text('');
+          }
+          return Container(
+            height: 55.0,
+            child: Center(child: body),
+          );
+        },
+      ),
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: notifications.length,
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(16),
+        itemBuilder: (_, index) {
+          final item = notifications[index];
+          return InkWell(
+            onTap: () => _selectNoti(item),
+            child: Container(
+              height: 96,
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(
+                left: 12,
+                right: 9,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0, 8),
+                    blurRadius: 20,
+                    color: ColorConstant.neutral_black.withOpacity(0.12),
                   ),
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 18,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 3,
+                ],
+              ),
+              child: Row(
+                children: [
+                  ClipRRectImage(
+                    height: 72,
+                    width: 72,
+                    radius: 4,
+                    url: AppUtils.getUrlImage(
+                      item.thumbnail?.path ?? '',
+                      width: 200,
+                      height: 200,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 18,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ColorConstant.neutral_gray_lightest,
+                            borderRadius: BorderRadius.circular(9),
+                          ),
+                          child: Text(
+                            item.title ?? '',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 10,
+                              color: ColorConstant.neutral_gray,
+                            ),
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: ColorConstant.neutral_gray_lightest,
-                          borderRadius: BorderRadius.circular(9),
+                        Text(
+                          item.body ?? '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(height: 1.7),
                         ),
-                        child: Text(
-                          item.title ?? '',
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          AppUtils.convertDatetimePrefix(item.sendTime ?? ''),
                           style: TextStyle(
-                            fontWeight: FontWeight.w500,
                             fontSize: 10,
                             color: ColorConstant.neutral_gray,
                           ),
-                        ),
-                      ),
-                      Text(
-                        item.body ?? '',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.copyWith(height: 1.7),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        AppUtils.convertDatetimePrefix(item.sendTime ?? ''),
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: ColorConstant.neutral_gray,
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Image.asset(
-                    ConstantImages.new_tag,
-                    width: 48,
-                    height: 27,
-                  ),
-                )
-              ],
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Image.asset(
+                      ConstantImages.new_tag,
+                      width: 48,
+                      height: 27,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

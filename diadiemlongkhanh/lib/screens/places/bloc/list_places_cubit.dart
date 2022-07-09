@@ -17,9 +17,11 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
     this.nearMe = false,
   }) : super(ListPlacesInitialState()) {
     dataSearch = SearchModel(
-      pageSize: 10,
+      pageSize: 20,
       page: _page,
-      subCategories: subCategory != null ? [subCategory!.id!] : [],
+      subCategories: subCategory != null && subCategory!.id != ''
+          ? [subCategory!.id!]
+          : [],
       categories: category != null ? [category!.id!] : [],
       lat: GlobalValue.lat,
       long: GlobalValue.long,
@@ -62,10 +64,16 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
     //   return;
     // }
     // isLoading = true;
+    if (isLast) {
+      return;
+    }
     _page += 1;
     dataSearch.page = _page;
-    emit(ListPlacesLoadingState());
     searchPlaces();
+  }
+
+  typingKeyword() {
+    emit(ListPlacesLoadingState());
   }
 
   filterComplete(SearchModel data) {

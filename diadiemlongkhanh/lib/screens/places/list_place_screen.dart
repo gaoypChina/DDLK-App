@@ -114,6 +114,7 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                           hintText: 'Nhập địa điểm cần tìm',
                           maxLines: 1,
                           onChanged: (val) {
+                            _cubit.typingKeyword();
                             _debouncer.run(() {
                               print(val);
                               _cubit.searchKeyWord(val);
@@ -121,6 +122,7 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                           },
                         ),
                       ),
+
                       // Container(
                       //   margin: const EdgeInsets.symmetric(
                       //     vertical: 9,
@@ -152,7 +154,8 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                 Expanded(
                   child: BlocBuilder<ListPlacesCubit, ListPlacesState>(
                     buildWhen: (previous, current) =>
-                        current is ListPlacesGetDoneState,
+                        current is ListPlacesGetDoneState ||
+                        current is ListPlacesLoadingState,
                     builder: (_, state) {
                       if (_cubit.places.isEmpty) {
                         return SingleChildScrollView(child: _buildEmptyView());
@@ -162,6 +165,9 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                         padding: const EdgeInsets.only(bottom: 78),
                         child: Column(
                           children: [
+                            state is ListPlacesLoadingState
+                                ? AppUtils.buildProgressIndicator(context)
+                                : SizedBox.shrink(),
                             Expanded(
                               child: SmartRefresher(
                                 enablePullDown: false,
@@ -173,15 +179,18 @@ class _ListPlaceScreenState extends State<ListPlaceScreen> {
                                     Widget body;
                                     print(mode);
                                     if (mode == LoadStatus.idle) {
-                                      body = Text("pull up load");
+                                      body = Text('');
                                     } else if (mode == LoadStatus.loading) {
+                                      if (_cubit.isLast) {
+                                        _smartController.loadComplete();
+                                      }
                                       body = CupertinoActivityIndicator();
                                     } else if (mode == LoadStatus.failed) {
-                                      body = Text("Load Failed!Click retry!");
+                                      body = Text('');
                                     } else if (mode == LoadStatus.canLoading) {
-                                      body = Text("release to load more");
+                                      body = Text('');
                                     } else {
-                                      body = Text("No more Data");
+                                      body = Text('');
                                     }
                                     return Container(
                                       height: 55.0,
