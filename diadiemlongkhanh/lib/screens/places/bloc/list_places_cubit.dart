@@ -15,6 +15,7 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
     this.subCategory,
     this.category,
     this.nearMe = false,
+    this.sort,
   }) : super(ListPlacesInitialState()) {
     dataSearch = SearchModel(
       pageSize: 20,
@@ -25,12 +26,15 @@ class ListPlacesCubit extends Cubit<ListPlacesState> {
       categories: category != null ? [category!.id!] : [],
       lat: GlobalValue.lat,
       long: GlobalValue.long,
+      sort: sort,
     );
   }
   List<PlaceModel> places = [];
   int _page = 1;
   bool isLast = true;
   bool nearMe;
+  String? sort;
+
   final CategoryModel? subCategory;
   final CategoryModel? category;
   List<CategoryModel> categories = [];

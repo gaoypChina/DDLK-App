@@ -15,6 +15,7 @@ class ConstantImages {
   static const ddlk_no_color = 'assets/images/ddlk-no-color.png';
 
   static const ddlk_no_color_small = 'assets/images/ddlk-no-color-small.png';
+  static const no_image = 'assets/images/no-image.png';
 }
 
 class ConstantIcons {

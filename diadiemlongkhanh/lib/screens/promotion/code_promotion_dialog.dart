@@ -1,6 +1,7 @@
 import 'package:diadiemlongkhanh/models/remote/voucher/voucher_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
@@ -101,12 +102,17 @@ class _CodePromotionDialogState extends State<CodePromotionDialog> {
                       // SizedBox(
                       //   height: 24,
                       // ),
-                      QrImage(
-                        data: code,
-                        padding: const EdgeInsets.all(0),
-                        version: QrVersions.auto,
-                        size: 200.0,
-                      ),
+                      code == ''
+                          ? ShimmerImage(
+                              height: 200,
+                              width: 200,
+                            )
+                          : QrImage(
+                              data: code,
+                              padding: const EdgeInsets.all(0),
+                              version: QrVersions.auto,
+                              size: 200.0,
+                            ),
                       SizedBox(
                         height: 24,
                       ),

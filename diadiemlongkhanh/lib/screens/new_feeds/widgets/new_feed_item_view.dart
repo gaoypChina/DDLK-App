@@ -602,115 +602,124 @@ class NewFeedItemView extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: ClipRRectImage(
-            radius: 8,
-            url: AppUtils.getUrlImage(
-              images.first.path ?? '',
-            ),
-            width: double.infinity,
-            height: double.infinity,
-            onPressed: () => AppUtils.showBottomDialog(
-              context,
-              FullImageView(
-                images.map((e) => e.path ?? '').toList(),
-                currentIndex: 0,
+          child: Row(
+            children: [
+              Expanded(
+                child: ClipRRectImage(
+                  radius: 8,
+                  url: AppUtils.getUrlImage(
+                    images.first.path ?? '',
+                  ),
+                  width: double.infinity,
+                  height: double.infinity,
+                  onPressed: () => AppUtils.showBottomDialog(
+                    context,
+                    FullImageView(
+                      images.map((e) => e.path ?? '').toList(),
+                      currentIndex: 0,
+                    ),
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: ClipRRectImage(
+                  radius: 8,
+                  url: AppUtils.getUrlImage(
+                    images[1].path ?? '',
+                  ),
+                  width: double.infinity,
+                  height: double.infinity,
+                  onPressed: () => AppUtils.showBottomDialog(
+                    context,
+                    FullImageView(
+                      images.map((e) => e.path ?? '').toList(),
+                      currentIndex: 1,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(
           height: 5,
         ),
         Expanded(
-            child: Row(
-          children: [
-            Expanded(
-              child: ClipRRectImage(
-                radius: 8,
-                url: AppUtils.getUrlImage(
-                  images[1].path ?? '',
-                ),
-                height: double.infinity,
-                onPressed: () => AppUtils.showBottomDialog(
-                  context,
-                  FullImageView(
-                    images.map((e) => e.path ?? '').toList(),
-                    currentIndex: 1,
+          child: Row(
+            children: [
+              Expanded(
+                child: ClipRRectImage(
+                  radius: 8,
+                  url: AppUtils.getUrlImage(
+                    images[2].path ?? '',
                   ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Expanded(
-              child: ClipRRectImage(
-                radius: 8,
-                url: AppUtils.getUrlImage(
-                  images[2].path ?? '',
-                ),
-                height: double.infinity,
-                onPressed: () => AppUtils.showBottomDialog(
-                  context,
-                  FullImageView(
-                    images.map((e) => e.path ?? '').toList(),
-                    currentIndex: 2,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Expanded(
-              child: Stack(
-                children: [
-                  ClipRRectImage(
-                    radius: 8,
-                    url: AppUtils.getUrlImage(
-                      images[3].path ?? '',
+                  // width: double.infinity,
+                  // height: double.infinity,
+                  onPressed: () => AppUtils.showBottomDialog(
+                    context,
+                    FullImageView(
+                      images.map((e) => e.path ?? '').toList(),
+                      currentIndex: 2,
                     ),
-                    width: double.infinity,
-                    height: double.infinity,
-                    onPressed: () => AppUtils.showBottomDialog(
-                      context,
-                      FullImageView(
-                        images.map((e) => e.path ?? '').toList(),
-                        currentIndex: 3,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    ClipRRectImage(
+                      radius: 8,
+                      url: AppUtils.getUrlImage(
+                        images[3].path ?? '',
+                      ),
+                      width: double.infinity,
+                      height: double.infinity,
+                      onPressed: () => AppUtils.showBottomDialog(
+                        context,
+                        FullImageView(
+                          images.map((e) => e.path ?? '').toList(),
+                          currentIndex: 3,
+                        ),
                       ),
                     ),
-                  ),
-                  isMulti
-                      ? GestureDetector(
-                          onTap: () => AppUtils.showBottomDialog(
-                            context,
-                            FullImageView(
-                              images.map((e) => e.path ?? '').toList(),
-                              currentIndex: 3,
-                            ),
-                          ),
-                          child: Container(
-                            height: double.infinity,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.6),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Center(
-                              child: Text(
-                                '+${images.length - 3}',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
+                    isMulti
+                        ? GestureDetector(
+                            onTap: () => AppUtils.showBottomDialog(
+                              context,
+                              FullImageView(
+                                images.map((e) => e.path ?? '').toList(),
+                                currentIndex: 3,
                               ),
                             ),
-                          ),
-                        )
-                      : SizedBox.shrink()
-                ],
+                            child: Container(
+                              // height: double.infinity,
+                              // width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.6),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '+${images.length - 3}',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox.shrink()
+                  ],
+                ),
               ),
-            ),
-          ],
-        ))
+            ],
+          ),
+        )
       ],
     );
   }

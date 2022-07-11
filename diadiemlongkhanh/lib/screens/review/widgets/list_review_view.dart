@@ -273,7 +273,8 @@ class ListReviewView extends StatelessWidget {
                   onPressed: () => AppUtils.showBottomDialog(
                     context,
                     FullImageView(
-                      [item.path ?? ''],
+                      photos.map((e) => e.path ?? '').toList(),
+                      currentIndex: index,
                     ),
                   ),
                   url: AppUtils.getUrlImage(

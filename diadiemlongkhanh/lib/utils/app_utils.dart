@@ -108,12 +108,12 @@ class AppUtils {
     }
   }
 
-  static int getDistance(double meters) {
+  static double getDistance(double meters) {
     if (meters > 99000 || meters == 0) {
       return 0;
     }
-    final klm = (meters / 1000).round();
-    return klm;
+    final klm = (meters / 1000);
+    return double.parse((klm).toStringAsFixed(1));
   }
 
   static double roundedRating(double rating) {
@@ -376,6 +376,9 @@ class AppUtils {
   static String getExpireDate(
     String endDate,
   ) {
+    if (endDate == '') {
+      return '';
+    }
     final end = DateTime.parse(endDate);
     final now = DateTime.now();
     if (now.isAfter(end)) {

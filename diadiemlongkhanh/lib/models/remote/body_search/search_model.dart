@@ -15,6 +15,7 @@ class SearchModel {
   double? long;
   List<String>? categories;
   List<String>? subCategories;
+  String? sort;
 
   SearchModel({
     this.page,
@@ -26,6 +27,7 @@ class SearchModel {
     this.long,
     this.categories,
     this.subCategories,
+    this.sort,
   });
 
   Map<String, dynamic> toJson() => _$SearchModelToJson(this);

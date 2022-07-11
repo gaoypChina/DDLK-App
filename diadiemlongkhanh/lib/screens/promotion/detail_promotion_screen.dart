@@ -72,9 +72,9 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                         );
                       },
                     ),
-                    SizedBox(
-                      height: 40,
-                    ),
+                    // SizedBox(
+                    //   height: 40,
+                    // ),
                     // Padding(
                     //   padding: const EdgeInsets.only(left: 16),
                     //   child: Text(
@@ -125,7 +125,8 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
   Container _buildVoucherView() {
     final voucher = _cubit.voucher;
     return Container(
-      height: 500,
+      height: 540,
+      // color: Colors.red,
       child: Stack(
         children: [
           voucher == null
@@ -147,11 +148,11 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
             child: Column(
               children: [
                 Container(
-                  height: 249,
+                  height: 280,
                   child: Column(
                     children: [
                       Container(
-                        height: 172,
+                        height: 200,
                         width: double.infinity,
                         padding: const EdgeInsets.only(
                           left: 16,
@@ -186,11 +187,29 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                             SizedBox(
                               height: 8,
                             ),
-                            Text(
-                              voucher?.place?.name ?? '',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.headline4,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    voucher?.place?.name ?? '',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        Theme.of(context).textTheme.headline4,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  AppUtils.getExpireDate(
+                                    voucher?.endDate ?? '',
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: 20,
@@ -248,7 +267,7 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                                                       ?.apply(
                                                         color: Colors.white,
                                                       ),
-                                                )
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -344,6 +363,7 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                                     SizedBox(
                                       height: 3,
                                     ),
+
                                     // Row(
                                     //   children: [
                                     //     Text(
@@ -373,6 +393,16 @@ class _DetailPromotionScreenState extends State<DetailPromotionScreen> {
                                         fontSize: 10,
                                         fontWeight: FontWeight.w500,
                                         color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      'Số khuyến mãi còn lại: ${(voucher?.count ?? 0) - (voucher?.usedCount ?? 0)}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: ColorConstant.orange_secondary,
                                       ),
                                     ),
                                   ],

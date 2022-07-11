@@ -27,6 +27,7 @@ import 'package:diadiemlongkhanh/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -40,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen>
   bool isLoading = true;
   HomeCubit get _cubit => BlocProvider.of(context);
   bool _isScroll = true;
+  final _refreshController = RefreshController();
   @override
   void initState() {
     print('home');
@@ -66,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen>
         // _cubit.getNewFeeds();
       },
     );
+    _refreshController.refreshCompleted();
   }
 
   @override
@@ -89,88 +92,97 @@ class _HomeScreenState extends State<HomeScreen>
                 _buildHeaderView(),
                 _buildSearchView(context),
                 Expanded(
-                  child: SingleChildScrollView(
-                    physics: _isScroll
-                        ? ScrollPhysics()
-                        : NeverScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 8,
-                        ),
-                        _buildSliderView(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        _buildMenuView(),
-                        SizedBox(
-                          height: 37,
-                        ),
-                        BlocBuilder<HomeCubit, HomeState>(
-                          buildWhen: (previous, current) =>
-                              current is HomeGetPlaceNearDoneState,
-                          builder: (_, state) {
-                            List<PlaceModel> places = [];
-                            if (state is HomeGetPlaceNearDoneState) {
-                              places = state.places;
-                            }
-                            return _buildListHorizontalSingleView(
-                              title: 'Địa điểm gần bạn',
-                              places: places,
-                              nextToAll: () =>
-                                  _cubit.nextToAllPlaceNear(context),
-                            );
-                          },
-                        ),
-                        BlocBuilder<HomeCubit, HomeState>(
-                          buildWhen: (previous, current) =>
-                              current is HomeGetPlaceHotDoneState,
-                          builder: (_, state) {
-                            List<PlaceModel> places = [];
-                            if (state is HomeGetPlaceHotDoneState) {
-                              places = state.places;
-                            }
-                            return _buildListHorizontalSingleView(
-                              title: 'Tìm kiếm nhiều nhất',
-                              places: places,
-                            );
-                          },
-                        ),
-                        _buildPromotionListView(),
-                        _buildGridView(context),
-                        Container(
-                          height: 15,
-                          color: ColorConstant.neutral_gray_lightest,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 32),
-                          child: Column(
-                            children: [
-                              _buildHeaderSection(
-                                'Khám phá',
-                                showIcon: false,
-                              ),
-                              _buildListNewFeedsView(),
-                              MainButton(
-                                title: 'KHÁM PHÁ THÊM',
-                                onPressed: () =>
-                                    Navigator.of(context).pushNamed(
-                                  RouterName.new_feeds,
-                                  arguments: true,
-                                ),
-                                margin: const EdgeInsets.only(
-                                  left: 16,
-                                  right: 16,
-                                  bottom: 30,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                            ],
+                  child: SmartRefresher(
+                    controller: _refreshController,
+                    enablePullDown: true,
+                    onRefresh: getData,
+                    header: WaterDropMaterialHeader(),
+                    child: SingleChildScrollView(
+                      physics: _isScroll
+                          ? ScrollPhysics()
+                          : NeverScrollableScrollPhysics(),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 8,
                           ),
-                        ),
-                      ],
+                          _buildSliderView(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _buildMenuView(),
+                          SizedBox(
+                            height: 37,
+                          ),
+                          BlocBuilder<HomeCubit, HomeState>(
+                            buildWhen: (previous, current) =>
+                                current is HomeGetPlaceNearDoneState,
+                            builder: (_, state) {
+                              List<PlaceModel> places = [];
+                              if (state is HomeGetPlaceNearDoneState) {
+                                places = state.places;
+                              }
+                              return _buildListHorizontalSingleView(
+                                title: 'Địa điểm gần bạn',
+                                places: places,
+                                nextToAll: () =>
+                                    _cubit.nextToAllPlaceNear(context),
+                              );
+                            },
+                          ),
+                          BlocBuilder<HomeCubit, HomeState>(
+                            buildWhen: (previous, current) =>
+                                current is HomeGetPlaceHotDoneState,
+                            builder: (_, state) {
+                              List<PlaceModel> places = [];
+                              if (state is HomeGetPlaceHotDoneState) {
+                                places = state.places;
+                              }
+                              return _buildListHorizontalSingleView(
+                                  title: 'Tìm kiếm nhiều nhất',
+                                  places: places,
+                                  nextToAll: () => _cubit.nextToAllPlaceNear(
+                                        context,
+                                        sort: 'view',
+                                      ));
+                            },
+                          ),
+                          _buildPromotionListView(),
+                          _buildGridView(context),
+                          Container(
+                            height: 15,
+                            color: ColorConstant.neutral_gray_lightest,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 32),
+                            child: Column(
+                              children: [
+                                _buildHeaderSection(
+                                  'Khám phá',
+                                  showIcon: false,
+                                ),
+                                _buildListNewFeedsView(),
+                                MainButton(
+                                  title: 'KHÁM PHÁ THÊM',
+                                  onPressed: () =>
+                                      Navigator.of(context).pushNamed(
+                                    RouterName.new_feeds,
+                                    arguments: true,
+                                  ),
+                                  margin: const EdgeInsets.only(
+                                    left: 16,
+                                    right: 16,
+                                    bottom: 30,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -228,7 +240,13 @@ class _HomeScreenState extends State<HomeScreen>
   Column _buildGridView(BuildContext context) {
     return Column(
       children: [
-        _buildHeaderSection('Địa điểm mới cập nhật'),
+        _buildHeaderSection(
+          'Địa điểm mới cập nhật',
+          nextToAll: () => _cubit.nextToAllPlaceNear(
+            context,
+            sort: 'createdAt',
+          ),
+        ),
         _buildListSubCategoriesView(context),
         BlocBuilder<HomeCubit, HomeState>(
           buildWhen: (previous, current) => current is HomeGetPlaceNewDoneState,
@@ -504,7 +522,10 @@ class _HomeScreenState extends State<HomeScreen>
             children: [
               _buildMenuItem(
                 title: 'Gần đây',
-                onPressed: () => _cubit.nextToAllPlaceNear(context),
+                onPressed: () => _cubit.nextToAllPlaceNear(
+                  context,
+                  isNear: true,
+                ),
                 icon: Image.asset(
                   ConstantIcons.ic_map,
                   width: 46,

@@ -147,6 +147,7 @@ class RouterManager {
         CategoryModel? subCategory;
         CategoryModel? category;
         bool nearMe = false;
+        String? sort;
         if (settings.arguments != null) {
           final arguments = settings.arguments as Map<String, dynamic>;
           if (arguments['sub_category'] != null) {
@@ -158,6 +159,9 @@ class RouterManager {
           if (arguments['near_me'] != null) {
             nearMe = arguments['near_me'] as bool;
           }
+          if (arguments['sort'] != null) {
+            sort = arguments['sort'] as String;
+          }
         }
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -165,6 +169,7 @@ class RouterManager {
               subCategory: subCategory,
               category: category,
               nearMe: nearMe,
+              sort: sort,
             ),
             child: ListPlaceScreen(),
           ),

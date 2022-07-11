@@ -104,7 +104,7 @@ class _FullImageViewState extends State<FullImageView> {
                       panEnabled: true,
                       child: FadeInImage.assetNetwork(
                         placeholderFit: BoxFit.contain,
-                        placeholder: ConstantImages.placeholder2,
+                        placeholder: ConstantImages.no_image,
                         fadeInDuration: Duration(milliseconds: 100),
                         fadeOutDuration: Duration(milliseconds: 100),
                         image: item,
