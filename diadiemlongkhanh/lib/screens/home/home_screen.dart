@@ -125,8 +125,10 @@ class _HomeScreenState extends State<HomeScreen>
                               return _buildListHorizontalSingleView(
                                 title: 'Địa điểm gần bạn',
                                 places: places,
-                                nextToAll: () =>
-                                    _cubit.nextToAllPlaceNear(context),
+                                nextToAll: () => _cubit.nextToAllPlaceNear(
+                                  context,
+                                  isNear: true,
+                                ),
                               );
                             },
                           ),

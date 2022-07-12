@@ -370,17 +370,17 @@ class NewFeedItemView extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: ColorConstant.neutral_gray_lightest,
+            color: ColorConstant.green_primary,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.16),
-            ),
-            BoxShadow(
-              color: Colors.white,
-              blurRadius: 16.0,
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.black.withOpacity(0.16),
+          //   ),
+          //   BoxShadow(
+          //     color: Colors.white,
+          //     blurRadius: 16.0,
+          //   ),
+          // ],
         ),
         child: Row(
           children: [

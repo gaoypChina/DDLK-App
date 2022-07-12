@@ -144,8 +144,6 @@ class HomeCubit extends Cubit<HomeState> {
     String? sort,
   }) {
     if (isNear) {
-      GlobalValue.lat = 10.9391996;
-      GlobalValue.long = 107.2668084;
       if (GlobalValue.lat == null || GlobalValue.long == null) {
         AppUtils.showOkDialog(context,
             'Vui lòng Bật truy cập vị trí để gợi ý các địa điểm ăn uống gần bạn');

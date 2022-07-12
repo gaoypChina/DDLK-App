@@ -109,6 +109,7 @@ class AppUtils {
   }
 
   static double getDistance(double meters) {
+    print(meters);
     if (meters > 99000 || meters == 0) {
       return 0;
     }

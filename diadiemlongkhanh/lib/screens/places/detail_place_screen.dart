@@ -637,7 +637,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Container _buildInfoContactView(PlaceModel? place) {
+  Widget _buildInfoContactView(PlaceModel? place) {
     List<LocalSocialModel> socials = [];
     if (place?.social != null) {
       if (place?.social?.facebook != null) {
@@ -650,47 +650,49 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             value: place?.social?.instagram ?? ''));
       }
     }
-    return Container(
-      margin: const EdgeInsets.only(
-        top: 16,
-        right: 16,
-        left: 16,
-      ),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 12),
-            blurRadius: 24,
-            color: ColorConstant.grey_shadow.withOpacity(0.08),
-          )
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Thông tin liên hệ',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          ListView.builder(
-            itemCount: socials.length,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(top: 18),
-            itemBuilder: (_, index) {
-              final item = socials[index];
-              return _buildItemContact(
-                item.icon,
-                item.value,
-              );
-            },
-          )
-        ],
-      ),
-    );
+    return socials.length == 0
+        ? SizedBox.shrink()
+        : Container(
+            margin: const EdgeInsets.only(
+              top: 16,
+              right: 16,
+              left: 16,
+            ),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0, 12),
+                  blurRadius: 24,
+                  color: ColorConstant.grey_shadow.withOpacity(0.08),
+                )
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Thông tin liên hệ',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                ListView.builder(
+                  itemCount: socials.length,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(top: 18),
+                  itemBuilder: (_, index) {
+                    final item = socials[index];
+                    return _buildItemContact(
+                      item.icon,
+                      item.value,
+                    );
+                  },
+                )
+              ],
+            ),
+          );
   }
 
   Widget _buildItemContact(
@@ -830,79 +832,83 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     );
   }
 
-  Container _buildMenuView(PlaceModel? place) {
-    return Container(
-      height: 144,
-      margin: const EdgeInsets.only(
-        top: 16,
-        right: 16,
-        left: 16,
-      ),
-      padding: const EdgeInsets.only(
-        top: 16,
-        right: 16,
-        left: 16,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 12),
-            blurRadius: 24,
-            color: ColorConstant.grey_shadow.withOpacity(0.08),
-          )
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Thực đơn',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          Container(
-            height: 72,
-            margin: const EdgeInsets.only(top: 16),
-            child: place == null
-                ? ShimmerImage()
-                : ListView.builder(
-                    itemCount: place.menu.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (_, index) {
-                      final item = place.menu[index];
-                      return Container(
-                        height: 72,
-                        width: 72,
-                        margin: const EdgeInsets.only(right: 8),
-                        child: Stack(
-                          children: [
-                            ClipRRectImage(
-                              onPressed: () => AppUtils.showBottomDialog(
-                                context,
-                                FullImageView(
-                                  place.menu.map((e) => e.path ?? '').toList(),
-                                  currentIndex: index,
-                                ),
-                              ),
+  Widget _buildMenuView(PlaceModel? place) {
+    return place?.menu.length == 0
+        ? SizedBox.shrink()
+        : Container(
+            height: 144,
+            margin: const EdgeInsets.only(
+              top: 16,
+              right: 16,
+              left: 16,
+            ),
+            padding: const EdgeInsets.only(
+              top: 16,
+              right: 16,
+              left: 16,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0, 12),
+                  blurRadius: 24,
+                  color: ColorConstant.grey_shadow.withOpacity(0.08),
+                )
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Thực đơn',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Container(
+                  height: 72,
+                  margin: const EdgeInsets.only(top: 16),
+                  child: place == null
+                      ? ShimmerImage()
+                      : ListView.builder(
+                          itemCount: place.menu.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            final item = place.menu[index];
+                            return Container(
                               height: 72,
                               width: 72,
-                              url: AppUtils.getUrlImage(
-                                item.path ?? '',
-                                width: 200,
-                                height: 200,
+                              margin: const EdgeInsets.only(right: 8),
+                              child: Stack(
+                                children: [
+                                  ClipRRectImage(
+                                    onPressed: () => AppUtils.showBottomDialog(
+                                      context,
+                                      FullImageView(
+                                        place.menu
+                                            .map((e) => e.path ?? '')
+                                            .toList(),
+                                        currentIndex: index,
+                                      ),
+                                    ),
+                                    height: 72,
+                                    width: 72,
+                                    url: AppUtils.getUrlImage(
+                                      item.path ?? '',
+                                      width: 200,
+                                      height: 200,
+                                    ),
+                                    radius: 8,
+                                  )
+                                ],
                               ),
-                              radius: 8,
-                            )
-                          ],
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-          ),
-        ],
-      ),
-    );
+                ),
+              ],
+            ),
+          );
   }
 
   Container _buildWorkHourView(PlaceModel? place) {
