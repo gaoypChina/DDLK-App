@@ -5,6 +5,7 @@ import 'package:diadiemlongkhanh/screens/base_tabbar/base_tabbar_screen.dart';
 
 import 'package:diadiemlongkhanh/screens/forgot_password/forgot_password_screen.dart';
 import 'package:diadiemlongkhanh/screens/forgot_password/reset_password_screen.dart';
+import 'package:diadiemlongkhanh/screens/home/bloc/home_cubit.dart';
 import 'package:diadiemlongkhanh/screens/login/login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/option_login_screen.dart';
 import 'package:diadiemlongkhanh/screens/login/otp_login_screen.dart';
@@ -35,6 +36,7 @@ import 'package:diadiemlongkhanh/screens/search/search_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/info_sign_up_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/option_signup_screen.dart';
 import 'package:diadiemlongkhanh/screens/signup/signup_screen.dart';
+import 'package:diadiemlongkhanh/screens/splash/splash_screen.dart';
 import 'package:diadiemlongkhanh/screens/verify_phone/verify_phone_screen.dart';
 import 'package:diadiemlongkhanh/screens/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +58,10 @@ class RouterManager {
       case RouterName.option_signup:
         return MaterialPageRoute(
           builder: (_) => OptionSingupScreen(),
+        );
+      case RouterName.splash:
+        return MaterialPageRoute(
+          builder: (_) => SplashScreen(),
         );
       case RouterName.login:
         return MaterialPageRoute(
@@ -295,6 +301,7 @@ class RouterManager {
             phone: phone,
           ),
         );
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -306,6 +313,7 @@ class RouterManager {
 }
 
 class RouterName {
+  static const splash = '/splash';
   static const option_login = '/option_login';
   static const option_signup = '/option_signup';
   static const login = '/login';

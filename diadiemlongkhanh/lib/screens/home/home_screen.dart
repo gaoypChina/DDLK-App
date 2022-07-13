@@ -52,22 +52,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   getData() async {
-    _cubit.getSlides();
-
-    Future.delayed(
-      Duration(seconds: 1),
-      () {
-        // setState(() {
-        //   _isScroll = true;
-        // });
-        _cubit.getInfoUser();
-        _cubit.getPlacesNear();
-        // _cubit.getPlacesHot();
-        // _cubit.getVouchers();
-        // _cubit.getSubCategories();
-        // _cubit.getNewFeeds();
-      },
-    );
+    _cubit.getAllData();
     _refreshController.refreshCompleted();
   }
 
@@ -741,28 +726,33 @@ class _HomeScreenState extends State<HomeScreen>
                       current is HomeGetProfileDoneState,
                   builder: (_, state) {
                     return Expanded(
-                      child: Row(
-                        children: [
-                          ClipRRectImage(
-                            height: 44,
-                            width: 44,
-                            radius: 22,
-                            url: AppUtils.getUrlImage(
-                              GlobalValue.avatar ?? '',
-                              width: 44,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(RouterName.account, arguments: true),
+                        child: Row(
+                          children: [
+                            ClipRRectImage(
                               height: 44,
+                              width: 44,
+                              radius: 22,
+                              url: AppUtils.getUrlImage(
+                                GlobalValue.avatar ?? '',
+                                width: 44,
+                                height: 44,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: Text(
-                              GlobalValue.name ?? '',
-                              style: Theme.of(context).textTheme.headline4,
+                            SizedBox(
+                              width: 8,
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: Text(
+                                GlobalValue.name ?? '',
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

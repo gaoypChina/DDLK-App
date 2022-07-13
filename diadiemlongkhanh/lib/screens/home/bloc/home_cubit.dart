@@ -127,6 +127,25 @@ class HomeCubit extends Cubit<HomeState> {
     getPlacesNew(subCategories[index].id ?? '');
   }
 
+  getAllData() {
+    getSlides();
+
+    Future.delayed(
+      Duration(seconds: 1),
+      () {
+        // setState(() {
+        //   _isScroll = true;
+        // });
+        getInfoUser();
+        getPlacesNear();
+        // _cubit.getPlacesHot();
+        // _cubit.getVouchers();
+        // _cubit.getSubCategories();
+        // _cubit.getNewFeeds();
+      },
+    );
+  }
+
   getPlacesNew(String subCategory) async {
     final res = await injector.get<ApiClient>().getPlacesNew(
           subCategory: subCategory,

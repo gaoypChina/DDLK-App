@@ -1,5 +1,6 @@
 class ConstantImages {
   static const logo = 'assets/images/logo.jpg';
+  static const logo2 = 'assets/images/logo_2.png';
   static const skip_bg = 'assets/images/skip_bg.png';
   static const skip_bg2 = 'assets/images/skip_bg2.png';
   static const welcome1 = 'assets/images/welcome1.png';

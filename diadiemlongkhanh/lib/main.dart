@@ -5,6 +5,7 @@ import 'package:diadiemlongkhanh/config/env_config.dart';
 import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/screens/home/bloc/home_cubit.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/notification/notification_manager.dart';
@@ -49,6 +50,9 @@ void main() {
           ),
           BlocProvider(
             create: (_) => AppProfileCubit(),
+          ),
+          BlocProvider(
+            create: (_) => HomeCubit(),
           )
         ],
         child: MyApp(),

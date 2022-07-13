@@ -139,37 +139,40 @@ class _DetailReviewScreenState extends State<DetailReviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: 'Bài của ${item?.author?.name ?? ''}',
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              item != null
-                  ? NewFeedItemView(
-                      item: item,
-                      margin: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(),
-                      comments: comments,
-                      isShowComment:
-                          injector.get<StorageService>().getToken() != null,
-                      sendComment: sendComment,
-                      likeComment: (index) => likeComment(index),
-                      likePressed: _likePost,
-                      moreSelect: () => AppUtils.showBottomDialog(
-                        context,
-                        PlaceActionDiaglog(
-                          type: ReportType.review,
-                          docId: item?.id,
-                          showShare: true,
-                          onShare: shareReview,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: MyAppBar(
+          title: 'Bài của ${item?.author?.name ?? ''}',
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                item != null
+                    ? NewFeedItemView(
+                        item: item,
+                        margin: const EdgeInsets.all(0),
+                        decoration: BoxDecoration(),
+                        comments: comments,
+                        isShowComment:
+                            injector.get<StorageService>().getToken() != null,
+                        sendComment: sendComment,
+                        likeComment: (index) => likeComment(index),
+                        likePressed: _likePost,
+                        moreSelect: () => AppUtils.showBottomDialog(
+                          context,
+                          PlaceActionDiaglog(
+                            type: ReportType.review,
+                            docId: item?.id,
+                            showShare: true,
+                            onShare: shareReview,
+                          ),
                         ),
-                      ),
-                    )
-                  : ShimmerNewFeed(context),
-            ],
+                      )
+                    : ShimmerNewFeed(context),
+              ],
+            ),
           ),
         ),
       ),

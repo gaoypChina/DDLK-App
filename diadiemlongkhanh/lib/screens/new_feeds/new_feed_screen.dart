@@ -57,111 +57,116 @@ class _NewFeedScreenState extends State<NewFeedScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorConstant.grey_F2F4F8,
-        body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                backgroundColor: Colors.white,
-                title: Text(
-                  'Khám phá',
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-                automaticallyImplyLeading: widget.isBack,
-                leading: widget.isBack
-                    ? IconButton(
-                        icon: SvgPicture.asset(
-                          ConstantIcons.ic_chevron_left,
-                        ),
-                        onPressed: () => Navigator.of(context).pop(),
-                      )
-                    : SizedBox.shrink(),
-                pinned: false,
-                floating: true,
-                forceElevated: innerBoxIsScrolled,
-              ),
-              // SliverToBoxAdapter(
-              //   child: _buildListFiltersView(context),
-              // ),
-            ];
-          },
-          body: BlocBuilder<NewFeedCubit, NewFeedState>(
-            buildWhen: (previous, current) =>
-                current is NewFeedGetDoneState ||
-                current is NewFeedLoadingState,
-            builder: (context, state) {
-              _smartController.loadComplete();
-              _smartController.refreshCompleted();
-              return SmartRefresher(
-                controller: _smartController,
-                enablePullDown: true,
-                enablePullUp: true,
-                onLoading: _cubit.loadMoreReviews,
-                onRefresh: _cubit.onRefresh,
-                header: WaterDropMaterialHeader(),
-                footer: CustomFooter(
-                  builder: (context, mode) {
-                    Widget body;
-                    if (mode == LoadStatus.idle) {
-                      body = Text('');
-                    } else if (mode == LoadStatus.loading) {
-                      if (_cubit.isLast) {
-                        _smartController.loadComplete();
-                      }
-                      body = CupertinoActivityIndicator();
-                    } else if (mode == LoadStatus.failed) {
-                      body = Text('');
-                    } else if (mode == LoadStatus.canLoading) {
-                      body = Text('');
-                    } else {
-                      body = Text('');
-                    }
-                    return Center(child: body);
-                  },
-                ),
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount:
-                      _cubit.newfeeds.isEmpty ? 5 : _cubit.newfeeds.length,
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(
-                    top: 24,
-                    bottom: 30,
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          backgroundColor: ColorConstant.grey_F2F4F8,
+          body: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  backgroundColor: Colors.white,
+                  title: Text(
+                    'Khám phá',
+                    style: Theme.of(context).textTheme.headline3,
                   ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return _cubit.newfeeds.isEmpty
-                        ? ShimmerNewFeed(context)
-                        : index == _cubit.newfeeds.length
-                            ? AppUtils.buildProgressIndicator(context)
-                            : NewFeedItemView(
-                                item: _cubit.newfeeds[index],
-                                moreSelect: () => AppUtils.showBottomDialog(
-                                  context,
-                                  PlaceActionDiaglog(
-                                    type: ReportType.review,
-                                    docId: _cubit.newfeeds[index].id,
-                                    showShare: true,
-                                    onShare: () => _cubit
-                                        .shareReview(_cubit.newfeeds[index]),
-                                  ),
-                                ),
-                                nextToDetail: () =>
-                                    Navigator.of(context).pushNamed(
-                                  RouterName.detail_review,
-                                  arguments: _cubit.newfeeds[index],
-                                ),
-                                sendComment: () => _cubit.sendComment(index),
-                                likePressed: () =>
-                                    _cubit.likePost(context, index),
-                                isShowComment:
-                                    injector.get<StorageService>().getToken() !=
-                                        null,
-                              );
-                  },
+                  automaticallyImplyLeading: widget.isBack,
+                  leading: widget.isBack
+                      ? IconButton(
+                          icon: SvgPicture.asset(
+                            ConstantIcons.ic_chevron_left,
+                          ),
+                          onPressed: () => Navigator.of(context).pop(),
+                        )
+                      : SizedBox.shrink(),
+                  pinned: false,
+                  floating: true,
+                  forceElevated: innerBoxIsScrolled,
                 ),
-              );
+                // SliverToBoxAdapter(
+                //   child: _buildListFiltersView(context),
+                // ),
+              ];
             },
+            body: BlocBuilder<NewFeedCubit, NewFeedState>(
+              buildWhen: (previous, current) =>
+                  current is NewFeedGetDoneState ||
+                  current is NewFeedLoadingState,
+              builder: (context, state) {
+                _smartController.loadComplete();
+                _smartController.refreshCompleted();
+                return SmartRefresher(
+                  controller: _smartController,
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  onLoading: _cubit.loadMoreReviews,
+                  onRefresh: _cubit.onRefresh,
+                  header: WaterDropMaterialHeader(),
+                  footer: CustomFooter(
+                    builder: (context, mode) {
+                      Widget body;
+                      if (mode == LoadStatus.idle) {
+                        body = Text('');
+                      } else if (mode == LoadStatus.loading) {
+                        if (_cubit.isLast) {
+                          _smartController.loadComplete();
+                        }
+                        body = CupertinoActivityIndicator();
+                      } else if (mode == LoadStatus.failed) {
+                        body = Text('');
+                      } else if (mode == LoadStatus.canLoading) {
+                        body = Text('');
+                      } else {
+                        body = Text('');
+                      }
+                      return Center(child: body);
+                    },
+                  ),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount:
+                        _cubit.newfeeds.isEmpty ? 5 : _cubit.newfeeds.length,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(
+                      top: 24,
+                      bottom: 30,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return _cubit.newfeeds.isEmpty
+                          ? ShimmerNewFeed(context)
+                          : index == _cubit.newfeeds.length
+                              ? AppUtils.buildProgressIndicator(context)
+                              : NewFeedItemView(
+                                  item: _cubit.newfeeds[index],
+                                  moreSelect: () => AppUtils.showBottomDialog(
+                                    context,
+                                    PlaceActionDiaglog(
+                                      type: ReportType.review,
+                                      docId: _cubit.newfeeds[index].id,
+                                      showShare: true,
+                                      onShare: () => _cubit
+                                          .shareReview(_cubit.newfeeds[index]),
+                                    ),
+                                  ),
+                                  nextToDetail: () =>
+                                      Navigator.of(context).pushNamed(
+                                    RouterName.detail_review,
+                                    arguments: _cubit.newfeeds[index],
+                                  ),
+                                  sendComment: () => _cubit.sendComment(index),
+                                  likePressed: () =>
+                                      _cubit.likePost(context, index),
+                                  isShowComment: injector
+                                          .get<StorageService>()
+                                          .getToken() !=
+                                      null,
+                                );
+                    },
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

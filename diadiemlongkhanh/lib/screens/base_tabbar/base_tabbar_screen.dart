@@ -37,10 +37,7 @@ class _BaseTabBarSreenState extends State<BaseTabBarSreen>
     super.initState();
     _token = injector.get<StorageService>().getToken();
     tabs = [
-      BlocProvider(
-        create: (_) => HomeCubit(),
-        child: HomeScreen(),
-      ),
+      HomeScreen(),
       BlocProvider(
         create: (_) => NewFeedCubit(),
         child: NewFeedScreen(),

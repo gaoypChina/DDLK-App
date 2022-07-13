@@ -868,12 +868,15 @@ class NewFeedItemView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  Text(
-                    AppUtils.convertDatetimePrefix(item!.createdAt ?? ''),
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: ColorConstant.neutral_gray_lighter,
+                  GestureDetector(
+                    onTap: nextToDetail,
+                    child: Text(
+                      AppUtils.convertDatetimePrefix(item!.createdAt ?? ''),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ColorConstant.neutral_gray_lighter,
+                      ),
                     ),
                   )
                 ],
