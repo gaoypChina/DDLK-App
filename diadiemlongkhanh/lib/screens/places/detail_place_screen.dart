@@ -253,7 +253,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               currentIndex = state.index;
             }
             return Container(
-              height: 620,
+              height: 620 - (_cubit.place?.voucherCount == 0 ? 64 : 0),
               child: Stack(
                 children: [
                   _buildSlider(
@@ -1361,7 +1361,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
 
   Container _buildInfoView(PlaceModel? place) {
     return Container(
-      height: 370,
+      height: 370 - (place?.voucherCount == 0 ? 64 : 0),
       margin: const EdgeInsets.only(
         left: 16,
         right: 16,
@@ -1580,38 +1580,40 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     },
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    height: 40,
-                    margin: const EdgeInsets.only(top: 24),
-                    padding: const EdgeInsets.symmetric(horizontal: 9),
-                    decoration: BoxDecoration(
-                      color: ColorConstant.neutral_gray_lightest,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(ConstantIcons.ic_discountstore),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Expanded(
-                          child: Text(
-                            '${place.voucherCount ?? 0} khuyến mãi',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).primaryColor,
-                            ),
+                place.voucherCount == 0
+                    ? SizedBox()
+                    : Expanded(
+                        child: Container(
+                          height: 40,
+                          margin: const EdgeInsets.only(top: 24),
+                          padding: const EdgeInsets.symmetric(horizontal: 9),
+                          decoration: BoxDecoration(
+                            color: ColorConstant.neutral_gray_lightest,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(ConstantIcons.ic_discountstore),
+                              SizedBox(
+                                width: 7,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  '${place.voucherCount ?? 0} khuyến mãi',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ),
+                              SvgPicture.asset(
+                                ConstantIcons.ic_chevron_right,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ],
                           ),
                         ),
-                        SvgPicture.asset(
-                          ConstantIcons.ic_chevron_right,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
+                      )
               ],
             ),
     );

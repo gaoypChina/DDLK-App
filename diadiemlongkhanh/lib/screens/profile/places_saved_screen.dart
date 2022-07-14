@@ -202,7 +202,8 @@ class _PlacesSavedScreenState extends State<PlacesSavedScreen> {
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w500,
-                                      color: Theme.of(context).primaryColor,
+                                      color: AppUtils.getOpeningColor(
+                                          item.openingStatus ?? ''),
                                     ),
                                   ),
                                 ],

@@ -420,8 +420,8 @@ class _HomeScreenState extends State<HomeScreen>
                   onTap: nextToAll,
                   child: SvgPicture.asset(
                     ConstantIcons.ic_chevron_right,
-                    width: 20,
-                    height: 20,
+                    width: 30,
+                    height: 30,
                   ),
                 )
               : SizedBox.shrink(),
@@ -728,8 +728,9 @@ class _HomeScreenState extends State<HomeScreen>
                     return Expanded(
                       child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
-                        onTap: () => Navigator.of(context)
-                            .pushNamed(RouterName.account, arguments: true),
+                        onTap: () => Navigator.of(context).pushNamed(
+                          RouterName.account,
+                        ),
                         child: Row(
                           children: [
                             ClipRRectImage(

@@ -91,7 +91,7 @@ class AppUtils {
       case 'is_open':
         return 'Đang mở cửa';
       case 'is_closed':
-        return 'Đang đóng cửa';
+        return 'Đóng cửa';
       default:
         return 'Sắp đóng cửa';
     }
@@ -104,7 +104,7 @@ class AppUtils {
       case 'is_closed':
         return ColorConstant.sematic_red;
       default:
-        return ColorConstant.neutral_gray;
+        return ColorConstant.orange_secondary;
     }
   }
 

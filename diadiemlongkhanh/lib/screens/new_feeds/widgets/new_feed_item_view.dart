@@ -139,11 +139,11 @@ class NewFeedItemView extends StatelessWidget {
             children: [
               ClipRRectImage(
                 radius: 18,
-                url: AppUtils.getUrlImage(
-                  item.author?.avatar ?? '',
-                  width: 36,
-                  height: 36,
+                onPressed: () => Navigator.of(context).pushNamed(
+                  RouterName.account,
+                  arguments: item.author?.id,
                 ),
+                url: item.author?.avatar ?? '',
                 width: 36,
                 height: 36,
               ),
@@ -168,9 +168,15 @@ class NewFeedItemView extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            item.author?.name ?? '',
-                            style: Theme.of(context).textTheme.headline2,
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pushNamed(
+                              RouterName.account,
+                              arguments: item.author?.id,
+                            ),
+                            child: Text(
+                              item.author?.name ?? '',
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
                           ),
                           SizedBox(
                             height: 8,

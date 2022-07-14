@@ -79,7 +79,7 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
           accessToken: Environment().config.mapAccessToken,
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
-            zoom: 15,
+            zoom: 14,
             target: LatLng(places.first.address?.geo?.lat ?? 0,
                 places.first.address?.geo?.long ?? 0),
           ),
@@ -109,7 +109,7 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
               LatLng newCenter = LatLng(
                   item.address?.geo?.lat ?? 0, item.address?.geo?.long ?? 0);
               CameraUpdate cameraUpdate =
-                  CameraUpdate.newLatLngZoom(newCenter, 20);
+                  CameraUpdate.newLatLngZoom(newCenter, 14);
               mapController?.moveCamera(cameraUpdate);
               setState(() {
                 _currentIndex = index;
