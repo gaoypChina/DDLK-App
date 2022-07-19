@@ -48,6 +48,15 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
             item.address?.geo?.long ?? 0,
           ),
           iconImage: ConstantIcons.ic_marker_full,
+          textField: item.name,
+          textSize: 12.5,
+          textOffset: Offset(0, 0.9),
+          textAnchor: 'top',
+          textColor: '#EF6F28',
+          textHaloBlur: 1,
+          textHaloColor: '#ffffff',
+          textHaloWidth: 0.8,
+          iconColor: '#EF6F28',
         ),
       );
     }
@@ -109,7 +118,7 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
               LatLng newCenter = LatLng(
                   item.address?.geo?.lat ?? 0, item.address?.geo?.long ?? 0);
               CameraUpdate cameraUpdate =
-                  CameraUpdate.newLatLngZoom(newCenter, 14);
+                  CameraUpdate.newLatLngZoom(newCenter, 20);
               mapController?.moveCamera(cameraUpdate);
               setState(() {
                 _currentIndex = index;
