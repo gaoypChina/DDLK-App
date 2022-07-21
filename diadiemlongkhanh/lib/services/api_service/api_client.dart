@@ -182,6 +182,8 @@ abstract class ApiClient {
 
   @GET(Apis.logout)
   Future<AuthResponse?> logout();
+  @GET(Apis.delete_account)
+  Future<AuthResponse?> deleteAccount();
 
   @GET(Apis.notifications)
   Future<ResultNotificationResponse?> getNotifications({

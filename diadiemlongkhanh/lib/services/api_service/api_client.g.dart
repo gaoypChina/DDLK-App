@@ -853,6 +853,23 @@ class _ApiClient implements ApiClient {
   }
 
   @override
+  Future<AuthResponse?> deleteAccount() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<AuthResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'auth/delete-account',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : AuthResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ResultNotificationResponse?> getNotifications(
       {page = 1, pageSize = 10}) async {
     const _extra = <String, dynamic>{};

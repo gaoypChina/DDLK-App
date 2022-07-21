@@ -18,5 +18,6 @@ enum SettingMenuType {
   settingProfile,
   logout,
   scan,
+  delete,
   none,
 }

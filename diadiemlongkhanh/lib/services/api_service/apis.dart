@@ -33,4 +33,5 @@ class Apis {
   static const notification = '/notification';
   static const login_with_google = '/auth/login-with-google';
   static const login_with_apple = '/auth/login-with-apple';
+  static const delete_account = 'auth/delete-account';
 }

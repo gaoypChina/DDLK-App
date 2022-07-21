@@ -489,14 +489,14 @@ class NewFeedItemView extends StatelessWidget {
     BuildContext context,
     List<ThumbnailModel> images,
   ) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Row(
       children: [
         Expanded(
           child: ClipRRectImage(
             radius: 8,
-            url: AppUtils.getUrlImage(
-              images.first.path ?? '',
-            ),
+            url: AppUtils.getUrlImage(images.first.path ?? '',
+                height: 218, width: screenWidth / 2),
             height: double.infinity,
             onPressed: () => AppUtils.showBottomDialog(
               context,
@@ -515,6 +515,8 @@ class NewFeedItemView extends StatelessWidget {
             radius: 8,
             url: AppUtils.getUrlImage(
               images.last.path ?? '',
+              height: 218,
+              width: screenWidth / 2,
             ),
             height: double.infinity,
             onPressed: () => AppUtils.showBottomDialog(
@@ -534,6 +536,8 @@ class NewFeedItemView extends StatelessWidget {
     BuildContext context,
     List<ThumbnailModel> images,
   ) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Row(
       children: [
         Expanded(
@@ -541,6 +545,8 @@ class NewFeedItemView extends StatelessWidget {
             radius: 8,
             url: AppUtils.getUrlImage(
               images.first.path ?? '',
+              height: 218,
+              width: screenWidth / 2,
             ),
             height: double.infinity,
             onPressed: () => AppUtils.showBottomDialog(
@@ -563,6 +569,8 @@ class NewFeedItemView extends StatelessWidget {
                   radius: 8,
                   url: AppUtils.getUrlImage(
                     images[1].path ?? '',
+                    height: 107,
+                    width: screenWidth / 2,
                   ),
                   width: double.infinity,
                   onPressed: () => AppUtils.showBottomDialog(
@@ -582,6 +590,8 @@ class NewFeedItemView extends StatelessWidget {
                   radius: 8,
                   url: AppUtils.getUrlImage(
                     images.last.path ?? '',
+                    height: 107,
+                    width: screenWidth / 2,
                   ),
                   width: double.infinity,
                   onPressed: () => AppUtils.showBottomDialog(
@@ -605,6 +615,7 @@ class NewFeedItemView extends StatelessWidget {
     List<ThumbnailModel> images, {
     bool isMulti = false,
   }) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Expanded(
@@ -615,6 +626,8 @@ class NewFeedItemView extends StatelessWidget {
                   radius: 8,
                   url: AppUtils.getUrlImage(
                     images.first.path ?? '',
+                    width: screenWidth / 2,
+                    height: 107,
                   ),
                   width: double.infinity,
                   height: double.infinity,
@@ -635,6 +648,8 @@ class NewFeedItemView extends StatelessWidget {
                   radius: 8,
                   url: AppUtils.getUrlImage(
                     images[1].path ?? '',
+                    width: screenWidth / 2,
+                    height: 107,
                   ),
                   width: double.infinity,
                   height: double.infinity,
@@ -661,6 +676,8 @@ class NewFeedItemView extends StatelessWidget {
                   radius: 8,
                   url: AppUtils.getUrlImage(
                     images[2].path ?? '',
+                    width: screenWidth / 2,
+                    height: 107,
                   ),
                   // width: double.infinity,
                   // height: double.infinity,
@@ -683,6 +700,8 @@ class NewFeedItemView extends StatelessWidget {
                       radius: 8,
                       url: AppUtils.getUrlImage(
                         images[3].path ?? '',
+                        width: screenWidth / 2,
+                        height: 107,
                       ),
                       width: double.infinity,
                       height: double.infinity,
@@ -733,6 +752,7 @@ class NewFeedItemView extends StatelessWidget {
   Container _buildPhotosView(BuildContext context) {
     final images = item!.images;
     Widget photoView = SizedBox.shrink();
+
     switch (images.length) {
       case 0:
         photoView = SizedBox.shrink();
@@ -742,6 +762,8 @@ class NewFeedItemView extends StatelessWidget {
           radius: 8,
           url: AppUtils.getUrlImage(
             images.first.path ?? '',
+            width: MediaQuery.of(context).size.width,
+            height: 218,
           ),
           width: double.infinity,
           height: double.infinity,

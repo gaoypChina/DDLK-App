@@ -57,6 +57,14 @@ class _SettingScreenState extends State<SettingScreen> {
       'Đăng xuất',
       type: SettingMenuType.logout,
     ),
+    SettingMenuModel(
+      Icon(
+        Icons.remove_circle,
+        color: ColorConstant.sematic_red,
+      ),
+      'Xóa tài khoản',
+      type: SettingMenuType.delete,
+    ),
   ];
   _selectMenu(SettingMenuType type) {
     if (type == SettingMenuType.settingProfile) {
@@ -65,6 +73,13 @@ class _SettingScreenState extends State<SettingScreen> {
       Navigator.of(context).pushNamed(RouterName.contact);
     } else if (type == SettingMenuType.scan) {
       Navigator.of(context).pushNamed(RouterName.scan);
+    } else if (type == SettingMenuType.delete) {
+      AppUtils.showOkDialog(
+        context,
+        'Bạn chắc chắn muốn xóa tài khoản? Sau khi tài khoản được xóa thành công, mọi thông tin của bạn đã cung cấp sẽ được xóa vĩnh viễn!',
+        okAction: _delete,
+        isCancel: true,
+      );
     } else if (type == SettingMenuType.logout) {
       AppUtils.showOkDialog(
         context,
@@ -73,6 +88,16 @@ class _SettingScreenState extends State<SettingScreen> {
         isCancel: true,
       );
     }
+  }
+
+  _delete() async {
+    await injector.get<ApiClient>().deleteAccount();
+    await injector.get<StorageService>().clear();
+    GlobalValue.avatar = null;
+    GlobalValue.id = null;
+    GlobalValue.name = null;
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
   }
 
   _logout() async {

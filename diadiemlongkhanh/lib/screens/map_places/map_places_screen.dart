@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MapPlacesSreen extends StatefulWidget {
   MapPlacesSreen({
@@ -28,6 +29,7 @@ class MapPlacesSreen extends StatefulWidget {
 
 class _MapPlacesSreenState extends State<MapPlacesSreen> {
   MapboxMapController? mapController;
+  final ItemScrollController itemScrollController = ItemScrollController();
   List<PlaceModel> places = [];
   int _currentIndex = 0;
   @override
@@ -107,8 +109,9 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
   Container _buildListPlaceView() {
     return Container(
       height: 112,
-      child: ListView.builder(
+      child: ScrollablePositionedList.builder(
         scrollDirection: Axis.horizontal,
+        itemScrollController: itemScrollController,
         itemCount: places.length,
         padding: const EdgeInsets.only(left: 16),
         itemBuilder: (_, index) {
@@ -122,6 +125,10 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
               mapController?.moveCamera(cameraUpdate);
               setState(() {
                 _currentIndex = index;
+                itemScrollController.scrollTo(
+                    index: _currentIndex,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOutCubic);
               });
             },
             child: Container(
