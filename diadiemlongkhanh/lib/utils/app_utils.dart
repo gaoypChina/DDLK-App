@@ -75,7 +75,7 @@ class AppUtils {
       }
     }
 
-    return Environment().config.domain + _path;
+    return Environment().config.domainImage + _path;
   }
 
   static String getPlaceUrl(String slug) {
@@ -87,6 +87,7 @@ class AppUtils {
   }
 
   static String getOpeningTitle(String status) {
+    if (status == '') return status;
     switch (status) {
       case 'is_open':
         return 'Đang mở cửa';

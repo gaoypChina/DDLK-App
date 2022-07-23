@@ -46,11 +46,13 @@ class PlaceHorizItemView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRectImage(
-              url: AppUtils.getUrlImage(
-                item!.avatar?.path ?? '',
-                width: 500,
-                height: 500,
-              ),
+              url: item == null
+                  ? ''
+                  : AppUtils.getUrlImage(
+                      item?.avatar?.path ?? '',
+                      width: 300,
+                      height: 300,
+                    ),
               radius: 8,
               width: 170,
               height: 170,
@@ -62,16 +64,16 @@ class PlaceHorizItemView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppUtils.getOpeningTitle(item!.openingStatus ?? ''),
+                  AppUtils.getOpeningTitle(item?.openingStatus ?? ''),
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
-                    color: AppUtils.getOpeningColor(item!.openingStatus ?? ''),
+                    color: AppUtils.getOpeningColor(item?.openingStatus ?? ''),
                   ),
                 ),
                 Text(
-                  AppUtils.getDistance(item!.distance ?? 0) > 0
-                      ? 'Cách ${AppUtils.getDistance(item!.distance ?? 0)}km '
+                  AppUtils.getDistance(item?.distance ?? 0) > 0
+                      ? 'Cách ${AppUtils.getDistance(item?.distance ?? 0)}km '
                       : '',
                   style: TextStyle(
                     fontSize: 10,
@@ -81,7 +83,7 @@ class PlaceHorizItemView extends StatelessWidget {
               ],
             ),
             Text(
-              item!.name ?? '',
+              item?.name ?? '',
               maxLines: 2,
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
@@ -99,7 +101,7 @@ class PlaceHorizItemView extends StatelessWidget {
                   width: 4,
                 ),
                 Text(
-                  item!.region?.name ?? '',
+                  item?.region?.name ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

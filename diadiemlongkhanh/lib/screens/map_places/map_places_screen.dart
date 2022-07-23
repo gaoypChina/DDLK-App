@@ -90,7 +90,7 @@ class _MapPlacesSreenState extends State<MapPlacesSreen> {
           accessToken: Environment().config.mapAccessToken,
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
-            zoom: 14,
+            zoom: 20,
             target: LatLng(places.first.address?.geo?.lat ?? 0,
                 places.first.address?.geo?.long ?? 0),
           ),

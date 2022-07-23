@@ -2,6 +2,7 @@ import 'package:diadiemlongkhanh/models/remote/new_feed/new_feed_response.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/app_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/screens/places/widgets/full_name_content_place_view.dart';
 import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
@@ -37,7 +38,18 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
     }
   }
 
+  onReadMore(BuildContext context) {
+    if (place == null) return;
+    AppUtils.showBottomDialog(
+      context,
+      FullNameContentPlaceView(
+        place: place!,
+      ),
+    );
+  }
+
   openMap() async {
+    if (place == null) return;
     final lat = place?.address?.geo?.lat;
     final long = place?.address?.geo?.long;
     if (await MapLauncher.isMapAvailable(MapType.google) ?? false) {
@@ -200,6 +212,7 @@ class DetailPlaceCubit extends Cubit<DetailPlaceState> {
   addReview(
     BuildContext context,
   ) async {
+    if (place == null) return;
     final token = await injector.get<StorageService>().getToken();
     if (token == null) {
       Navigator.of(context).pushNamed(

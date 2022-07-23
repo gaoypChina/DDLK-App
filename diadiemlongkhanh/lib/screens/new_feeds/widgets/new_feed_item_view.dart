@@ -89,7 +89,7 @@ class NewFeedItemView extends StatelessWidget {
           GestureDetector(
             onTap: nextToDetail,
             child: ReadMoreText(
-              item!.content ?? '',
+              item?.content ?? '',
               trimLines: 3,
               colorClickableText: Theme.of(context).primaryColor,
               trimMode: TrimMode.Line,
@@ -278,7 +278,7 @@ class NewFeedItemView extends StatelessWidget {
               height: 36,
               child: MainTextFormField(
                 hintText: 'Viết bình luận',
-                controller: item!.controller,
+                controller: item?.controller,
                 colorBorder: ColorConstant.neutral_gray_lightest,
                 radius: 18,
               ),
@@ -316,16 +316,18 @@ class NewFeedItemView extends StatelessWidget {
             onTap: likePressed,
             child: Row(
               children: [
-                SvgPicture.asset(
-                  item!.isLiked
-                      ? ConstantIcons.ic_heart
-                      : ConstantIcons.ic_heart_outline,
-                ),
+                item == null
+                    ? SizedBox.shrink()
+                    : SvgPicture.asset(
+                        item!.isLiked
+                            ? ConstantIcons.ic_heart
+                            : ConstantIcons.ic_heart_outline,
+                      ),
                 SizedBox(
                   width: 5,
                 ),
                 Text(
-                  '${item!.likeCount} Thích',
+                  '${item?.likeCount ?? 0} Thích',
                   style: TextStyle(
                     fontSize: 10,
                     color: ColorConstant.neutral_gray,
@@ -346,7 +348,7 @@ class NewFeedItemView extends StatelessWidget {
                   width: 6,
                 ),
                 Text(
-                  '${item!.commentCount} Bình luận',
+                  '${item?.commentCount ?? 0} Bình luận',
                   style: TextStyle(
                     fontSize: 10,
                     color: ColorConstant.neutral_gray,
@@ -361,6 +363,7 @@ class NewFeedItemView extends StatelessWidget {
   }
 
   _nextToDetailPlace(BuildContext context) async {
+    if (item == null) return;
     injector.get<StorageService>().savePlaceIds(item?.place?.id ?? '');
     Navigator.of(context)
         .pushNamed(RouterName.detail_place, arguments: item?.place?.id);
@@ -392,11 +395,13 @@ class NewFeedItemView extends StatelessWidget {
           children: [
             ClipRRectImage(
               radius: 4,
-              url: AppUtils.getUrlImage(
-                item!.place?.avatar?.path ?? '',
-                width: 200,
-                height: 200,
-              ),
+              url: item == null
+                  ? ''
+                  : AppUtils.getUrlImage(
+                      item!.place?.avatar?.path ?? '',
+                      width: 200,
+                      height: 200,
+                    ),
               width: 64,
               height: 64,
             ),
@@ -412,7 +417,7 @@ class NewFeedItemView extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          item!.place?.name ?? '',
+                          item?.place?.name ?? '',
                           style: Theme.of(context).textTheme.headline2,
                         ),
                       ),
@@ -420,8 +425,8 @@ class NewFeedItemView extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        AppUtils.getDistance(item!.place?.distance ?? 0) > 0
-                            ? 'Cách ${AppUtils.getDistance(item!.place?.distance ?? 0)}km '
+                        AppUtils.getDistance(item?.place?.distance ?? 0) > 0
+                            ? 'Cách ${AppUtils.getDistance(item?.place?.distance ?? 0)}km '
                             : '',
                         style: TextStyle(
                           fontSize: 10,
@@ -443,7 +448,7 @@ class NewFeedItemView extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          item!.place?.address?.specific ?? '',
+                          item?.place?.address?.specific ?? '',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -459,7 +464,7 @@ class NewFeedItemView extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        AppUtils.roundedRating(item!.place?.avgRate ?? 0)
+                        AppUtils.roundedRating(item?.place?.avgRate ?? 0)
                             .toString(),
                         style: TextStyle(
                           fontSize: 10,
@@ -471,7 +476,7 @@ class NewFeedItemView extends StatelessWidget {
                         width: 7,
                       ),
                       MyRatingBar(
-                        rating: item!.place?.avgRate ?? 0,
+                        rating: item?.place?.avgRate ?? 0,
                         onRatingUpdate: (rate, isEmpty) {},
                       ),
                     ],
@@ -750,7 +755,7 @@ class NewFeedItemView extends StatelessWidget {
   }
 
   Container _buildPhotosView(BuildContext context) {
-    final images = item!.images;
+    final images = item?.images ?? [];
     Widget photoView = SizedBox.shrink();
 
     switch (images.length) {
@@ -801,10 +806,11 @@ class NewFeedItemView extends StatelessWidget {
   }
 
   _nexToInfoUser(BuildContext context) {
+    if (item == null) return;
     if (disablNextProfile) {
       return;
     }
-    if (item!.anonymous == true) {
+    if (item?.anonymous == true) {
       return;
     }
     Navigator.of(context).pushNamed(
@@ -818,11 +824,13 @@ class NewFeedItemView extends StatelessWidget {
       children: [
         ClipRRectImage(
           radius: 22,
-          url: AppUtils.getUrlImage(
-            item!.author?.avatar ?? '',
-            width: 100,
-            height: 100,
-          ),
+          url: item == null
+              ? ''
+              : AppUtils.getUrlImage(
+                  item!.author?.avatar ?? '',
+                  width: 100,
+                  height: 100,
+                ),
           width: 44,
           height: 44,
           onPressed: () => _nexToInfoUser(context),
@@ -838,7 +846,7 @@ class NewFeedItemView extends StatelessWidget {
                   GestureDetector(
                     onTap: () => _nexToInfoUser(context),
                     child: Text(
-                      item!.author?.name ?? '',
+                      item?.author?.name ?? '',
                       style: Theme.of(context).textTheme.headline2,
                     ),
                   ),
@@ -855,7 +863,7 @@ class NewFeedItemView extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => _nextToDetailPlace(context),
                       child: Text(
-                        item!.place?.name ?? '',
+                        item?.place?.name ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.headline2,
@@ -870,7 +878,7 @@ class NewFeedItemView extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    AppUtils.roundedRating(item!.rateAvg ?? 0).toString(),
+                    AppUtils.roundedRating(item?.rateAvg ?? 0).toString(),
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
@@ -881,7 +889,7 @@ class NewFeedItemView extends StatelessWidget {
                     width: 7,
                   ),
                   MyRatingBar(
-                    rating: item!.rateAvg ?? 0,
+                    rating: item?.rateAvg ?? 0,
                     onRatingUpdate: (rate, isEmpty) {},
                   ),
                   Container(
@@ -899,7 +907,10 @@ class NewFeedItemView extends StatelessWidget {
                   GestureDetector(
                     onTap: nextToDetail,
                     child: Text(
-                      AppUtils.convertDatetimePrefix(item!.createdAt ?? ''),
+                      item == null
+                          ? ''
+                          : AppUtils.convertDatetimePrefix(
+                              item?.createdAt ?? ''),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,

@@ -33,6 +33,7 @@ abstract class BaseConfig {
   String get domain;
   String get mapAccessToken;
   String get domain2;
+  String get domainImage;
   CategoryStatic get categoryStatic;
 }
 
@@ -41,6 +42,7 @@ class DevConfig implements BaseConfig {
   String get nameEnv => 'DEV';
 
   String get domain => 'http://45.32.58.54:8500/';
+  String get domainImage => '';
 
   String get mapAccessToken =>
       'pk.eyJ1IjoiZGlhZGllbWxrIiwiYSI6ImNsMmgxZGM0cjA5bnIzY21rbnk0NWI4N2oifQ.ZxyP2isXgHTZAwRIJZcGgQ';
@@ -55,6 +57,7 @@ class DevConfig implements BaseConfig {
 class ProdConfig implements BaseConfig {
   String get apiHost => "https://diadiemlongkhanh.com/api/app/";
   String get nameEnv => 'PROD';
+  String get domainImage => 'https://diadiemlongkhanh.cdn.vccloud.vn/';
 
   String get domain => 'https://diadiemlongkhanh.com/';
   String get mapAccessToken =>

@@ -27,6 +27,9 @@ class _CustomSliderViewState extends State<CustomSliderView> {
   }
 
   _onSelect(SlideModel item) {
+    if (widget.datas.isEmpty) {
+      return;
+    }
     if (item.docModel?.toLowerCase() == 'place') {
       Navigator.of(context).pushNamed(
         RouterName.detail_place,
@@ -49,31 +52,29 @@ class _CustomSliderViewState extends State<CustomSliderView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        widget.datas.isNotEmpty
-            ? CarouselSlider.builder(
-                itemCount: widget.datas.length,
-                options: CarouselOptions(
-                    height: 180,
-                    enlargeCenterPage: true,
-                    onPageChanged: (index, _) {
-                      setState(() {
-                        _indexSelected = index;
-                      });
-                    }),
-                itemBuilder: (context, index, realIndex) {
-                  return ClipRRectImage(
-                    height: 180,
-                    radius: 12,
-                    onPressed: () => _onSelect(widget.datas[index]),
-                    url: AppUtils.getUrlImage(
-                      widget.datas[index].photo?.path ?? '',
-                    ),
-                  );
-                },
-              )
-            : ShimmerImage(
-                height: 180,
+        CarouselSlider.builder(
+          itemCount: widget.datas.isEmpty ? 1 : widget.datas.length,
+          options: CarouselOptions(
+              height: 180,
+              enlargeCenterPage: true,
+              onPageChanged: (index, _) {
+                setState(() {
+                  _indexSelected = index;
+                });
+              }),
+          itemBuilder: (context, index, realIndex) {
+            return ClipRRectImage(
+              height: 180,
+              radius: 12,
+              onPressed: () => _onSelect(widget.datas[index]),
+              url: AppUtils.getUrlImage(
+                widget.datas.isEmpty
+                    ? ''
+                    : widget.datas[index].photo?.path ?? '',
               ),
+            );
+          },
+        ),
         SizedBox(
           height: 12,
         ),

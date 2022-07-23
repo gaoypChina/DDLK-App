@@ -14,10 +14,6 @@ import 'package:diadiemlongkhanh/screens/new_feeds/widgets/new_feed_item_view.da
 import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_horiz_item_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/places_grid_view.dart';
-import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
-import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_newfeed.dart';
-import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_paragraph.dart';
-import 'package:diadiemlongkhanh/screens/skeleton_view/skeleton_voucher.dart';
 import 'package:diadiemlongkhanh/services/di/di.dart';
 import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
@@ -40,11 +36,10 @@ class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   bool isLoading = true;
   HomeCubit get _cubit => BlocProvider.of(context);
-  bool _isScroll = true;
+  final bool _isScroll = true;
   final _refreshController = RefreshController();
   @override
   void initState() {
-    print('home');
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       getData();
@@ -81,22 +76,22 @@ class _HomeScreenState extends State<HomeScreen>
                     controller: _refreshController,
                     enablePullDown: true,
                     onRefresh: getData,
-                    header: WaterDropMaterialHeader(),
+                    header: const WaterDropMaterialHeader(),
                     child: SingleChildScrollView(
                       physics: _isScroll
-                          ? ScrollPhysics()
-                          : NeverScrollableScrollPhysics(),
+                          ? const ScrollPhysics()
+                          : const NeverScrollableScrollPhysics(),
                       child: Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           _buildSliderView(),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           _buildMenuView(),
-                          SizedBox(
+                          const SizedBox(
                             height: 37,
                           ),
                           BlocBuilder<HomeCubit, HomeState>(
@@ -162,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     bottom: 30,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 30,
                                 ),
                               ],
@@ -189,35 +184,43 @@ class _HomeScreenState extends State<HomeScreen>
 
         return ListView.builder(
           itemCount: newfeeds.isEmpty ? 5 : newfeeds.length,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           padding: const EdgeInsets.only(top: 16, bottom: 24),
           itemBuilder: (_, index) {
-            return newfeeds.isEmpty
-                ? ShimmerNewFeed(
-                    context,
-                  )
-                : NewFeedItemView(
-                    item: newfeeds[index],
-                    moreSelect: () => AppUtils.showBottomDialog(
-                      context,
-                      PlaceActionDiaglog(
-                        type: ReportType.review,
-                        docId: newfeeds[index].id,
-                      ),
-                    ),
-                    isShowComment:
-                        injector.get<StorageService>().getToken() != null,
-                    nextToDetail: () => Navigator.of(context).pushNamed(
-                      RouterName.detail_review,
-                      arguments: newfeeds[index],
-                    ),
-                    likePressed: () => _cubit.likePost(
-                      context,
-                      index,
-                    ),
-                    sendComment: () => _cubit.sendComment(index),
-                  );
+            final item = newfeeds.isEmpty ? null : newfeeds[index];
+            return NewFeedItemView(
+              item: item,
+              moreSelect: () {
+                if (item == null) return;
+                AppUtils.showBottomDialog(
+                  context,
+                  PlaceActionDiaglog(
+                    type: ReportType.review,
+                    docId: newfeeds[index].id,
+                  ),
+                );
+              },
+              isShowComment: injector.get<StorageService>().getToken() != null,
+              nextToDetail: () {
+                if (item == null) return;
+                Navigator.of(context).pushNamed(
+                  RouterName.detail_review,
+                  arguments: newfeeds[index],
+                );
+              },
+              likePressed: () {
+                if (item == null) return;
+                _cubit.likePost(
+                  context,
+                  index,
+                );
+              },
+              sendComment: () {
+                if (item == null) return;
+                _cubit.sendComment(index);
+              },
+            );
           },
         );
       },
@@ -244,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen>
             }
             return PlacesGridView(
               places: places,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               onSelect: (item) => Navigator.of(context).pushNamed(
                 RouterName.detail_place,
                 arguments: item.id,
@@ -318,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen>
         return Container(
           height: 250,
           margin: const EdgeInsets.only(bottom: 40),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: ColorConstant.grey_F1F5F2,
             image: DecorationImage(
               image: AssetImage(ConstantImages.world_map),
@@ -326,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               _buildHeaderSection(
@@ -340,53 +343,58 @@ class _HomeScreenState extends State<HomeScreen>
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.only(left: 16, top: 16),
                     itemBuilder: (_, index) {
+                      VoucherModel? item =
+                          vouchers.isEmpty ? null : vouchers[index];
                       return Container(
                         width: 218,
                         margin: const EdgeInsets.only(right: 16),
-                        child: vouchers.isEmpty
-                            ? SkeletonVoucher()
-                            : GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () => Navigator.of(context).pushNamed(
-                                  RouterName.detail_promotion,
-                                  arguments: vouchers[index].id,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRectImage(
-                                      radius: 12,
-                                      url: AppUtils.getUrlImage(
-                                        vouchers[index].thumbnail?.path ?? '',
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            if (item == null) return;
+                            Navigator.of(context).pushNamed(
+                              RouterName.detail_promotion,
+                              arguments: vouchers[index].id,
+                            );
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRectImage(
+                                radius: 12,
+                                url: item == null
+                                    ? ''
+                                    : AppUtils.getUrlImage(
+                                        item.thumbnail?.path ?? '',
+                                        height: 122,
                                       ),
-                                      height: 122,
-                                      width: double.infinity,
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Text(
-                                      vouchers[index].title ?? '',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style:
-                                          Theme.of(context).textTheme.headline2,
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      vouchers[index].content ?? '',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: ColorConstant.orange_secondary,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                height: 122,
+                                width: 218,
                               ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                item?.title ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                item?.content ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: ColorConstant.orange_secondary,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                       );
                     }),
               )
@@ -424,7 +432,7 @@ class _HomeScreenState extends State<HomeScreen>
                     height: 30,
                   ),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
         ],
       ),
     );
@@ -442,7 +450,7 @@ class _HomeScreenState extends State<HomeScreen>
           title,
           nextToAll: nextToAll,
         ),
-        Container(
+        SizedBox(
           height: 314,
           child: ListView.builder(
             itemCount: places.isEmpty ? 5 : places.length,
@@ -454,27 +462,20 @@ class _HomeScreenState extends State<HomeScreen>
               bottom: 40,
             ),
             itemBuilder: (_, index) {
-              return places.isEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: ShimmerImage(
-                        width: 194,
-                        height: 314,
-                      ),
-                    )
-                  : PlaceHorizItemView(
-                      context: context,
-                      item: places[index],
-                      onPressed: () {
-                        injector
-                            .get<StorageService>()
-                            .savePlaceIds(places[index].id ?? '');
-                        Navigator.of(context).pushNamed(
-                          RouterName.detail_place,
-                          arguments: places[index].id ?? '',
-                        );
-                      },
-                    );
+              return PlaceHorizItemView(
+                context: context,
+                item: places.isEmpty ? null : places[index],
+                onPressed: () {
+                  if (places.isEmpty) return;
+                  injector
+                      .get<StorageService>()
+                      .savePlaceIds(places[index].id ?? '');
+                  Navigator.of(context).pushNamed(
+                    RouterName.detail_place,
+                    arguments: places[index].id ?? '',
+                  );
+                },
+              );
             },
           ),
         )
@@ -495,7 +496,7 @@ class _HomeScreenState extends State<HomeScreen>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 15),
+            offset: const Offset(0, 15),
             blurRadius: 40,
             color: ColorConstant.grey_shadow.withOpacity(0.12),
           )
@@ -559,7 +560,7 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Row(
@@ -643,7 +644,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 12,
               color: ColorConstant.neutral_black,
@@ -684,7 +685,7 @@ class _HomeScreenState extends State<HomeScreen>
         child: Row(
           children: [
             SvgPicture.asset(ConstantIcons.ic_search),
-            SizedBox(
+            const SizedBox(
               width: 16,
             ),
             Text(
@@ -743,7 +744,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 height: 44,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
                             Expanded(
@@ -767,7 +768,7 @@ class _HomeScreenState extends State<HomeScreen>
   GestureDetector _buildNotiButton() {
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed(RouterName.notification),
-      child: Container(
+      child: SizedBox(
         height: 36,
         width: 36,
         child: Stack(

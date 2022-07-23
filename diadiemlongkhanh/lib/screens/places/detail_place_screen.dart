@@ -5,17 +5,13 @@ import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/screens/places/bloc/detail_place_cubit.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/all_opening_time_view.dart';
-import 'package:diadiemlongkhanh/screens/places/widgets/full_name_content_place_view.dart';
 import 'package:diadiemlongkhanh/screens/places/widgets/place_action_dialog.dart';
 import 'package:diadiemlongkhanh/screens/review/widgets/list_review_view.dart';
-import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_image.dart';
-import 'package:diadiemlongkhanh/screens/skeleton_view/shimmer_paragraph.dart';
 import 'package:diadiemlongkhanh/utils/app_utils.dart';
 import 'package:diadiemlongkhanh/widgets/cliprrect_image.dart';
 import 'package:diadiemlongkhanh/widgets/full_image_view.dart';
 import 'package:diadiemlongkhanh/widgets/line_dashed_painter.dart';
 import 'package:diadiemlongkhanh/widgets/mini_map_view.dart';
-import 'package:diadiemlongkhanh/widgets/my_back_button.dart';
 import 'package:diadiemlongkhanh/widgets/my_rating_bar.dart';
 import 'package:diadiemlongkhanh/widgets/verified_view.dart';
 import 'package:flutter/material.dart';
@@ -193,10 +189,10 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 controller: scrollController,
                 // shrinkWrap: true,
                 slivers: <Widget>[
-                  new SliverPadding(
+                  SliverPadding(
                     padding: const EdgeInsets.all(0),
-                    sliver: new SliverList(
-                      delegate: new SliverChildListDelegate(
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
                         <Widget>[
                           _buildInfoDetailPlaceView(context),
                           BlocBuilder<DetailPlaceCubit, DetailPlaceState>(
@@ -252,7 +248,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             if (state is DetailPlaceChangePagePhotoState) {
               currentIndex = state.index;
             }
-            return Container(
+            return SizedBox(
               height: 620 - (_cubit.place?.voucherCount == 0 ? 64 : 0),
               child: Stack(
                 children: [
@@ -299,7 +295,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
           current is DetailPlaceGetDoneState || current is DetailPlaceSaveState,
       builder: (_, state) {
         if (_cubit.place == null) {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
         return Align(
           alignment: Alignment.bottomCenter,
@@ -329,10 +325,10 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                       SvgPicture.asset(
                         ConstantIcons.ic_share,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
-                      Text(
+                      const Text(
                         'Chia sẻ',
                         style: TextStyle(
                           fontSize: 12,
@@ -343,7 +339,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 39,
                 ),
                 GestureDetector(
@@ -361,7 +357,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 52,
                 ),
                 GestureDetector(
@@ -375,12 +371,12 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                             ? null
                             : ColorConstant.neutral_black,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       Text(
                         _cubit.place!.isSaved ? 'Bỏ lưu' : 'Lưu',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: ColorConstant.neutral_black,
@@ -406,7 +402,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
           left: 16,
           right: 16,
           child: AnimatedContainer(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             height: _cubit.isVisibleAppBar ? 36.0 : 0.0,
             child: Container(
               decoration: BoxDecoration(
@@ -434,12 +430,15 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     ),
                   ),
                   InkWell(
-                    onTap: () => AppUtils.showBottomDialog(
-                      context,
-                      PlaceActionDiaglog(
-                        docId: _cubit.id,
-                      ),
-                    ),
+                    onTap: () {
+                      if (_cubit.place == null) return;
+                      AppUtils.showBottomDialog(
+                        context,
+                        PlaceActionDiaglog(
+                          docId: _cubit.id,
+                        ),
+                      );
+                    },
                     child: Container(
                       height: 36,
                       width: 36,
@@ -447,7 +446,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         borderRadius: BorderRadius.circular(18),
                         color: Colors.black.withOpacity(0.6),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Icon(
                           Icons.more_horiz,
                           color: Colors.white,
@@ -513,7 +512,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     }
     scrollController.animateTo(
       position,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.linear,
     );
   }
@@ -525,9 +524,9 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
           current is DetailPlaceSelectMenuState,
       builder: (_, state) {
         return AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           height: _cubit.isVisible ? 56.0 : 0.0,
-          child: new Container(
+          child: Container(
             width: MediaQuery.of(context).size.width,
             color: Colors.white,
             child: ListView.builder(
@@ -538,7 +537,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 return GestureDetector(
                   onTap: () => _selectTab(index),
                   behavior: HitTestBehavior.opaque,
-                  child: Container(
+                  child: SizedBox(
                     height: 56,
                     child: Stack(
                       children: [
@@ -594,7 +593,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 'Đánh giá từ cộng đồng',
                 style: Theme.of(context).textTheme.headline4,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               Text('${place?.reviewCount ?? 0} đánh giá')
@@ -617,10 +616,10 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                     width: 16,
                     height: 16,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 4,
                   ),
-                  Text(
+                  const Text(
                     'Viết đánh giá',
                     style: TextStyle(
                       fontSize: 14,
@@ -650,8 +649,8 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             value: place?.social?.instagram ?? ''));
       }
     }
-    return socials.length == 0
-        ? SizedBox.shrink()
+    return socials.isEmpty
+        ? const SizedBox.shrink()
         : Container(
             margin: const EdgeInsets.only(
               top: 16,
@@ -664,7 +663,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0, 12),
+                  offset: const Offset(0, 12),
                   blurRadius: 24,
                   color: ColorConstant.grey_shadow.withOpacity(0.08),
                 )
@@ -679,7 +678,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 ),
                 ListView.builder(
                   itemCount: socials.length,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(top: 18),
                   itemBuilder: (_, index) {
@@ -702,7 +701,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => AppUtils.launchLink(value),
-      child: Container(
+      child: SizedBox(
         height: 48,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -710,7 +709,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             Row(
               children: [
                 SvgPicture.asset(icon),
-                SizedBox(
+                const SizedBox(
                   width: 4,
                 ),
                 Expanded(
@@ -725,10 +724,10 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: CustomPaint(
                 painter: LineDashedPainter(
@@ -761,7 +760,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 12),
+            offset: const Offset(0, 12),
             blurRadius: 24,
             color: ColorConstant.grey_shadow.withOpacity(0.08),
           )
@@ -774,67 +773,62 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             'Bản đồ',
             style: Theme.of(context).textTheme.headline4,
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
-          place == null
-              ? Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: ShimmerImage(),
-                  ),
-                )
-              : Expanded(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            ConstantIcons.ic_primary_marker,
+          Expanded(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      ConstantIcons.ic_primary_marker,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => _cubit.openMap(),
+                        child: Text(
+                          place?.address?.specific ?? '',
+                          maxLines: 2,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).primaryColor,
+                            decoration: TextDecoration.underline,
                           ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => _cubit.openMap(),
-                              child: Text(
-                                place.address?.specific ?? '',
-                                maxLines: 2,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).primaryColor,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Expanded(
-                        child: MiniMapView(
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: place == null
+                      ? const SizedBox.shrink()
+                      : MiniMapView(
                           lat: place.address?.geo?.lat,
                           long: place.address?.geo?.long,
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ],
-                  ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildMenuView(PlaceModel? place) {
-    return place?.menu.length == 0
-        ? SizedBox.shrink()
+    return place == null || place.menu.isEmpty
+        ? const SizedBox.shrink()
         : Container(
             height: 144,
             margin: const EdgeInsets.only(
@@ -852,7 +846,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0, 12),
+                  offset: const Offset(0, 12),
                   blurRadius: 24,
                   color: ColorConstant.grey_shadow.withOpacity(0.08),
                 )
@@ -868,43 +862,43 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                 Container(
                   height: 72,
                   margin: const EdgeInsets.only(top: 16),
-                  child: place == null
-                      ? ShimmerImage()
-                      : ListView.builder(
-                          itemCount: place.menu.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (_, index) {
-                            final item = place.menu[index];
-                            return Container(
+                  child: ListView.builder(
+                    itemCount: place.menu.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (_, index) {
+                      final item = place.menu[index];
+                      return Container(
+                        height: 72,
+                        width: 72,
+                        margin: const EdgeInsets.only(right: 8),
+                        child: Stack(
+                          children: [
+                            ClipRRectImage(
+                              onPressed: () {
+                                AppUtils.showBottomDialog(
+                                  context,
+                                  FullImageView(
+                                    place.menu
+                                        .map((e) => e.path ?? '')
+                                        .toList(),
+                                    currentIndex: index,
+                                  ),
+                                );
+                              },
                               height: 72,
                               width: 72,
-                              margin: const EdgeInsets.only(right: 8),
-                              child: Stack(
-                                children: [
-                                  ClipRRectImage(
-                                    onPressed: () => AppUtils.showBottomDialog(
-                                      context,
-                                      FullImageView(
-                                        place.menu
-                                            .map((e) => e.path ?? '')
-                                            .toList(),
-                                        currentIndex: index,
-                                      ),
-                                    ),
-                                    height: 72,
-                                    width: 72,
-                                    url: AppUtils.getUrlImage(
-                                      item.path ?? '',
-                                      width: 200,
-                                      height: 200,
-                                    ),
-                                    radius: 8,
-                                  )
-                                ],
+                              url: AppUtils.getUrlImage(
+                                item.path ?? '',
+                                width: 150,
+                                height: 150,
                               ),
-                            );
-                          },
+                              radius: 8,
+                            )
+                          ],
                         ),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -929,87 +923,85 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 12),
+            offset: const Offset(0, 12),
             blurRadius: 24,
             color: ColorConstant.grey_shadow.withOpacity(0.08),
           )
         ],
       ),
-      child: place == null
-          ? Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: ShimmerImage(),
-            )
-          : Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Khung giờ mở cửa',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => AppUtils.showBottomDialog(
-                        context,
-                        AllOpeningTimeView(
-                          openingTime: place.openingTime,
-                        ),
-                      ),
-                      child: Text(
-                        'Xem tất cả',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ),
-                    SvgPicture.asset(
-                      ConstantIcons.ic_chevron_right,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ],
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Khung giờ mở cửa',
+                  style: Theme.of(context).textTheme.headline4,
                 ),
-                SizedBox(
-                  height: 16,
-                ),
-                Container(
-                  height: 48,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: ColorConstant.neutral_gray_lightest,
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (place == null) return;
+                  AppUtils.showBottomDialog(
+                    context,
+                    AllOpeningTimeView(
+                      openingTime: place.openingTime,
+                    ),
+                  );
+                },
+                child: Text(
+                  'Xem tất cả',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).primaryColor,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Đang mở cửa',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Text(
-                          place.openingTime != null
-                              ? AppUtils.getTimeOpening(place.openingTime!)
-                              : '',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                      )
-                    ],
+                ),
+              ),
+              SvgPicture.asset(
+                ConstantIcons.ic_chevron_right,
+                color: Theme.of(context).primaryColor,
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Container(
+            height: 48,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: ColorConstant.neutral_gray_lightest,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Đang mở cửa',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Text(
+                    place?.openingTime != null
+                        ? AppUtils.getTimeOpening(place!.openingTime!)
+                        : '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                 )
               ],
             ),
+          )
+        ],
+      ),
     );
   }
 
@@ -1027,7 +1019,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 12),
+            offset: const Offset(0, 12),
             blurRadius: 24,
             color: ColorConstant.grey_shadow.withOpacity(0.08),
           )
@@ -1072,7 +1064,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 12),
+            offset: const Offset(0, 12),
             blurRadius: 24,
             color: ColorConstant.grey_shadow.withOpacity(0.08),
           )
@@ -1095,41 +1087,37 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
-          place == null
-              ? Expanded(
-                  child: ShimmerImage(),
-                )
-              : Expanded(
-                  child: Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      _buildReviewItem(
-                        'Vị trí',
-                        place.rate?.position ?? 0,
-                      ),
-                      _buildReviewItem(
-                        'Không gian',
-                        place.rate?.view ?? 0,
-                      ),
-                      _buildReviewItem(
-                        'Ăn uống',
-                        place.rate?.drink ?? 0,
-                      ),
-                      _buildReviewItem(
-                        'Phục vụ',
-                        place.rate?.service ?? 0,
-                      ),
-                      _buildReviewItem(
-                        'Giá cả',
-                        place.rate?.price ?? 0,
-                      ),
-                    ],
-                  ),
-                )
+          Expanded(
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                _buildReviewItem(
+                  'Vị trí',
+                  place?.rate?.position ?? 0,
+                ),
+                _buildReviewItem(
+                  'Không gian',
+                  place?.rate?.view ?? 0,
+                ),
+                _buildReviewItem(
+                  'Ăn uống',
+                  place?.rate?.drink ?? 0,
+                ),
+                _buildReviewItem(
+                  'Phục vụ',
+                  place?.rate?.service ?? 0,
+                ),
+                _buildReviewItem(
+                  'Giá cả',
+                  place?.rate?.price ?? 0,
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -1152,7 +1140,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                offset: Offset(0, 12),
+                offset: const Offset(0, 12),
                 blurRadius: 24,
                 color: ColorConstant.grey_shadow.withOpacity(0.08),
               )
@@ -1183,10 +1171,10 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                             SvgPicture.asset(
                               ConstantIcons.ic_book_contact,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
-                            Text(
+                            const Text(
                               'Gọi điện',
                               style: TextStyle(
                                 fontSize: 12,
@@ -1198,7 +1186,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                         ),
                       ),
                     )
-                  : Text(
+                  : const Text(
                       'Chưa cập nhật số điện thoại',
                       style: TextStyle(
                         fontSize: 12,
@@ -1233,14 +1221,14 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   children: [
                     TextSpan(
                       text: title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: ColorConstant.neutral_black,
                       ),
                     ),
                     TextSpan(
                       text: ' ($value/5.0)',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: ColorConstant.neutral_gray,
                       ),
@@ -1248,7 +1236,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Image.asset(
@@ -1280,7 +1268,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 12),
+            offset: const Offset(0, 12),
             blurRadius: 24,
             color: ColorConstant.grey_shadow.withOpacity(0.08),
           )
@@ -1307,7 +1295,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               //   ConstantIcons.ic_chevron_right,
               //   color: Theme.of(context).primaryColor,
               // ),
-              SizedBox(
+              const SizedBox(
                 width: 16,
               ),
             ],
@@ -1315,44 +1303,42 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
           Container(
             height: 32,
             margin: const EdgeInsets.only(top: 16),
-            child: place == null
-                ? ShimmerImage()
-                : ListView.builder(
-                    itemCount: place.benefits.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (_, index) {
-                      final item = place.benefits[index];
-                      return Container(
-                        height: 32,
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        margin: const EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: ColorConstant.neutral_gray_lightest,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              IconDataSolid(
-                                getHexFromStr(item.code ?? ''),
-                              ),
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              item.name ?? '',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: ColorConstant.neutral_black,
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
+            child: ListView.builder(
+              itemCount: place?.benefits.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, index) {
+                final item = place?.benefits[index];
+                return Container(
+                  height: 32,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  margin: const EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: ColorConstant.neutral_gray_lightest,
                   ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        IconDataSolid(
+                          getHexFromStr(item?.code ?? ''),
+                        ),
+                        size: 20,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        item?.name ?? '',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: ColorConstant.neutral_black,
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
           )
         ],
       ),
@@ -1372,258 +1358,231 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 12),
+            offset: const Offset(0, 12),
             blurRadius: 24,
             color: ColorConstant.grey_shadow.withOpacity(0.08),
           )
         ],
       ),
-      child: place == null
-          ? Column(
-              children: [
-                Row(
-                  children: [
-                    ShimmerImage(
-                      shape: BoxShape.circle,
-                      width: 52,
-                      height: 52,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: ShimmerParagraph(),
-                    ),
-                  ],
-                ),
-                ShimmerParagraph(),
-                SizedBox(
-                  height: 10,
-                ),
-                Expanded(
-                  child: ShimmerImage(),
-                ),
-              ],
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRectImage(
-                      height: 52,
-                      width: 52,
-                      radius: 26,
-                      url: AppUtils.getUrlImage(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRectImage(
+                height: 52,
+                width: 52,
+                radius: 26,
+                url: place == null
+                    ? ''
+                    : AppUtils.getUrlImage(
                         place.avatar?.path ?? '',
                         width: 200,
                         height: 200,
                       ),
+              ),
+              const SizedBox(
+                width: 9,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Text(
+                    //   place.name ?? '',
+                    //   maxLines: 1,
+                    //   overflow: TextOverflow.ellipsis,
+                    //   style: Theme.of(context).textTheme.headline3,
+                    // ),
+                    overFlowText(
+                      place?.name ?? '',
+                      Theme.of(context).textTheme.headline3!,
+                      1,
+                      readMore: () => _cubit.onReadMore(context),
                     ),
-                    SizedBox(
-                      width: 9,
+                    const SizedBox(
+                      height: 4,
                     ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      children: [
+                        MyRatingBar(
+                          rating: place?.rate?.summary ?? 0,
+                          onRatingUpdate: (rate, isEmpty) {},
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          '(${place?.reviewCount ?? 0} đánh giá)',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: ColorConstant.neutral_gray,
+                          ),
+                        )
+                      ],
+                    ),
+                    place?.verified == true
+                        ? Align(
+                            alignment: Alignment.bottomLeft,
+                            child: VerifiedView(
+                              margin: const EdgeInsets.only(
+                                top: 12,
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  ],
+                ),
+              ),
+              // Container(
+              //   height: 36,
+              //   width: 36,
+              //   decoration: BoxDecoration(
+              //     shape: BoxShape.circle,
+              //     border: Border.all(
+              //       color: Theme.of(context).primaryColor,
+              //     ),
+              //   ),
+              //   child: Center(
+              //     child: SvgPicture.asset(
+              //       ConstantIcons.ic_book_mark,
+              //     ),
+              //   ),
+              // )
+            ],
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          Row(
+            children: [
+              SvgPicture.asset(
+                ConstantIcons.ic_marker_filled,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                place?.region?.name ?? '',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              GestureDetector(
+                onTap: () => _cubit.openMap(),
+                child: Text(
+                  ' - Bản đồ chỉ đường',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          overFlowText(
+            place?.intro ?? '',
+            Theme.of(context).textTheme.bodyText1!.copyWith(
+                  height: 1.5,
+                ),
+            2,
+            isRow: false,
+            readMore: () => _cubit.onReadMore(context),
+          ),
+          // Text(
+          //   place.intro ?? '',
+          //   maxLines: 2,
+          //   overflow: TextOverflow.ellipsis,
+          //   style: Theme.of(context)
+          //       .textTheme
+          //       .bodyText1
+          //       ?.copyWith(height: 1.5),
+          // ),
+          Container(
+            height: 72,
+            margin: const EdgeInsets.only(top: 24),
+            child: ListView.builder(
+              itemCount: place?.images.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, index) {
+                final item = place?.images[index];
+                return Container(
+                  height: 72,
+                  width: 72,
+                  margin: const EdgeInsets.only(right: 8),
+                  child: Stack(
+                    children: [
+                      ClipRRectImage(
+                        onPressed: () {
+                          if (place == null) return;
+                          AppUtils.showBottomDialog(
+                            context,
+                            FullImageView(
+                              place.images.map((e) => e.path ?? '').toList(),
+                              currentIndex: index,
+                            ),
+                          );
+                        },
+                        height: 72,
+                        width: 72,
+                        url: item == null
+                            ? ''
+                            : AppUtils.getUrlImage(
+                                item.path ?? '',
+                                width: 150,
+                                height: 150,
+                              ),
+                        radius: 8,
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          place?.voucherCount == 0 || place?.voucherCount == null
+              ? const SizedBox()
+              : Expanded(
+                  child: InkWell(
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(RouterName.promotion),
+                    child: Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(top: 24),
+                      padding: const EdgeInsets.symmetric(horizontal: 9),
+                      decoration: BoxDecoration(
+                        color: ColorConstant.neutral_gray_lightest,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
                         children: [
-                          // Text(
-                          //   place.name ?? '',
-                          //   maxLines: 1,
-                          //   overflow: TextOverflow.ellipsis,
-                          //   style: Theme.of(context).textTheme.headline3,
-                          // ),
-                          overFlowText(
-                            place.name ?? '',
-                            Theme.of(context).textTheme.headline3!,
-                            1,
-                            readMore: _onReadMore,
+                          SvgPicture.asset(ConstantIcons.ic_discountstore),
+                          const SizedBox(
+                            width: 7,
                           ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Row(
-                            children: [
-                              MyRatingBar(
-                                rating: place.rate?.summary ?? 0,
-                                onRatingUpdate: (rate, isEmpty) {},
+                          Expanded(
+                            child: Text(
+                              '${place?.voucherCount ?? 0} khuyến mãi',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).primaryColor,
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                '(${place.reviewCount ?? 0} đánh giá)',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: ColorConstant.neutral_gray,
-                                ),
-                              )
-                            ],
+                            ),
                           ),
-                          place.verified
-                              ? Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: VerifiedView(
-                                    margin: const EdgeInsets.only(
-                                      top: 12,
-                                    ),
-                                  ),
-                                )
-                              : SizedBox.shrink(),
+                          SvgPicture.asset(
+                            ConstantIcons.ic_chevron_right,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ],
                       ),
                     ),
-                    // Container(
-                    //   height: 36,
-                    //   width: 36,
-                    //   decoration: BoxDecoration(
-                    //     shape: BoxShape.circle,
-                    //     border: Border.all(
-                    //       color: Theme.of(context).primaryColor,
-                    //     ),
-                    //   ),
-                    //   child: Center(
-                    //     child: SvgPicture.asset(
-                    //       ConstantIcons.ic_book_mark,
-                    //     ),
-                    //   ),
-                    // )
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      ConstantIcons.ic_marker_filled,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      place.region?.name ?? '',
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                    GestureDetector(
-                      onTap: () => _cubit.openMap(),
-                      child: Text(
-                        ' - Bản đồ chỉ đường',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                overFlowText(
-                  place.intro ?? '',
-                  Theme.of(context).textTheme.bodyText1!.copyWith(
-                        height: 1.5,
-                      ),
-                  2,
-                  isRow: false,
-                  readMore: _onReadMore,
-                ),
-                // Text(
-                //   place.intro ?? '',
-                //   maxLines: 2,
-                //   overflow: TextOverflow.ellipsis,
-                //   style: Theme.of(context)
-                //       .textTheme
-                //       .bodyText1
-                //       ?.copyWith(height: 1.5),
-                // ),
-                Container(
-                  height: 72,
-                  margin: const EdgeInsets.only(top: 24),
-                  child: ListView.builder(
-                    itemCount: place.images.length,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (_, index) {
-                      final item = place.images[index];
-                      return Container(
-                        height: 72,
-                        width: 72,
-                        margin: const EdgeInsets.only(right: 8),
-                        child: Stack(
-                          children: [
-                            ClipRRectImage(
-                              onPressed: () => AppUtils.showBottomDialog(
-                                context,
-                                FullImageView(
-                                  place.images
-                                      .map((e) => e.path ?? '')
-                                      .toList(),
-                                  currentIndex: index,
-                                ),
-                              ),
-                              height: 72,
-                              width: 72,
-                              url: AppUtils.getUrlImage(
-                                item.path ?? '',
-                                width: 200,
-                                height: 200,
-                              ),
-                              radius: 8,
-                            )
-                          ],
-                        ),
-                      );
-                    },
                   ),
-                ),
-                place.voucherCount == 0
-                    ? SizedBox()
-                    : Expanded(
-                        child: Container(
-                          height: 40,
-                          margin: const EdgeInsets.only(top: 24),
-                          padding: const EdgeInsets.symmetric(horizontal: 9),
-                          decoration: BoxDecoration(
-                            color: ColorConstant.neutral_gray_lightest,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(ConstantIcons.ic_discountstore),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '${place.voucherCount ?? 0} khuyến mãi',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                ),
-                              ),
-                              SvgPicture.asset(
-                                ConstantIcons.ic_chevron_right,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-              ],
-            ),
-    );
-  }
-
-  _onReadMore() {
-    AppUtils.showBottomDialog(
-      context,
-      FullNameContentPlaceView(
-        place: _cubit.place!,
+                )
+        ],
       ),
     );
   }
@@ -1671,7 +1630,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   exceeded
                       ? GestureDetector(
                           onTap: readMore,
-                          child: Text(
+                          child: const Text(
                             "Xem thêm",
                             style: TextStyle(
                               fontSize: 10,
@@ -1679,7 +1638,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                             ),
                           ),
                         )
-                      : SizedBox.shrink()
+                      : const SizedBox.shrink()
                 ],
               )
             : Column(
@@ -1696,7 +1655,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                   exceeded
                       ? GestureDetector(
                           onTap: readMore,
-                          child: Text(
+                          child: const Text(
                             "Xem thêm",
                             style: TextStyle(
                               fontSize: 10,
@@ -1704,7 +1663,7 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
                             ),
                           ),
                         )
-                      : SizedBox.shrink()
+                      : const SizedBox.shrink()
                 ],
               );
       },
@@ -1717,49 +1676,47 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
       height: 268,
       child: Stack(
         children: [
-          place == null
-              ? ShimmerImage()
-              : PageView.builder(
-                  itemCount: place.images.length,
-                  scrollDirection: Axis.horizontal,
-                  onPageChanged: (index) {
-                    print(index);
-                    _cubit.changePage(index);
-                  },
-                  itemBuilder: (_, index) {
-                    final item = place.images[index];
-                    return ClipRRectImage(
-                      height: double.infinity,
-                      width: double.infinity,
-                      url: AppUtils.getUrlImage(
+          PageView.builder(
+            itemCount: place == null ? 1 : place.images.length,
+            scrollDirection: Axis.horizontal,
+            onPageChanged: (index) {
+              _cubit.changePage(index);
+            },
+            itemBuilder: (_, index) {
+              final item = place == null ? null : place.images[index];
+              return ClipRRectImage(
+                height: double.infinity,
+                width: double.infinity,
+                url: item == null
+                    ? ''
+                    : AppUtils.getUrlImage(
                         item.path ?? '',
+                        width: width,
                       ),
-                    );
-                  },
-                ),
-          place == null
-              ? SizedBox.shrink()
-              : Positioned(
-                  right: 16,
-                  bottom: 32,
-                  child: Container(
-                    width: 52,
-                    height: 22,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(11),
-                      color: Colors.black.withOpacity(0.5),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '${currentIndex + 1}/${place.images.length}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+              );
+            },
+          ),
+          Positioned(
+            right: 16,
+            bottom: 32,
+            child: Container(
+              width: 52,
+              height: 22,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(11),
+                color: Colors.black.withOpacity(0.5),
+              ),
+              child: Center(
+                child: Text(
+                  '${currentIndex + 1}/${place?.images.length ?? 1}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
                   ),
-                )
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -1780,7 +1737,7 @@ int getHexFromStr(String fontCode) {
       // a..f
       val += (hexDigit - 87) * (1 << (4 * (len - 1 - i)));
     } else {
-      throw new FormatException("An error occurred when converting");
+      throw const FormatException("An error occurred when converting");
     }
   }
   return val;

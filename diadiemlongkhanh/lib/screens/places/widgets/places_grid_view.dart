@@ -29,7 +29,7 @@ class PlacesGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       physics: physics,
-      itemCount: places.isEmpty ? 4 : places.length,
+      itemCount: places.isEmpty ? 6 : places.length,
       shrinkWrap: true,
       controller: controller,
       padding: EdgeInsets.only(
@@ -45,27 +45,16 @@ class PlacesGridView extends StatelessWidget {
         mainAxisExtent: 238,
       ),
       itemBuilder: (BuildContext context, int index) {
-        return places.isEmpty
-            ? Container(
-                height: 238,
-                child: Column(
-                  children: [
-                    ShimmerImage(
-                      height: 148,
-                      width: double.infinity,
-                    ),
-                    ShimmerParagraph()
-                  ],
-                ),
-              )
-            : PlaceGridItemView(
-                item: places[index],
-                onSelect: () {
-                  if (onSelect != null) {
-                    onSelect!(places[index]);
-                  }
-                },
-              );
+        final item = places.isEmpty ? null : places[index];
+        return PlaceGridItemView(
+          item: item,
+          onSelect: () {
+            if (item == null) return;
+            if (onSelect != null) {
+              onSelect!(places[index]);
+            }
+          },
+        );
       },
     );
   }

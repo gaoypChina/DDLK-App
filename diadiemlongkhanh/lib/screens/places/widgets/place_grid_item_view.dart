@@ -27,6 +27,7 @@ class PlaceGridItemView extends StatelessWidget {
           onSelect!();
           return;
         }
+        if (item == null) return;
         injector.get<StorageService>().savePlaceIds(item?.id ?? '');
         Navigator.of(context).pushNamed(
           RouterName.detail_place,
@@ -53,11 +54,13 @@ class PlaceGridItemView extends StatelessWidget {
             children: [
               ClipRRectImage(
                 radius: 8,
-                url: AppUtils.getUrlImage(
-                  item!.avatar?.path ?? '',
-                  width: 500,
-                  height: 500,
-                ),
+                url: item == null
+                    ? ''
+                    : AppUtils.getUrlImage(
+                        item?.avatar?.path ?? '',
+                        width: 300,
+                        height: 300,
+                      ),
                 height: 148,
                 width: double.infinity,
               ),
@@ -68,17 +71,17 @@ class PlaceGridItemView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    AppUtils.getOpeningTitle(item!.openingStatus ?? ''),
+                    AppUtils.getOpeningTitle(item?.openingStatus ?? ''),
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
                       color:
-                          AppUtils.getOpeningColor(item!.openingStatus ?? ''),
+                          AppUtils.getOpeningColor(item?.openingStatus ?? ''),
                     ),
                   ),
                   Text(
-                    AppUtils.getDistance(item!.distance ?? 0) > 0
-                        ? 'Cách ${AppUtils.getDistance(item!.distance ?? 0)}km '
+                    AppUtils.getDistance(item?.distance ?? 0) > 0
+                        ? 'Cách ${AppUtils.getDistance(item?.distance ?? 0)}km '
                         : '',
                     style: TextStyle(
                       fontSize: 10,
@@ -92,7 +95,7 @@ class PlaceGridItemView extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  item!.name ?? '',
+                  item?.name ?? '',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -114,7 +117,7 @@ class PlaceGridItemView extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      item!.address?.specific ?? '',
+                      item?.address?.specific ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
