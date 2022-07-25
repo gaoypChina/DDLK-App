@@ -20,6 +20,7 @@ class MainTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
   final bool readOnly;
+  final TextCapitalization textCapitalization;
 
   MainTextFormField({
     this.hintText,
@@ -39,6 +40,7 @@ class MainTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.maxLength,
     this.readOnly = false,
+    this.textCapitalization = TextCapitalization.none,
   });
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,7 @@ class MainTextFormField extends StatelessWidget {
       maxLength: maxLength,
       validator: validator,
       readOnly: readOnly,
+      textCapitalization: textCapitalization,
       decoration: InputDecoration(
         counterText: "",
         fillColor: fillColor,

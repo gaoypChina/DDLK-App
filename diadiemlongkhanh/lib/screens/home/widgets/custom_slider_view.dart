@@ -67,11 +67,11 @@ class _CustomSliderViewState extends State<CustomSliderView> {
               height: 180,
               radius: 12,
               onPressed: () => _onSelect(widget.datas[index]),
-              url: AppUtils.getUrlImage(
-                widget.datas.isEmpty
-                    ? ''
-                    : widget.datas[index].photo?.path ?? '',
-              ),
+              url: widget.datas.isEmpty
+                  ? ''
+                  : AppUtils.getUrlImage(
+                      widget.datas[index].photo?.path ?? '',
+                    ),
             );
           },
         ),

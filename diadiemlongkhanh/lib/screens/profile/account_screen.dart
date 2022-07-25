@@ -446,7 +446,7 @@ class _AccountScreenState extends State<AccountScreen>
         bottom: 4,
       ),
       height: 86,
-      width: 78,
+      width: 80,
       child: Stack(
         children: [
           ClipRRectImage(

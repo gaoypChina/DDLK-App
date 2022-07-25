@@ -27,7 +27,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     super.initState();
     injector.get<StorageService>().setFirstInstall(false);
     scrollController.addListener(() {
-      print(scrollController.offset);
+      addListener();
     });
     controller = AnimationController(
       value: 0.5,
@@ -37,6 +37,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         setState(() {});
         print(controller.value);
       });
+  }
+
+  addListener() async {
+    if (scrollController.page == 1.0 ||
+        scrollController.page == 2.0 ||
+        scrollController.page == 0.0) {
+      final _step = scrollController.page?.round() ?? 0;
+
+      setState(() {
+        step = _step;
+      });
+    }
   }
 
   @override
@@ -52,13 +64,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 142,
                     ),
-                    Container(
+                    SizedBox(
                       height: 353,
                       child: PageView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          // physics: NeverScrollableScrollPhysics(),
                           controller: scrollController,
                           itemCount: WelcomeModel.welcomeDatas.length,
                           itemBuilder: (_, index) {
@@ -66,7 +78,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             return Column(
                               children: [
                                 item.img,
-                                SizedBox(
+                                const SizedBox(
                                   height: 32,
                                 ),
                                 item.title != null
@@ -77,8 +89,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                             .textTheme
                                             .bodyText1,
                                       )
-                                    : SizedBox.shrink(),
-                                SizedBox(
+                                    : const SizedBox.shrink(),
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Text(
@@ -86,7 +98,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.headline1,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 24,
                                 ),
                                 Text(
@@ -98,14 +110,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             );
                           }),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 32,
                     ),
                     DotsView(
                       step: step,
                       length: 3,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 58,
                     ),
                     _buildNextButton()
@@ -130,7 +142,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       step += 1;
       scrollController.animateTo(
         width * step,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeIn,
       );
     });
@@ -208,7 +220,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           child: Container(
             height: 100,
             width: 100,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage(
@@ -218,7 +230,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             child: Stack(
               children: [
-                Positioned(
+                const Positioned(
                   top: 16,
                   right: 16,
                   child: Text(

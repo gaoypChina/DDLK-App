@@ -977,11 +977,11 @@ class _DetailPlaceScreenState extends State<DetailPlaceScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Đang mở cửa',
+                  AppUtils.getOpeningTitle(place?.openingStatus ?? ''),
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColor,
+                    color: AppUtils.getOpeningColor(place?.openingStatus ?? ''),
                   ),
                 ),
                 const SizedBox(

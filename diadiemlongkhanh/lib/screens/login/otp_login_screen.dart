@@ -95,26 +95,24 @@ class _OTPLoginScreenState extends State<OTPLoginScreen> {
     );
   }
 
-  Container _buildLoginWithPhoneView() {
-    return Container(
-      child: Column(
-        children: [
-          PhoneFormField(
-            controller: _phoneCtler,
-          ),
-          SizedBox(
-            height: 32,
-          ),
-          MainButton(
-            onPressed: _requestOtp,
-            color: isDisable
-                ? Theme.of(context).primaryColor.withOpacity(0.7)
-                : Theme.of(context).primaryColor, //ColorConstant.grey_F5F5F5,
-            title: 'Yêu cầu OTP',
-            textColor: Colors.white, //ColorConstant.border_gray2,
-          )
-        ],
-      ),
+  Widget _buildLoginWithPhoneView() {
+    return Column(
+      children: [
+        PhoneFormField(
+          controller: _phoneCtler,
+        ),
+        const SizedBox(
+          height: 32,
+        ),
+        MainButton(
+          onPressed: _requestOtp,
+          color: isDisable
+              ? Theme.of(context).primaryColor.withOpacity(0.7)
+              : Theme.of(context).primaryColor, //ColorConstant.grey_F5F5F5,
+          title: 'Yêu cầu OTP',
+          textColor: Colors.white, //ColorConstant.border_gray2,
+        )
+      ],
     );
   }
 }

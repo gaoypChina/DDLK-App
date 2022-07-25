@@ -72,6 +72,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 : 'Nữ';
         _fbCtler.text = user.social?.facebook ?? '';
         _insCtler.text = user.social?.instagram ?? '';
+        _emailCtler.text = user.email ?? '';
       });
     }
   }

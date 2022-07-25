@@ -55,7 +55,7 @@ void main() {
             create: (_) => HomeCubit(),
           )
         ],
-        child: MyApp(),
+        child: const MyApp(),
       ),
     );
   }, (e, stack) {
@@ -117,11 +117,11 @@ class _MyAppState extends State<MyApp> {
     await NotificationsManager().init();
     if (Platform.isAndroid) {
       var initializationSettingsAndroid =
-          new AndroidInitializationSettings('@mipmap/ic_launcher');
+          const AndroidInitializationSettings('@mipmap/ic_launcher');
 
       var initializationSettings =
-          new InitializationSettings(android: initializationSettingsAndroid);
-      flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+          InitializationSettings(android: initializationSettingsAndroid);
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
       flutterLocalNotificationsPlugin.initialize(
         initializationSettings,
       );
@@ -152,7 +152,7 @@ class _MyAppState extends State<MyApp> {
       final doc = data['doc'] as String;
       final docModel = data['docModel'] as String;
 
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         _nextToDetail(doc, docModel);
       });
     });
@@ -196,7 +196,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   _requestLocation() async {
-    Location location = new Location();
+    Location location = Location();
 
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;

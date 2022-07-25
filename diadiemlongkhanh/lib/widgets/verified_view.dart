@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 class VerifiedView extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
-  VerifiedView({
+  const VerifiedView({
     this.margin,
   });
   @override
@@ -37,12 +37,14 @@ class VerifiedView extends StatelessWidget {
           SizedBox(
             width: 2,
           ),
-          Text(
-            'Đã xác minh',
-            style: TextStyle(
-              fontSize: 8,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
+          Expanded(
+            child: Text(
+              'Đã xác minh',
+              style: TextStyle(
+                fontSize: 8,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
             ),
           )
         ],

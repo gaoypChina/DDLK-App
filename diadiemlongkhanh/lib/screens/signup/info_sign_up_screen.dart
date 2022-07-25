@@ -10,6 +10,7 @@ import 'package:diadiemlongkhanh/widgets/main_text_form_field.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 class InfoSignupScreen extends StatefulWidget {
@@ -102,6 +103,7 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                     hintText: 'Tên của bạn*',
                     maxLines: 1,
                     controller: _nameCtler,
+                    textCapitalization: TextCapitalization.words,
                     validator: (val) {
                       if (val == null || val == '') {
                         return 'Vui lòng nhập tên của bạn';
@@ -219,4 +221,20 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
       ),
     );
   }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: capitalize(newValue.text),
+      selection: newValue.selection,
+    );
+  }
+}
+
+String capitalize(String value) {
+  if (value.trim().isEmpty) return "";
+  return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
 }

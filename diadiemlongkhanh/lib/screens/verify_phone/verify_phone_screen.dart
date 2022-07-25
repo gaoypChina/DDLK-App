@@ -36,8 +36,8 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
   }
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
         if (_start == 0) {
@@ -135,7 +135,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Text(
@@ -144,12 +144,12 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
             ),
             Text(
               'Mã của bạn đã được gửi đến ${widget.phone}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
                 color: ColorConstant.neutral_gray,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             PinCodeTextField(
@@ -181,14 +181,13 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                 activeFillColor: ColorConstant.grey_EBEFF4,
               ),
               cursorColor: Theme.of(context).primaryColor,
-              animationDuration: Duration(milliseconds: 300),
+              animationDuration: const Duration(milliseconds: 300),
               enableActiveFill: true,
               // errorAnimationController: errorController,
               // controller: textEditingController,
               keyboardType: TextInputType.number,
 
               onCompleted: (v) {
-                print("Completed");
                 if (widget.verifyType == VerifyPhoneType.signup) {
                   Navigator.of(context).pushNamed(
                     RouterName.info_signup,
@@ -222,7 +221,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                 return true;
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Row(
@@ -241,9 +240,11 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                               ),
                         ),
                       )
-                    : Text(
-                        ' Gửi lại sau $_start giây',
-                        style: Theme.of(context).textTheme.bodyText1,
+                    : Expanded(
+                        child: Text(
+                          ' Gửi lại sau $_start giây',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
               ],
             ),
