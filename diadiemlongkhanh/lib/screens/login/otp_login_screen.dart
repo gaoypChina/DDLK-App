@@ -48,7 +48,12 @@ class _OTPLoginScreenState extends State<OTPLoginScreen> {
     AppUtils.hideLoading();
     if (res != null) {
       if (res.error != null) {
-        AppUtils.showOkDialog(context, res.error!);
+        AppUtils.showOkDialog(
+          context,
+          'Số điện thoại này chưa được đăng ký, bạn có muốn đăng ký không?',
+          okAction: () => _register(data),
+          isCancel: true,
+        );
         return;
       }
       if (res.success == true) {
@@ -66,6 +71,33 @@ class _OTPLoginScreenState extends State<OTPLoginScreen> {
 
         return;
       }
+    }
+    AppUtils.showOkDialog(
+      context,
+      ConstantTitle.please_try_again,
+    );
+  }
+
+  _register(dynamic data) async {
+    AppUtils.showLoading();
+    final res = await injector.get<ApiClient>().registerWithPhone(data);
+    AppUtils.hideLoading();
+    if (res != null) {
+      if (res.error != null) {
+        AppUtils.showOkDialog(context, res.error!);
+        return;
+      }
+      AppUtils.showOkDialog(
+        context,
+        'Hệ thống sẽ gửi mã OTP thông qua cuộc gọi, vui lòng chú ý tới điện thoại của bạn',
+        okAction: () => Navigator.of(context).pushNamed(
+          RouterName.verify_phone,
+          arguments: {
+            'phone': _phoneCtler.text,
+          },
+        ),
+      );
+      return;
     }
     AppUtils.showOkDialog(
       context,

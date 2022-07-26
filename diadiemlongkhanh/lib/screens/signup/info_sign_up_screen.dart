@@ -96,13 +96,16 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 60,
                   ),
                   MainTextFormField(
                     hintText: 'Tên của bạn*',
                     maxLines: 1,
                     controller: _nameCtler,
+                    onChanged: (val) {
+                      _nameCtler.text.toTitleCase();
+                    },
                     textCapitalization: TextCapitalization.words,
                     validator: (val) {
                       if (val == null || val == '') {
@@ -119,7 +122,7 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                       width: 20,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   MainTextFormField(
@@ -138,7 +141,7 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                       width: 20,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   MainTextFormField(
@@ -171,7 +174,7 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   MainTextFormField(
@@ -204,7 +207,7 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 32,
                   ),
                   MainButton(
@@ -223,18 +226,11 @@ class _InfoSignupScreenState extends State<InfoSignupScreen> {
   }
 }
 
-class UpperCaseTextFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    return TextEditingValue(
-      text: capitalize(newValue.text),
-      selection: newValue.selection,
-    );
-  }
-}
-
-String capitalize(String value) {
-  if (value.trim().isEmpty) return "";
-  return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
+extension StringCasingExtension on String {
+  String toCapitalized() =>
+      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
+      .split(' ')
+      .map((str) => str.toCapitalized())
+      .join(' ');
 }
