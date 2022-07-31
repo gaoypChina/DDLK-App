@@ -1,8 +1,11 @@
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
+import 'package:diadiemlongkhanh/resources/color_constant.dart';
 import 'package:diadiemlongkhanh/routes/router_manager.dart';
 import 'package:diadiemlongkhanh/widgets/list_option_login_view.dart';
 import 'package:diadiemlongkhanh/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class OptionLoginScreen extends StatefulWidget {
   const OptionLoginScreen({
@@ -34,14 +37,14 @@ class _OptionLoginScreenState extends State<OptionLoginScreen> {
                 width: 144,
                 height: 144,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 28,
               ),
               Text(
                 'Đăng nhập',
                 style: Theme.of(context).textTheme.headline1,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Text(
@@ -57,7 +60,7 @@ class _OptionLoginScreenState extends State<OptionLoginScreen> {
                 ),
                 child: ListOptionLoginView(),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 36,
               ),
               Row(
@@ -79,7 +82,21 @@ class _OptionLoginScreenState extends State<OptionLoginScreen> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
+                height: 20,
+              ),
+              GestureDetector(
+                onTap: openLink,
+                child: const Text(
+                  'Chính sách bảo mật',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: ColorConstant.neutral_black,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+              const SizedBox(
                 height: 36,
               ),
             ],
@@ -87,5 +104,14 @@ class _OptionLoginScreenState extends State<OptionLoginScreen> {
         ),
       ),
     );
+  }
+
+  openLink() async {
+    const url = "https://diadiemlongkhanh.com/privacy";
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      throw "Could not launch $url";
+    }
   }
 }
