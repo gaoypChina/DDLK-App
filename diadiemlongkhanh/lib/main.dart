@@ -229,13 +229,13 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       navigatorKey: navigatorKey,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: [
-        const Locale('vi'),
+      supportedLocales: const [
+        Locale('vi'),
       ],
       theme: AppTheme.of(context, listen: true).currentTheme,
       onGenerateRoute: RouterManager.generateRoute,

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 enum AppThemeKeys { light, dark }
+
 final Map<AppThemeKeys, ThemeData> _themes = {
   AppThemeKeys.light: ThemeData(
     primaryColor: ColorConstant.green_primary,

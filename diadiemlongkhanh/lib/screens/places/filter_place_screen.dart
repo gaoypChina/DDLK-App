@@ -92,10 +92,10 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
       backgroundColor: Colors.black.withOpacity(0.5),
       body: Container(
         margin: EdgeInsets.only(top: width / 3),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8),
+            topLeft: const Radius.circular(8),
             topRight: Radius.circular(8),
           ),
         ),
@@ -105,7 +105,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
             Container(
               height: 50,
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom:
                       BorderSide(color: ColorConstant.neutral_gray_lightest),
@@ -143,7 +143,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 18,
                           ),
                           _buildBoolFilter(
@@ -161,7 +161,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                               });
                             },
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           _buildBoolFilter(
@@ -174,7 +174,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                               });
                             },
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           Text(
@@ -186,7 +186,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                             height: 1,
                             color: ColorConstant.neutral_gray_lightest,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           Column(
@@ -196,7 +196,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                                 'Giá: ${AppUtils.formatCurrency(_lowerValue.round())}₫ - ${AppUtils.formatCurrency(_upperValue.round())}₫',
                                 style: Theme.of(context).textTheme.headline4,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 12,
                               ),
                               SfRangeSlider(
@@ -232,7 +232,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           Wrap(
@@ -315,7 +315,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
     return ListView.builder(
       itemCount: _categories.length,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 12, bottom: 12),
       itemBuilder: (_, index) {
         final item = _categories[index];
@@ -356,7 +356,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
           title,
           style: Theme.of(context).textTheme.headline4,
         ),
-        SizedBox(
+        const SizedBox(
           height: 12,
         ),
         _buildCheckBoxView(
@@ -364,7 +364,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
           value,
           onChanged: onChanged,
         ),
-        SizedBox(
+        const SizedBox(
           height: 28,
         ),
         Container(
@@ -388,7 +388,7 @@ class _FilterPlaceScreenState extends State<FilterPlaceScreen> {
           isSquare: isSquare,
           onChanged: onChanged,
         ),
-        SizedBox(
+        const SizedBox(
           width: 8,
         ),
         Text(

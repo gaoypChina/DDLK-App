@@ -107,7 +107,7 @@ class _CodePromotionDialogState extends State<CodePromotionDialog> {
                               height: 200,
                               width: 200,
                             )
-                          : QrImage(
+                          : QrImageView(
                               data: code,
                               padding: const EdgeInsets.all(0),
                               version: QrVersions.auto,

@@ -20,7 +20,7 @@ class SearchModel {
   SearchModel({
     this.page,
     this.pageSize,
-    this.opening = true,
+    this.opening = false,
     this.nearby = '',
     this.price,
     this.lat,
