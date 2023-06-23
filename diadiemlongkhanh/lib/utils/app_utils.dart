@@ -2,9 +2,15 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:diadiemlongkhanh/config/env_config.dart';
+import 'package:diadiemlongkhanh/main.dart';
 import 'package:diadiemlongkhanh/models/remote/place_response/place_response.dart';
 import 'package:diadiemlongkhanh/resources/asset_constant.dart';
 import 'package:diadiemlongkhanh/resources/color_constant.dart';
+import 'package:diadiemlongkhanh/routes/router_manager.dart';
+import 'package:diadiemlongkhanh/services/api_service/api_client.dart';
+import 'package:diadiemlongkhanh/services/di/di.dart';
+import 'package:diadiemlongkhanh/services/storage/storage_service.dart';
+import 'package:diadiemlongkhanh/utils/global_value.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -22,6 +28,16 @@ class AppUtils {
 
   static void hideLoading() {
     EasyLoading.dismiss();
+  }
+
+  static logout() async {
+    // await injector.get<ApiClient>().logout();
+    await injector.get<StorageService>().clear();
+    GlobalValue.avatar = null;
+    GlobalValue.id = null;
+    GlobalValue.name = null;
+    Navigator.of(navigatorKey.currentContext!)
+        .pushNamedAndRemoveUntil(RouterName.base_tabbar, (route) => false);
   }
 
   static showBottomDialog(
@@ -188,7 +204,7 @@ class AppUtils {
     return DateFormat(format).format(date);
   }
 
-  static showOkDialog(
+  static Future<void> showOkDialog(
     BuildContext context,
     String msg, {
     bool isCancel = false,
